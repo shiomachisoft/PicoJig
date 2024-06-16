@@ -7,6 +7,7 @@ The PC app source code is public.
 **PicoJig-WL**    
 The microcontroller board uses Raspberry Pi Pico W.   
 This is firmware and a PC application that controls the GPIO/UART/SPI/I2C/ADC/PWM of Pico W from a PC via Wi-Fi (TCP socket communication) or USB (virtual COM).   
+
 -System Configuration  
 https://sites.google.com/view/shiomachisoft/english-home/download-picojig
 
