@@ -1,0 +1,34 @@
+■20240616
+
+・PicoJigApp 2.0.2
+  一部のエラーメッセージの誤記を修正した。
+  
+・マニュアル
+  英語版を新規作成した。
+
+■20240526
+
+・PicoJigApp 2.0.1
+  ①TCP切断の検出にTCP KeepAliveを使うようにした
+  ②予期しないTCP切断が発生した場合は再接続するようにした
+  ③メイン画面にAppログを表示するようにした
+
+・PicoJig_WL_24052600.uf2
+  TCP接続数を1に制限した
+
+
+■20240520
+・PicoJig-WL公開
+
+・PicoJigApp 2.0.0
+  PicoJig/PicoJig-WL兼用のPCアプリとした。
+
+・PicoJig_WL_24050100.uf2
+  PicoJig-WLの初版のFW 
+
+・PicoJig_24050100.uf2
+  UART受信⇒仮想COMの処理効率を改善した。
+  
+
+■20240303 
+・PicoJig公開
