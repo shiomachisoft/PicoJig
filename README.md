@@ -1,10 +1,4 @@
-English website:  
-https://sites.google.com/view/shiomachisoft/english-home    
-  
-Japanese website:   
-https://sites.google.com/view/shiomachisoft/%E3%83%9B%E3%83%BC%E3%83%A0  
-  
-Contains PicoJig-WL and PicoJig  　　
+Contains PicoJig-WL and PicoJig.  　　
   
 **PicoJig-WL**    
 The microcontroller board uses Raspberry Pi Pico W. This is firmware and a PC application that controls the GPIO/UART/SPI/I2C/ADC/PWM of Pico W from a PC via Wi-Fi (TCP socket communication) or USB (virtual COM).   
@@ -22,4 +16,10 @@ https://sites.google.com/view/shiomachisoft/english-home/download-picojig/picoji
 *The SPI/I2C on Pi Pico W is on the master side. ・The source code for the PC app (a Windows app created in C#) is open to the public.     
   
 **PicoJig**        
-The microcontroller board uses a Raspberry Pi Pico. Compared to the PicoJig-WL, it does not have Wi-Fi functionality.     
+The microcontroller board uses a Raspberry Pi Pico. Compared to the PicoJig-WL, it does not have Wi-Fi functionality.
+
+English website:  
+https://sites.google.com/view/shiomachisoft/english-home    
+  
+Japanese website:   
+https://sites.google.com/view/shiomachisoft/%E3%83%9B%E3%83%BC%E3%83%A0  
