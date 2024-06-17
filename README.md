@@ -12,7 +12,7 @@ This is firmware and a PC application that controls the GPIO/UART/SPI/I2C/ADC/PW
 https://sites.google.com/view/shiomachisoft/english-home/picojig
 
 -Screen Capture   
-https://sites.google.com/view/shiomachisoft/english-home/download-picojig/picojig-screen 
+https://sites.google.com/view/shiomachisoft/english-home/picojig/picojig-screen 
 
 -Features   
 *By sending commands from the PC app to Pi Pico W via Wi-Fi or USB, you can have Pi Pico W send any UART/SPI/I2C/GPIO/PWM data.       
