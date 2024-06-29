@@ -1,3 +1,7 @@
+-20240629
+
+Just extract JigApp.zip.
+
 -20240616
 
 Added English manual.
