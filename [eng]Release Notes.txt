@@ -1,3 +1,7 @@
+-20240702
+
+Fixed bug in UART transmission
+
 -20240629
 
 Just extract JigApp.zip.
