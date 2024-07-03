@@ -1,3 +1,7 @@
+-20240705
+
+Stopped monitoring TCP idle time (no impact on operation)
+
 -20240702
 
 Fixed bug in UART transmission
