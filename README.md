@@ -15,7 +15,7 @@ https://sites.google.com/view/shiomachisoft/english-home/picojig/picojig-screen
 *By sending commands from the PC app to Pi Pico W via Wi-Fi or USB, you can have Pi Pico W send any UART/SPI/I2C/GPIO/PWM data.       
 *The UART/SPI/I2C/GPIO/ADC data received by Pi Pico W is passed to the PC app via W-Fi or USB and displayed on the PC app.     
 *The Wi-Fi mode requires a wireless LAN router that supports the 2.4 GHz band Wi-Fi standard "IEEE 802.11b/g/n".     
-*The SPI/I2C on Pi Pico W is on the master side. ・The source code for the PC app (a Windows app created in C#) is open to the public.     
+*The SPI/I2C on Pi Pico W is on the master side.      
   
 **PicoJig**        
 The microcontroller board uses a Raspberry Pi Pico. Compared to the PicoJig-WL, it does not have Wi-Fi functionality.
