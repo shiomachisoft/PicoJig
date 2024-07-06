@@ -1,8 +1,5 @@
 Contains PicoJig-WL and PicoJig.   
 Please refer to the manual for usage. The manual is available in English and Japanese.　　     
-
-The firmware source code is not public.  
-The PC app source code is public.  
     
 **PicoJig-WL**    
 The microcontroller board uses Raspberry Pi Pico W.   
