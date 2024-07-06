@@ -1,0 +1,43 @@
+■ビルド方法 ※pico-sdk(ver1.5.1)を使用します。
+
+1. [Getting started with pico]を見てWindowsでのビルド環境を準備します。
+
+2. src_fwの中のpicoフォルダをcドライブの直下に置きます。
+
+3. c:\pico\PicoJig\ にver1.5.1のpico-sdkフォルダを置きます。
+
+4. 下記のファイルを、pico-sdk-1.5.1_replaceフォルダにあるstdio_usb.cで上書きします。
+
+  C:\pico\PicoJig\pico-sdk\src\rp2_common\pico_stdio_usb\stdio_usb.c
+
+5. ver.hでdefine設定をします。
+
+	<PicoJigの場合>
+   	#define MY_BOARD_PICO_W を無効
+   
+   	<PicoJig_Wの場合>
+   	#define MY_BOARD_PICO_W を有効
+   
+6. コマンド
+
+   	<リリース>
+	setx PICO_SDK_PATH "../pico-sdk" 
+	cd C:/pico/PicoJig
+	mkdir build
+	cd C:/pico/PicoJig/build
+	cmake -G "NMake Makefiles" .. -DPICO_BOARD=pico_w -DCMAKE_BUILD_TYPE=Release -DPICO_DEOPTIMIZED_DEBUG=off
+	nmake
+	
+	<デバッグ>
+	setx PICO_SDK_PATH "../pico-sdk" 
+	cd C:/pico/PicoJig
+	mkdir build
+	cd C:/pico/PicoJig/build
+	cmake -G "NMake Makefiles" .. -DPICO_BOARD=pico_w -DCMAKE_BUILD_TYPE=Debug -DPICO_DEOPTIMIZED_DEBUG=on
+	nmake	
+	   
+■ソースの注意
+
+変なWDTの使い方をしていますが、理由は以下です。
+・uf2ファイルを書き込んだ時にWDTを発生させないため。
+・WDT以外でリセットする方法が見つからなかったため。
