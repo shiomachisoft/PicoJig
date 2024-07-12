@@ -100,7 +100,7 @@ static void MAIN_ControlLed()
 		gpio_put(ONBOARD_LED, bLedOn);
 #endif
 		// LED点滅のタイマカウントをクリア
-		TIMER_ClearLed();
+		TIMER_ClearLedTimer();
 	}
 }
 

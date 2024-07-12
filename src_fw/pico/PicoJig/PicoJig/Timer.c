@@ -118,7 +118,7 @@ bool TIMER_IsLedChangeTiming()
 }
 
 // LED点滅のタイマカウントをクリア
-void TIMER_ClearLed()
+void TIMER_ClearLedTimer()
 {
     f_timerCnt_led = 0;
 }

@@ -56,16 +56,16 @@ static void UART_Interrupt()
                 // 起動してからの安定待ち時間が経過していた場合
 
                 // FWエラーを設定
-                if (rsr && (1 << 0)) {
+                if (rsr & (1 << 0)) {
                     errorBits |= CMN_ERR_BIT_UART_FRAMING_ERR;
                 }        
-                if (rsr && (1 << 1)) {
+                if (rsr & (1 << 1)) {
                     errorBits |= CMN_ERR_BIT_UART_PARITY_ERR;
                 } 
-                if (rsr && (1 << 2)) {
+                if (rsr & (1 << 2)) {
                     errorBits |= CMN_ERR_BIT_UART_BREAK_ERR;
                 } 
-                if (rsr && (1 << 3)) {
+                if (rsr & (1 << 3)) {
                     errorBits |= CMN_ERR_BIT_UART_OVERRUN_ERR;
                 }                         
                 CMN_SetErrorBits(errorBits, true);

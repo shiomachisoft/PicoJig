@@ -40,8 +40,9 @@ static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line)
 	ST_FRM_REQ_FRAME *pstReqFrm = NULL; // 抽出が完了した要求フレーム(未完了の場合はNULL)
 	ST_FRM_RECV_DATA_INFO *pstRecv = &f_astRecvDataInf[line];
 
-	// [要求フレームの受信タイムアウト判定]
 	isConnected = FRM_IsConnected(line);
+
+	// [要求フレームの受信タイムアウト判定]
 	if (pstRecv->reqFrmSize > 0) { // 要求フレームのヘッダは受信済みの場合
 		if (TIMER_IsRecvTimeout(line) // 右記のタイムアウトが発生した場合:要求フレームのヘッダを受信後、TIMER_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
 		  || (!isConnected)) { // 未接続の場合 

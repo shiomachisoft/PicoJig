@@ -18,7 +18,7 @@ bool TIMER_IsUsbSendTimeout();
 void TIMER_ClearI2cTimeout();
 bool TIMER_IsI2cTimeout();
 bool TIMER_IsLedChangeTiming();
-void TIMER_ClearLed();
+void TIMER_ClearLedTimer();
 ULONG TIMER_GetLedPeriod();
 void TIMER_Init();
 
