@@ -1,3 +1,7 @@
+-20240712
+
+Fixed a mistake in UART error detection
+
 -20240706
 
 FW source released
