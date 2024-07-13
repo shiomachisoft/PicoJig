@@ -1,4 +1,4 @@
-*It was created using pico-sdk and C language without using MicroPython or Arduino IDE.  
+*It was created using pico-sdk and C language.  
     
 Please refer to the manual for usage.   
 The manual is available in English and Japanese.  　　     
