@@ -7,7 +7,7 @@
 #define TCP_SERVER_DEFAULT_IP_ADDR       0xC0A80A64 // IPアドレス
 
 // [列挙体]
-// キューの種類
+// フェーズ
 typedef enum _E_TCP_SERVER_PHASE {
     E_TCP_SERVER_PHASE_NOT_INIT,        // 未初期化
     E_TCP_SERVER_PHASE_INITED,          // 初期化済み
