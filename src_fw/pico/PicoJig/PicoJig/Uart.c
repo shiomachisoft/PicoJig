@@ -124,9 +124,7 @@ static void UART_SendFirstbyte()
     if (!f_isSentFirstByte) {  // 1byte目をまだ送信済みではない場合
         if (uart_is_writable(UART_ID)) { // UART送信可能な場合
             // UART送信データ取り出し⇒UART送信
-            if (UART_Send(true)) { // true:UART送信割り込みのデキューと同期する
-                // 無処理
-            }  
+            (void)UART_Send(true); // true:UART送信割り込みのデキューと同期する
         }
     }
 }
@@ -139,9 +137,7 @@ static inline bool UART_Send(bool bLock)
 
      // UART送信データ1byteのデキュー
     if (CMN_Dequeue(CMN_QUE_KIND_UART_SEND, &data, sizeof(UCHAR), bLock)) {   
-        if (!f_isSentFirstByte) { // 1byte目をまだ送信済みではない場合
-            f_isSentFirstByte = true; // 1byteを送信済み
-        }
+        f_isSentFirstByte = true; // 1byteを送信済み
         // UART送信(1byte)
         uart_get_hw(UART_ID)->dr = (io_rw_32)data;
         hw_set_bits(&uart_get_hw(UART_ID)->imsc, 1 << UART_UARTIMSC_TXIM_LSB);
@@ -177,7 +173,7 @@ void UART_Init(ST_UART_CONFIG *pstConfig)
     // 割り込み設定
     irq_set_exclusive_handler(UART_IRQ, UART_Interrupt);
     irq_set_priority(UART_IRQ, CMN_IRQ_PRIORITY_UART); // 割り込みの優先度
-    irq_set_enabled(UART_IRQ, true);    
+    irq_set_enabled(UART_IRQ, true); // 実行中のCPUコア上の指定の割り込みを有効   
     uart_set_irq_enables(UART_ID, true, true); // UARTのRX・TX割り込みを有効
 }
 

@@ -60,6 +60,7 @@ static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line)
 			}
 			break;
 		case E_FRM_LINE_TCP_SERVER: // TCPサーバー
+			// 無線受信データの1byteのデキュー
 			if (!CMN_Dequeue(CMN_QUE_KIND_WL_RECV, &data, sizeof(UCHAR), true)) { // CPUコア1のエンキューとCPUコア0のデキューを排他する
 				return pstReqFrm; // NULLを返す
 			}

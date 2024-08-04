@@ -67,7 +67,7 @@ static void MAIN_MainLoop_Core1()
 		tcp_server_main();
 #endif
 
-		// USB/無線の送信メイン処理
+		// USB/無線送信のメイン処理
 		FRM_SendMain();
 	}
 }

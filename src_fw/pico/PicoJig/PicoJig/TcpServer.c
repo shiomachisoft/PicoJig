@@ -3,9 +3,10 @@
 // [define]
 #define TCP_SERVER_POLL_TIME_S 5
 #define TCP_SERVER_DRIVER_WORK_TIMEOUT 1000 //ms
-#define TCP_SERVER_THRESHOLD_LESS_THAN_CYW43_LINK_DOWN 100000ULL // us
-#define TCP_SERVER_THRESHOLD_MORE_THAN_CYW43_LINK_DOWN 10000000ULL // us
+#define TCP_SERVER_CONNECT_AP_INTERVAL 100000ULL // us 100ms APとの接続に失敗した場合、この時間を待ってからフェーズをE_TCP_CMN_PHASE_INITEDに戻す
+#define TCP_SERVER_CONNECT_AP_TIMEOUT 10000000ULL // us 10秒 この時間が経過してもAPと接続できない場合、フェーズをE_TCP_CMN_PHASE_INITEDに戻す
 
+// [define]
 #define WIFI_HOSTNAME FW_NAME // hostname
 #define TCP_PORT 7777 // ソケットポート番号
 
@@ -144,10 +145,10 @@ static bool tcp_server_check_link_up() // cyw43_arch_wifi_connect_bssid_until()�
         endUs = time_us_64();
         diffUs = endUs - f_startUs;
         if (status < CYW43_LINK_DOWN) { // 接続失敗
-            threshold = TCP_SERVER_THRESHOLD_LESS_THAN_CYW43_LINK_DOWN;
+            threshold = TCP_SERVER_CONNECT_AP_INTERVAL;
         }
         else { // 接続を試み中
-            threshold = TCP_SERVER_THRESHOLD_MORE_THAN_CYW43_LINK_DOWN;
+            threshold = TCP_SERVER_CONNECT_AP_TIMEOUT;
         }
         if (diffUs >= threshold) {
             f_ePhase = E_TCP_SERVER_PHASE_INITED;
