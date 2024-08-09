@@ -4,13 +4,7 @@
 
 2. Place the pico folder in src_fw directly under the C drive.
 
-3. Place the ver1.5.1 pico-sdk folder in c:/pico/PicoJig/
-
-4. Overwrite the following file with stdio_usb.c in the pico-sdk-1.5.1_replace folder.
-
-	C:/pico/PicoJig/pico-sdk/src/rp2_common/pico_stdio_usb/stdio_usb.c
-
-5. Set the define in ver.h.
+3. Set the define in ver.h.
 
 	<For PicoJig>
 	Disable		#define MY_BOARD_PICO_W 
@@ -18,10 +12,10 @@
 	<For PicoJig_W>
 	Enable		#define MY_BOARD_PICO_W
 
-6. Command
+4. Command
 
    	<Release>
-	setx PICO_SDK_PATH "../pico-sdk" 
+	setx PICO_SDK_PATH "c:/pico-sdk"    *Specify the path of pico-sdk.
 	cd C:/pico/PicoJig
 	mkdir build
 	cd C:/pico/PicoJig/build
@@ -29,7 +23,7 @@
 	nmake
 	
 	<Debug>
-	setx PICO_SDK_PATH "../pico-sdk" 
+	setx PICO_SDK_PATH "c:/pico-sdk"   *Specify the path of pico-sdk. 
 	cd C:/pico/PicoJig
 	mkdir build
 	cd C:/pico/PicoJig/build

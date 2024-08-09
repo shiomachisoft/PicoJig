@@ -13,8 +13,6 @@ void TIMER_WdtClear();
 bool TIMER_IsStabilizationWaitTimePassed();
 void TIMER_ClearRecvTimeout(ULONG line);
 bool TIMER_IsRecvTimeout(ULONG line);
-void TIMER_ClearUsbSendTimeout();
-bool TIMER_IsUsbSendTimeout();
 void TIMER_ClearI2cTimeout();
 bool TIMER_IsI2cTimeout();
 bool TIMER_IsLedChangeTiming();

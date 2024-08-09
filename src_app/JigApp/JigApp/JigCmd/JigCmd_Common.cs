@@ -196,7 +196,15 @@ namespace JigLib
             /// <summary>
             /// ネットワーク設定取得
             /// </summary>
-            GET_NW_CONFIG
+            GET_NW_CONFIG,
+            /// <summary>
+            /// ネットワーク設定変更2
+            /// </summary>
+            SET_NW_CONFIG2,
+            /// <summary>
+            /// ネットワーク設定取得2
+            /// </summary>
+            GET_NW_CONFIG2,
         }
 
         /// <summary>

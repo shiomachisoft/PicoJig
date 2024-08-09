@@ -16,7 +16,7 @@ int main()
 {
 	// 電源起動時の初期化
 	MAIN_Init();
-	
+
 	// CPUコア1のメインループを開始
 	multicore_launch_core1(MAIN_MainLoop_Core1); 
 
@@ -119,7 +119,7 @@ static void MAIN_Init()
 	// 例外ハンドラを登録
 	MAIN_RegisterExceptionHandler();
 
-	// 標準入出力を初期化
+	// CDCを初期化
     stdio_init_all();
 
 	// 共通ライブラリを初期化

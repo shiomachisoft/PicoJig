@@ -627,6 +627,90 @@ namespace JigLib
         }
 
         /// <summary>
+        /// 「ネットワーク設定変更2」コマンドの要求を送信
+        /// </summary>
+        public string SendCmd_SetNwConfig2(string strCountryCode, string strIpAddr, string strSsid, string strPassword, string strServerIpAddr, bool isClient)
+        {
+            byte[] aReqData = new byte[110];
+            byte[] aResData = null;
+            char[] achCountryCode = new char[3];
+            byte[] abyIpAddr = new byte[4];
+            char[] achSsid = new char[33];
+            char[] achPassword = new char[65];
+            byte[] abyServerIpAddr = new byte[4];
+            byte byIsClient = 0;
+            string strErrMsg;
+
+            Array.Clear(achCountryCode, 0, achCountryCode.Length);
+            Array.Clear(achSsid, 0, achSsid.Length);
+            Array.Clear(achPassword, 0, achPassword.Length);
+
+            // カントリーコード
+            if (strCountryCode.ToCharArray().Length != achCountryCode.Length - 1)
+            {
+                strErrMsg = "Invalid parameter. (Country code)";
+                goto End;
+            }
+            Array.Copy(strCountryCode.ToCharArray(), 0, achCountryCode, 0, strCountryCode.ToCharArray().Length);
+
+            // IPアドレス
+            strErrMsg = ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr);
+            if (strErrMsg != null)
+            {
+                goto End;
+            }
+
+            // SSID
+            if (strSsid.ToCharArray().Length > achSsid.Length - 1)
+            {
+                strErrMsg = "Invalid parameter. (SSID)";
+                goto End;
+            }
+            Array.Copy(strSsid.ToCharArray(), 0, achSsid, 0, strSsid.ToCharArray().Length);
+
+            // パスワード
+            if (strPassword.ToCharArray().Length > achPassword.Length - 1)
+            {
+                strErrMsg = "Invalid parameter. (Password)";
+                goto End;
+            }
+            Array.Copy(strPassword.ToCharArray(), 0, achPassword, 0, strPassword.ToCharArray().Length);
+
+            // サーバーのIPアドレス
+            strErrMsg = ConvertIpAddrStringToByteArray(strServerIpAddr, out abyServerIpAddr);
+            if (strErrMsg != null)
+            {
+                goto End;
+            }
+
+            // 要求データ
+            for (int i = 0; i < achCountryCode.Length; i++)
+            {
+                aReqData[i] = (byte)achCountryCode[i];
+            }
+            Array.Copy(abyIpAddr, 0, aReqData, 3, abyIpAddr.Length);
+            for (int i = 0; i < achSsid.Length; i++)
+            {
+                aReqData[7 + i] = (byte)achSsid[i];
+            }
+            for (int i = 0; i < achPassword.Length; i++)
+            {
+                aReqData[40 + i] = (byte)achPassword[i];
+            }
+            Array.Copy(abyServerIpAddr, 0, aReqData, 105, abyServerIpAddr.Length);
+            if (isClient)
+            {
+                byIsClient = 1;
+            }
+            aReqData[109] = byIsClient;
+
+            strErrMsg = SendCmd(E_FRM_CMD.SET_NW_CONFIG2, aReqData, out aResData);
+
+            End:
+            return strErrMsg;
+        }
+
+        /// <summary>
         /// 「ネットワーク設定取得」コマンドの要求を送信
         /// </summary>
         public string SendCmd_GetNwConfig(out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword)
@@ -655,6 +739,51 @@ namespace JigLib
                 strIpAddr = aIpAddr[0].ToString() + "." + aIpAddr[1].ToString() + "." + aIpAddr[2].ToString() + "." +  aIpAddr[3].ToString();
                 strSsid = new string(szSsid);
                 strPassword = new string(szPassword);
+            }
+
+            return strErrMsg;
+        }
+
+        /// <summary>
+        /// 「ネットワーク設定取得2」コマンドの要求を送信
+        /// </summary>
+        public string SendCmd_GetNwConfig2(out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword, out string strServerIpAddr, out bool isClient)
+        {
+            byte[] aReqData = null;
+            byte[] aResData = null;
+            byte[] aIpAddr = new byte[4];
+            char[] szCountryCode = new char[3];
+            char[] szSsid = new char[33];
+            char[] szPassword = new char[65];
+            byte[] aServerIpAddr = new byte[4];
+            string strErrMsg;
+
+            strCountryCode = null;
+            strIpAddr = null;
+            strSsid = null;
+            strPassword = null;
+            strServerIpAddr = null;
+            isClient = false;
+
+            strErrMsg = SendCmd(E_FRM_CMD.GET_NW_CONFIG2, aReqData, out aResData);
+            if (strErrMsg == null)
+            {
+                Array.Copy(aResData, 0, szCountryCode, 0, szCountryCode.Length);
+                Array.Copy(aResData, 3, aIpAddr, 0, aIpAddr.Length);
+                Array.Copy(aResData, 7, szSsid, 0, szSsid.Length);
+                Array.Copy(aResData, 40, szPassword, 0, szPassword.Length);
+                Array.Copy(aResData, 105, aServerIpAddr, 0, aServerIpAddr.Length);
+
+                strCountryCode = new string(szCountryCode);
+                strIpAddr = aIpAddr[0].ToString() + "." + aIpAddr[1].ToString() + "." + aIpAddr[2].ToString() + "." + aIpAddr[3].ToString();
+                strSsid = new string(szSsid);
+                strPassword = new string(szPassword);
+                strServerIpAddr = aServerIpAddr[0].ToString() + "." + aServerIpAddr[1].ToString() + "." + aServerIpAddr[2].ToString() + "." + aServerIpAddr[3].ToString();
+
+                if (aResData[109] == 1)
+                {
+                    isClient = true;
+                }
             }
 
             return strErrMsg;

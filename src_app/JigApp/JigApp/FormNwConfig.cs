@@ -18,6 +18,8 @@ namespace JigApp
         /// </summary>
         private string _strTitle;
 
+        private bool _isNwConfig2 = false;
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -34,6 +36,19 @@ namespace JigApp
         {
             // タイトル
             this.Text = _strTitle + " - " + Program.PrpJigCmd.PrpConnectName;
+
+            if ((Str.PrpFwName == Str.STR_FW_NAME_PICOBRG) || (Str.PrpFwName == Str.STR_FW_NAME_PICOSEN))
+            {
+                _isNwConfig2 = true;
+            }
+            else 
+            {
+                radioButton_Client.Visible = false;
+                label_ServerIpAddr.Visible = false;
+                textBox_ServerIpAddr.Visible = false;
+            }
+           
+
             // 通信設定を取得
             GetConfig();
         }
@@ -47,13 +62,23 @@ namespace JigApp
             string strIpAddr = null;
             string strSsid = null;
             string strPassword = null;
+            string strServerIpAddr = null;
+            bool isClient = false;
             string strErrMsg = null;
 
             this.Enabled = false;
             strErrMsg = await Task.Run(() =>
             {
-                //「ネットワーク設定取得」コマンドの要求を送信
-                return Program.PrpJigCmd.SendCmd_GetNwConfig(out strCountryCode, out strIpAddr, out strSsid, out strPassword);
+                if (_isNwConfig2)
+                {
+                    //「ネットワーク設定取得」コマンドの要求を送信
+                    return Program.PrpJigCmd.SendCmd_GetNwConfig2(out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient);
+                }
+                else
+                {
+                    //「ネットワーク設定取得」コマンドの要求を送信
+                    return Program.PrpJigCmd.SendCmd_GetNwConfig(out strCountryCode, out strIpAddr, out strSsid, out strPassword);
+                }
             });
             this.Enabled = true;
 
@@ -64,6 +89,13 @@ namespace JigApp
                 textBox_IpAddr.Text = strIpAddr;
                 textBox_SSID.Text = strSsid;
                 textBox_Password.Text = strPassword;
+                if (_isNwConfig2)
+                {
+                    radioButton_Server.Checked = !isClient;
+                    radioButton_Client.Checked = isClient;
+                    textBox_ServerIpAddr.Enabled = isClient;
+                    textBox_ServerIpAddr.Text = strServerIpAddr;
+                }
             }
             else
             {
@@ -87,8 +119,16 @@ namespace JigApp
             this.Enabled = false;
             strErrMsg = await Task.Run(() =>
             {
-                //「ネットワーク設定設定変更」コマンドの要求を送信
-                return Program.PrpJigCmd.SendCmd_SetNwConfig(textBox_CountryCode.Text.Trim(), textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim());
+                if (_isNwConfig2)
+                {
+                    //「ネットワーク設定設定変更2」コマンドの要求を送信
+                    return Program.PrpJigCmd.SendCmd_SetNwConfig2(textBox_CountryCode.Text.Trim(), textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim(), textBox_ServerIpAddr.Text.Trim(), radioButton_Client.Checked);
+                }
+                else
+                {
+                    //「ネットワーク設定設定変更」コマンドの要求を送信
+                    return Program.PrpJigCmd.SendCmd_SetNwConfig(textBox_CountryCode.Text.Trim(), textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim());
+                }
             });          
             if (strErrMsg == null)
             {
@@ -102,6 +142,16 @@ namespace JigApp
                 UI.ShowErrMsg(this, strErrMsg);
             }
             this.Enabled = true;
+        }
+
+        /// <summary>
+        /// 「サーバー」ラジオボタンのチェック状態が変化した時
+        /// </summary>
+        private void radioButton_Server_CheckedChanged(object sender, EventArgs e)
+        {
+            RadioButton radio = (RadioButton)sender;
+
+            textBox_ServerIpAddr.Enabled = !radio.Checked;
         }
     }
 }

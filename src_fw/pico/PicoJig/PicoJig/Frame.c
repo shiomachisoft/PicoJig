@@ -7,9 +7,7 @@
 static ST_FRM_RECV_DATA_INFO f_astRecvDataInf[E_FRM_LINE_NUM] = {0}; // USB/無線の受信データ情報
 static UCHAR f_aSendData[FRM_SEND_BUF_SIZE] = {0}; // USB/無線送信バッファ
 
-// [関数プロトタイプ宣言]
-extern int stdio_usb_in_chars(char *buf, int length);
-extern void stdio_usb_out_chars(const char *buf, int length); 
+// [関数プロトタイプ宣言] 
 static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line);
 static void FRM_ReqToSend(PVOID pBuf, ULONG size);
 static bool FRM_IsConnected(ULONG line);
@@ -34,6 +32,7 @@ void FRM_RecvMain()
 // USB/無線受信データから要求フレームを作成する
 static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line)
 {
+	int ret;
 	UCHAR data = 0; 					// 受信データ(1byte)
 	ULONG reqFrmSize = 0; 			    // 要求フレームのサイズ(チェックサム除く)
 	bool isConnected;
@@ -55,9 +54,11 @@ static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line)
 	{
 		case E_FRM_LINE_USB: // USB
 			// USB受信データ1byte取り出し
-			if (0 >= stdio_usb_in_chars((char*)&data, sizeof(UCHAR))) { // USB受信データが無い場合
+			ret = getchar_timeout_us(0); 
+			if (PICO_ERROR_TIMEOUT == ret) { // USB受信データが無い場合
 				return pstReqFrm; // NULLを返す
 			}
+			data = (UCHAR)ret;
 			break;
 		case E_FRM_LINE_TCP_SERVER: // TCPサーバー
 			// 無線受信データの1byteのデキュー
@@ -175,7 +176,10 @@ void FRM_SendMain()
 		// USB優先
 		if (stdio_usb_connected()) { // USB接続済み
 			// USB送信 
-			stdio_usb_out_chars((const char*)f_aSendData, size);
+			for (i = 0; i < size; i++) 
+			{
+				putchar_raw(f_aSendData[i]);
+			}				
 		}
 		else if (tcp_server_is_connected()) { // TCP接続済み
 			// TCP送信

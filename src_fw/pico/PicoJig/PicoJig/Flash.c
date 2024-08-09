@@ -89,7 +89,7 @@ void FLASH_Write(ST_FLASH_DATA *pstFlashData)
    
     // CPUコア1を停止
     multicore_reset_core1();
-    // 割り込みを無効に設定
+    // 割り込み禁止
     ints = save_and_disable_interrupts();
     // WDTタイマをクリア
     TIMER_WdtClear();
@@ -104,7 +104,7 @@ void FLASH_Write(ST_FLASH_DATA *pstFlashData)
     // watchdog_enable()を使用しないで即WDTタイムアウトで再起動する
     CMN_WdtNoEnableReboot();
 
-    // 割り込みフラグを戻す
+    // 割り込み許可
     //restore_interrupts(ints);     
 }
 

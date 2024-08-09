@@ -12,7 +12,6 @@ static repeating_timer_t f_stTimer = {0};                   // 定期タイマ�
 static ULONG f_timerCnt_wdt = 0;                            // WDTタイマのタイマカウント
 static ULONG f_timerCnt_stabilizationWait = 0;              // 起動してからの安定待ち時間のタイマカウント
 static ULONG f_aTimerCnt_recvTimeout[E_FRM_LINE_NUM] = {0}; // 右記のタイマカウント:要求フレームのヘッダを受信後、TIMER_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
-static ULONG f_timerCnt_usbSendTimeout = 0;                 // USB送信タイムアウトのタイマカウント 
 static ULONG f_timerCnt_led = 0;                            // LED点滅のタイマカウント
 static ULONG f_ledPeriod = TIMER_LED_PERIOD_NORMAL;         // LED点滅周期
 static ULONG f_timerCnt_i2cTimeout = 0;                     // I2C送信/受信タイムアウトのタイマカウント
@@ -44,11 +43,6 @@ static bool Timer_PeriodicCallback(repeating_timer_t *pstTimer)
         if (f_aTimerCnt_recvTimeout[i] < TIMER_RECV_TIMEOUT) {
             f_aTimerCnt_recvTimeout[i]++;
         }
-    }
-
-    // [USB送信タイムアウトのタイマカウント]
-    if (f_timerCnt_usbSendTimeout < TIMER_USB_SEND_TIMEOUT) {
-        f_timerCnt_usbSendTimeout++;
     }
 
     // [I2C送信/受信タイムアウトのタイマカウント]
@@ -96,19 +90,6 @@ void TIMER_ClearRecvTimeout(ULONG line)
 bool TIMER_IsRecvTimeout(ULONG line)
 {
     return (f_aTimerCnt_recvTimeout[line] >= TIMER_RECV_TIMEOUT) ? true : false;
-}
-
-// USB送信タイムアウトのタイマカウントをクリア
-void TIMER_ClearUsbSendTimeout()
-{
-    f_timerCnt_usbSendTimeout = 0;
-}
-
-// USB送信タイムアウトか否かを取得
-// ※本関数は、pico-sdk\src\rp2_common\pico_stdio_usb\stdio_usb.c のstdio_usb_out_chars()の内部で使用している
-bool TIMER_IsUsbSendTimeout()
-{
-    return (f_timerCnt_usbSendTimeout >= TIMER_USB_SEND_TIMEOUT) ? true : false;
 }
 
 // LEDのON/OFFを変更するタイミングか否かを取得

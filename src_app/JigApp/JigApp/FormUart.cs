@@ -45,9 +45,7 @@ namespace JigApp
         /// </summary>
         private void FormUart_Load(object sender, EventArgs e)
         {
-            if ((Str.PrpFwName == Str.STR_FW_NAME_PICOBRG) 
-                || (Str.PrpFwName == Str.STR_FW_NAME_PICOSENTCP)
-                )
+            if (Str.PrpFwName == Str.STR_FW_NAME_PICOBRG)
             {
                 label_sendData.Visible = false;
                 textBox_SendData.Visible = false;

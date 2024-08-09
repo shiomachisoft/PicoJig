@@ -20,7 +20,7 @@ namespace JigApp
         public const string STR_FW_NAME_PICOJIG = "PicoJig";
         public const string STR_FW_NAME_PICOJIG_WL = "PicoJig_WL";
         public const string STR_FW_NAME_PICOBRG = "PicoBrg";
-        public const string STR_FW_NAME_PICOSENTCP = "PicoSenTcp";
+        public const string STR_FW_NAME_PICOSEN = "PicoSen";
 
         /// <summary>
         /// FW名

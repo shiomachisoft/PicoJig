@@ -1,3 +1,7 @@
+-20240804
+
+It is no longer necessary to modify the pico-sdk source code to build.
+
 -20240712
 
 Fixed a mistake in UART error detection
