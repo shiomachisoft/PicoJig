@@ -1,5 +1,5 @@
 # 1. PicoJigの概要  
-## 1-1. PicoJig_WL  
+## 1-1. PicoJig-WL  
 - (1) マイコン基板はRaspberry Pi Pico Wを使用します。   
 - (2) PCアプリからPico WにUSBまたはWi-Fi経由でコマンドを送信することで、Pico Wに任意のUART/SPI/I2C/GPIO/PWMデータを送信させることができます。 
 - (3) Pico Wが受信したUART/SPI/I2C/GPIO/ADCデータをW-FiまたはUSB経由でPCアプリに渡し、PCアプリで表示します。
