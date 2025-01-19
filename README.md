@@ -1,22 +1,19 @@
-*It was created using pico-sdk and C language.  
-    
-Please refer to the manual for usage.   
-The manual is available in English and Japanese.  　　     
-    
-**PicoJig-WL**    
-The microcontroller board uses Raspberry Pi Pico W.   
-This is firmware and a PC application that controls the GPIO/UART/SPI/I2C/ADC/PWM of Pico W from a PC via Wi-Fi (TCP socket communication) or USB (virtual COM).   
+## 1.PicoJigの概要  
+マイコン基板はRaspberry Pi Pico Wを使用します。   
+PCからWi-Fi(TCPソケット通信)またはUSB(仮想COM)経由でPi Pico WのGPIO/UART/SPI/I2C/ADC/PWMを制御するファームウェアとPCアプリです。 
+Raspberry Pi Picoを使用する場合はWi-Fi機能がありません。  
 
-[System Configuration]   
-https://sites.google.com/view/shiomachisoft/english-home/picojig
+## 2.特徴
+- (1) PCアプリからPico WにWi-FiまたはUSB経由でコマンドを送信することで、Pi Pico Wに任意のUART/SPI/I2C/GPIO/PWMデータを送信させることができます。  
+- (2) Pi Pico Wが受信したUART/SPI/I2C/GPIO/ADCデータをW-FiまたはUSB経由でPCアプリに渡し、PCアプリで表示します。  
+- (3) Pico Wに対するWi-Fi設定等は専用PCアプリを使用し、Pico WのFlashメモリに保存します。
 
-[Screen Capture]   
-https://sites.google.com/view/shiomachisoft/english-home/picojig/picojig-screen 
+## 3.システム構成    
+  
+![image](https://github.com/user-attachments/assets/e0c38d6b-b5d4-4417-8f48-5e3670726e59)  
+  
+## 4.使い方
+マニュアルを参照。
 
-[Features] 
-- By sending commands from the PC app to Pi Pico W via Wi-Fi or USB, you can have Pi Pico W send any UART/SPI/I2C/GPIO/PWM data.       
-- The UART/SPI/I2C/GPIO/ADC data received by Pi Pico W is passed to the PC app via W-Fi or USB and displayed on the PC app.     
-     
-**PicoJig**        
-The microcontroller board uses a Raspberry Pi Pico.   
-Compared to the PicoJig-WL, it does not have Wi-Fi functionality.  
+## 5.ソースコード  
+PCアプリもFWもソースコードを公開しています。  
