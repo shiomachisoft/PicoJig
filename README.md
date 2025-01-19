@@ -7,7 +7,7 @@
   
 ## 1-2. PicoJig  
 マイコン基板はRaspberry Pi Picoを使用します。  
-PicoJig_WLと比較してWi-Fi機能がありません。      
+PicoJig-WLと比較してWi-Fi機能がありません。      
 
 # 2. システム構成    
   
