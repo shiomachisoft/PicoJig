@@ -9,12 +9,12 @@
 マイコン基板はRaspberry Pi Picoを使用します。  
 PicoJig_WLと比較してWi-Fi機能がありません。      
 
-## 2. システム構成    
+# 2. システム構成    
   
 ![image](https://github.com/user-attachments/assets/e0c38d6b-b5d4-4417-8f48-5e3670726e59)  
   
-## 3. 使い方
+# 3. 使い方
 マニュアルを参照。
 
-## 4. ソースコード  
+# 4. ソースコード  
 PCアプリもFWもソースコードを公開しています。  
