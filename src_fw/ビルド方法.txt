@@ -1,0 +1,20 @@
+■ビルド方法
+
+<事前準備>
+Windows上でVisual Studio Code(VS Code)に拡張機能「Raspberry Pi Pico」をインストールする。
+
+<ビルド手順>
+①VS Codeを「新しいウィンドウ」で開く。
+②拡張機能「Raspberry Pi Pico」で「Import Project」を押す。
+③「Location」について、FWのソースファイルが格納されているPicoJigフォルダを選択する。
+④「Select Pico SDK version」について、「v2.1.1」を選択する。
+⑤「Import」を押す。
+⑥拡張機能「Raspberry Pi Pico」で「Switch Board」について、「pico_w」を選択する。
+  ※PicoJigとPicoJig-WLのどちらでビルドする場合でも「pico_w」を選択します。
+⑦Ver.hについて、必要に応じて以下の設定を行う。
+  ●PicoJig-WLとしてビルドする場合
+    #define MY_BOARD_PICO_W をコメントアウトしない
+  ●PicoJigとしてビルドする場合
+    #define MY_BOARD_PICO_W をコメントアウトする
+⑧拡張機能「Raspberry Pi Pico」で「Switch Build Type」について、適宜、「Release」か「Debug」を選択する。    
+⑨拡張機能「Raspberry Pi Pico」で「Compile Project」を押す。

@@ -174,7 +174,7 @@ namespace JigApp
             string strErrMsg;
 
             // [接続状態のモニタ]
-            if ((!Program.PrpJigCmd.IsConnected()) && (label_ConnectStatus.Text == STR_LBL_CONNECT)) 
+            if ((!Program.PrpJigCmd.IsConnected()) && (label_ConnectStatus.Text == STR_LBL_CONNECT))
             {
                 // マイコンとの接続がUI操作以外の要因で切断された場合
                 AppendAppLogText(true, "Connection status is abnormal.");
@@ -313,7 +313,7 @@ namespace JigApp
                     strErrMsg = Program.PrpJigCmd.SendCmd_GetFwInfo(out strMakerName, out strFwName, out strFwVer, out strBoardId);
                     if (strErrMsg != null)
                     {
-                        strErrMsg = "Firmware information could not be obtained from the microcontroller after connection.\n\n" + strErrMsg;
+                        strErrMsg = "Firmware information could not be gotten from the microcontroller after connection.\n\n" + strErrMsg;
                     }
                 }
                 return strErrMsg;
@@ -422,7 +422,7 @@ namespace JigApp
                 {
                     if (!((label_FwName.Text == Str.STR_FW_NAME_PICOJIG_WL) 
                         || (label_FwName.Text == Str.STR_FW_NAME_PICOBRG)
-                        || (label_FwName.Text == Str.STR_FW_NAME_PICOSEN)
+                        || (label_FwName.Text == Str.STR_FW_NAME_PICOIOT)
                         ))
                     {
                         btn.Enabled = false;
@@ -432,7 +432,7 @@ namespace JigApp
 
                 if (btn == button_Uart)
                 {
-                    if (label_FwName.Text == Str.STR_FW_NAME_PICOSEN)
+                    if (label_FwName.Text == Str.STR_FW_NAME_PICOIOT)
                     {
                         btn.Enabled = false;
                         continue;
@@ -445,7 +445,8 @@ namespace JigApp
                     || (btn == button_Pwm)
                     || (btn == button_Spi))
                 {
-                    if (!((label_FwName.Text == Str.STR_FW_NAME_PICOJIG_WL) || (label_FwName.Text == Str.STR_FW_NAME_PICOJIG)))
+                    if (!((label_FwName.Text == Str.STR_FW_NAME_PICOJIG) 
+                        || (label_FwName.Text == Str.STR_FW_NAME_PICOJIG_WL)))
                     {
                         btn.Enabled = false;
                         continue;

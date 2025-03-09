@@ -188,7 +188,7 @@ namespace JigApp
             this.button_PutGpio.Size = new System.Drawing.Size(238, 50);
             this.button_PutGpio.TabIndex = 50;
             this.button_PutGpio.TabStop = false;
-            this.button_PutGpio.Text = "Change output value";
+            this.button_PutGpio.Text = "change output value";
             this.button_PutGpio.UseVisualStyleBackColor = true;
             this.button_PutGpio.Click += new System.EventHandler(this.button_PutGpio_Click);
             // 
@@ -660,7 +660,7 @@ namespace JigApp
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(365, 45);
             this.label35.TabIndex = 121;
-            this.label35.Text = "Select High or Low and \r\nclick \"Change output value\"";
+            this.label35.Text = "Select High or Low and \r\nclick \"change output value\"";
             // 
             // label17
             // 
@@ -841,7 +841,7 @@ namespace JigApp
             this.groupBox5.Size = new System.Drawing.Size(580, 100);
             this.groupBox5.TabIndex = 115;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Input GPIO monitoring";
+            this.groupBox5.Text = "Input GPIO Monitoring";
             // 
             // label28
             // 

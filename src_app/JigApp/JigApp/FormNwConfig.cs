@@ -18,7 +18,20 @@ namespace JigApp
         /// </summary>
         private string _strTitle;
 
-        private bool _isNwConfig2 = false;
+        /// <summary>
+        /// ネットワーク設定変更/取得コマンドのバージョン
+        /// </summary>
+        enum E_NW_CONFIG : int
+        {
+            NW_CONFIG,
+            NW_CONFIG2,
+            NW_CONFIG3
+        }
+
+        /// <summary>
+        /// ネットワーク設定変更/取得コマンドのバージョン
+        /// </summary>
+        private E_NW_CONFIG _eNwConfig = E_NW_CONFIG.NW_CONFIG;
 
         /// <summary>
         /// コンストラクタ
@@ -37,18 +50,24 @@ namespace JigApp
             // タイトル
             this.Text = _strTitle + " - " + Program.PrpJigCmd.PrpConnectName;
 
-            if ((Str.PrpFwName == Str.STR_FW_NAME_PICOBRG) || (Str.PrpFwName == Str.STR_FW_NAME_PICOSEN))
+            if (Str.PrpFwName == Str.STR_FW_NAME_PICOBRG)
             {
-                _isNwConfig2 = true;
+                _eNwConfig = E_NW_CONFIG.NW_CONFIG2;
+                groupBox_EMail.Visible = false;
+            }
+            else if (Str.PrpFwName == Str.STR_FW_NAME_PICOIOT)
+            {
+                _eNwConfig = E_NW_CONFIG.NW_CONFIG3;
+                label_CountryCode.Visible = false;
+                textBox_CountryCode.Visible = false;
+                label_CountryCode_Eg.Visible = false;
             }
             else 
             {
-                radioButton_Client.Visible = false;
-                label_ServerIpAddr.Visible = false;
-                textBox_ServerIpAddr.Visible = false;
+                groupBox_TcpSocketCom.Visible = false;
+                groupBox_EMail.Visible = false;
             }
            
-
             // 通信設定を取得
             GetConfig();
         }
@@ -64,20 +83,26 @@ namespace JigApp
             string strPassword = null;
             string strServerIpAddr = null;
             bool isClient = false;
+            string strGMailAddress = null;
+            string strGMailAppPassword = null;
+            string strToEMailAddress = null;
+            byte mailIntervalHour = 1;
             string strErrMsg = null;
 
             this.Enabled = false;
             strErrMsg = await Task.Run(() =>
             {
-                if (_isNwConfig2)
+                switch (_eNwConfig)
                 {
-                    //「ネットワーク設定取得」コマンドの要求を送信
-                    return Program.PrpJigCmd.SendCmd_GetNwConfig2(out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient);
-                }
-                else
-                {
-                    //「ネットワーク設定取得」コマンドの要求を送信
-                    return Program.PrpJigCmd.SendCmd_GetNwConfig(out strCountryCode, out strIpAddr, out strSsid, out strPassword);
+                    case E_NW_CONFIG.NW_CONFIG2:
+                        //「ネットワーク設定取得2」コマンドの要求を送信
+                        return Program.PrpJigCmd.SendCmd_GetNwConfig2(out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient);
+                    case E_NW_CONFIG.NW_CONFIG3:
+                        //「ネットワーク設定取得3」コマンドの要求を送信
+                        return Program.PrpJigCmd.SendCmd_GetNwConfig3(out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient, out strGMailAddress, out strGMailAppPassword, out strToEMailAddress, out mailIntervalHour);
+                    default:
+                        //「ネットワーク設定取得」コマンドの要求を送信
+                        return Program.PrpJigCmd.SendCmd_GetNwConfig(out strCountryCode, out strIpAddr, out strSsid, out strPassword);
                 }
             });
             this.Enabled = true;
@@ -89,12 +114,19 @@ namespace JigApp
                 textBox_IpAddr.Text = strIpAddr;
                 textBox_SSID.Text = strSsid;
                 textBox_Password.Text = strPassword;
-                if (_isNwConfig2)
+                if ((_eNwConfig == E_NW_CONFIG.NW_CONFIG2) || (_eNwConfig == E_NW_CONFIG.NW_CONFIG3))
                 {
                     radioButton_Server.Checked = !isClient;
                     radioButton_Client.Checked = isClient;
                     textBox_ServerIpAddr.Enabled = isClient;
                     textBox_ServerIpAddr.Text = strServerIpAddr;
+                }
+                if (_eNwConfig == E_NW_CONFIG.NW_CONFIG3)
+                {
+                    textBox_GMailAddress.Text = strGMailAddress;
+                    textBox_GMailAppPassword.Text = strGMailAppPassword;
+                    textBox_ToEMailAddress.Text = strToEMailAddress;
+                    numericUpDown_MailIntervalHour.Value = mailIntervalHour;
                 }
             }
             else
@@ -119,10 +151,15 @@ namespace JigApp
             this.Enabled = false;
             strErrMsg = await Task.Run(() =>
             {
-                if (_isNwConfig2)
+                if (_eNwConfig == E_NW_CONFIG.NW_CONFIG2)
                 {
                     //「ネットワーク設定設定変更2」コマンドの要求を送信
                     return Program.PrpJigCmd.SendCmd_SetNwConfig2(textBox_CountryCode.Text.Trim(), textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim(), textBox_ServerIpAddr.Text.Trim(), radioButton_Client.Checked);
+                }
+                else if (_eNwConfig == E_NW_CONFIG.NW_CONFIG3)
+                {
+                    //「ネットワーク設定設定変更3」コマンドの要求を送信                                                                                                                                                                                                                  
+                    return Program.PrpJigCmd.SendCmd_SetNwConfig3(textBox_CountryCode.Text.Trim(), textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim(), textBox_ServerIpAddr.Text.Trim(), radioButton_Client.Checked, textBox_GMailAddress.Text.Trim(), textBox_GMailAppPassword.Text.Trim(), textBox_ToEMailAddress.Text.Trim(), (byte)numericUpDown_MailIntervalHour.Value);
                 }
                 else
                 {

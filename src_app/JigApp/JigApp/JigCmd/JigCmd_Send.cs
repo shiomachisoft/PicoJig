@@ -564,23 +564,23 @@ namespace JigLib
         {
             byte[] aReqData = new byte[105];
             byte[] aResData = null;
-            char[] achCountryCode = new char[3];
+            char[] szCountryCode = new char[3];
             byte[] abyIpAddr = new byte[4];
-            char[] achSsid = new char[33];
-            char[] achPassword = new char[65];
+            char[] szSsid = new char[33];
+            char[] szPassword = new char[65];
             string strErrMsg;
 
-            Array.Clear(achCountryCode, 0, achCountryCode.Length);
-            Array.Clear(achSsid, 0, achSsid.Length);
-            Array.Clear(achPassword, 0, achPassword.Length);
+            Array.Clear(szCountryCode, 0, szCountryCode.Length);
+            Array.Clear(szSsid, 0, szSsid.Length);
+            Array.Clear(szPassword, 0, szPassword.Length);
 
             // カントリーコード
-            if (strCountryCode.ToCharArray().Length != achCountryCode.Length - 1)
+            if (strCountryCode.ToCharArray().Length != szCountryCode.Length - 1)
             {
                 strErrMsg = "Invalid parameter. (Country code)";
                 goto End;
             }
-            Array.Copy(strCountryCode.ToCharArray(), 0, achCountryCode, 0, strCountryCode.ToCharArray().Length);
+            Array.Copy(strCountryCode.ToCharArray(), 0, szCountryCode, 0, strCountryCode.ToCharArray().Length);
 
             // IPアドレス
             strErrMsg = ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr);
@@ -590,39 +590,64 @@ namespace JigLib
             }
 
             // SSID
-            if (strSsid.ToCharArray().Length > achSsid.Length - 1)
+            if (strSsid.ToCharArray().Length > szSsid.Length - 1)
             {
                 strErrMsg = "Invalid parameter. (SSID)";
                 goto End;
             }
-            Array.Copy(strSsid.ToCharArray(), 0, achSsid, 0, strSsid.ToCharArray().Length);
+            Array.Copy(strSsid.ToCharArray(), 0, szSsid, 0, strSsid.ToCharArray().Length);
 
             // パスワード
-            if (strPassword.ToCharArray().Length > achPassword.Length - 1)
+            if (strPassword.ToCharArray().Length > szPassword.Length - 1)
             {
                 strErrMsg = "Invalid parameter. (Password)";
                 goto End;
             }
-            Array.Copy(strPassword.ToCharArray(), 0, achPassword, 0, strPassword.ToCharArray().Length);
+            Array.Copy(strPassword.ToCharArray(), 0, szPassword, 0, strPassword.ToCharArray().Length);
 
             // 要求データ
-            for (int i = 0; i < achCountryCode.Length; i++)
-            {
-                aReqData[i] = (byte)achCountryCode[i];
-            }
+            Array.Copy(ConvertCharAryToByteAry(szCountryCode), 0, aReqData, 0, szCountryCode.Length);
             Array.Copy(abyIpAddr, 0, aReqData, 3, abyIpAddr.Length);
-            for (int i = 0; i < achSsid.Length; i++)
-            {
-                aReqData[7 + i] = (byte)achSsid[i];
-            }
-            for (int i = 0; i < achPassword.Length; i++)
-            {
-                aReqData[40 + i] = (byte)achPassword[i];
-            }
+            Array.Copy(ConvertCharAryToByteAry(szSsid), 0, aReqData, 7, szSsid.Length);
+            Array.Copy(ConvertCharAryToByteAry(szPassword), 0, aReqData, 40, szPassword.Length);
 
             strErrMsg = SendCmd(E_FRM_CMD.SET_NW_CONFIG, aReqData, out aResData);
 
         End:
+            return strErrMsg;
+        }
+
+        /// <summary>
+        /// 「ネットワーク設定取得」コマンドの要求を送信
+        /// </summary>
+        public string SendCmd_GetNwConfig(out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword)
+        {
+            byte[] aReqData = null;
+            byte[] aResData = null;
+            byte[] abyIpAddr = new byte[4];
+            char[] szCountryCode = new char[3];
+            char[] szSsid = new char[33];
+            char[] szPassword = new char[65];
+            string strErrMsg;
+
+            strCountryCode = null;
+            strIpAddr = null;
+            strSsid = null;
+            strPassword = null;
+
+            strErrMsg = SendCmd(E_FRM_CMD.GET_NW_CONFIG, aReqData, out aResData);
+            if (strErrMsg == null)
+            {
+                Array.Copy(aResData, 0, szCountryCode, 0, szCountryCode.Length);
+                Array.Copy(aResData, 3, abyIpAddr, 0, abyIpAddr.Length);
+                Array.Copy(aResData, 7, szSsid, 0, szSsid.Length);
+                Array.Copy(aResData, 40, szPassword, 0, szPassword.Length);
+                strCountryCode = new string(szCountryCode);
+                strIpAddr = abyIpAddr[0].ToString() + "." + abyIpAddr[1].ToString() + "." + abyIpAddr[2].ToString() + "." + abyIpAddr[3].ToString();
+                strSsid = new string(szSsid);
+                strPassword = new string(szPassword);
+            }
+
             return strErrMsg;
         }
 
@@ -633,25 +658,25 @@ namespace JigLib
         {
             byte[] aReqData = new byte[110];
             byte[] aResData = null;
-            char[] achCountryCode = new char[3];
+            char[] szCountryCode = new char[3];
             byte[] abyIpAddr = new byte[4];
-            char[] achSsid = new char[33];
-            char[] achPassword = new char[65];
+            char[] szSsid = new char[33];
+            char[] szPassword = new char[65];
             byte[] abyServerIpAddr = new byte[4];
             byte byIsClient = 0;
             string strErrMsg;
 
-            Array.Clear(achCountryCode, 0, achCountryCode.Length);
-            Array.Clear(achSsid, 0, achSsid.Length);
-            Array.Clear(achPassword, 0, achPassword.Length);
+            Array.Clear(szCountryCode, 0, szCountryCode.Length);
+            Array.Clear(szSsid, 0, szSsid.Length);
+            Array.Clear(szPassword, 0, szPassword.Length);
 
             // カントリーコード
-            if (strCountryCode.ToCharArray().Length != achCountryCode.Length - 1)
+            if (strCountryCode.ToCharArray().Length != szCountryCode.Length - 1)
             {
                 strErrMsg = "Invalid parameter. (Country code)";
                 goto End;
             }
-            Array.Copy(strCountryCode.ToCharArray(), 0, achCountryCode, 0, strCountryCode.ToCharArray().Length);
+            Array.Copy(strCountryCode.ToCharArray(), 0, szCountryCode, 0, strCountryCode.ToCharArray().Length);
 
             // IPアドレス
             strErrMsg = ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr);
@@ -661,20 +686,20 @@ namespace JigLib
             }
 
             // SSID
-            if (strSsid.ToCharArray().Length > achSsid.Length - 1)
+            if (strSsid.ToCharArray().Length > szSsid.Length - 1)
             {
                 strErrMsg = "Invalid parameter. (SSID)";
                 goto End;
             }
-            Array.Copy(strSsid.ToCharArray(), 0, achSsid, 0, strSsid.ToCharArray().Length);
+            Array.Copy(strSsid.ToCharArray(), 0, szSsid, 0, strSsid.ToCharArray().Length);
 
             // パスワード
-            if (strPassword.ToCharArray().Length > achPassword.Length - 1)
+            if (strPassword.ToCharArray().Length > szPassword.Length - 1)
             {
                 strErrMsg = "Invalid parameter. (Password)";
                 goto End;
             }
-            Array.Copy(strPassword.ToCharArray(), 0, achPassword, 0, strPassword.ToCharArray().Length);
+            Array.Copy(strPassword.ToCharArray(), 0, szPassword, 0, strPassword.ToCharArray().Length);
 
             // サーバーのIPアドレス
             strErrMsg = ConvertIpAddrStringToByteArray(strServerIpAddr, out abyServerIpAddr);
@@ -684,19 +709,10 @@ namespace JigLib
             }
 
             // 要求データ
-            for (int i = 0; i < achCountryCode.Length; i++)
-            {
-                aReqData[i] = (byte)achCountryCode[i];
-            }
+            Array.Copy(ConvertCharAryToByteAry(szCountryCode), 0, aReqData, 0, szCountryCode.Length);
             Array.Copy(abyIpAddr, 0, aReqData, 3, abyIpAddr.Length);
-            for (int i = 0; i < achSsid.Length; i++)
-            {
-                aReqData[7 + i] = (byte)achSsid[i];
-            }
-            for (int i = 0; i < achPassword.Length; i++)
-            {
-                aReqData[40 + i] = (byte)achPassword[i];
-            }
+            Array.Copy(ConvertCharAryToByteAry(szSsid), 0, aReqData, 7, szSsid.Length);
+            Array.Copy(ConvertCharAryToByteAry(szPassword), 0, aReqData, 40, szPassword.Length);
             Array.Copy(abyServerIpAddr, 0, aReqData, 105, abyServerIpAddr.Length);
             if (isClient)
             {
@@ -711,47 +727,13 @@ namespace JigLib
         }
 
         /// <summary>
-        /// 「ネットワーク設定取得」コマンドの要求を送信
-        /// </summary>
-        public string SendCmd_GetNwConfig(out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword)
-        {
-            byte[] aReqData = null;
-            byte[] aResData = null;
-            byte[] aIpAddr = new byte[4];
-            char[] szCountryCode = new char[3];
-            char[] szSsid = new char[33];
-            char[] szPassword = new char[65];
-            string strErrMsg;
-            
-            strCountryCode = null;
-            strIpAddr = null;
-            strSsid = null;
-            strPassword = null;
-
-            strErrMsg = SendCmd(E_FRM_CMD.GET_NW_CONFIG, aReqData, out aResData);
-            if (strErrMsg == null)
-            {
-                Array.Copy(aResData, 0, szCountryCode, 0, szCountryCode.Length);
-                Array.Copy(aResData, 3, aIpAddr, 0, aIpAddr.Length);
-                Array.Copy(aResData, 7, szSsid, 0, szSsid.Length);
-                Array.Copy(aResData, 40, szPassword, 0, szPassword.Length);
-                strCountryCode = new string(szCountryCode);
-                strIpAddr = aIpAddr[0].ToString() + "." + aIpAddr[1].ToString() + "." + aIpAddr[2].ToString() + "." +  aIpAddr[3].ToString();
-                strSsid = new string(szSsid);
-                strPassword = new string(szPassword);
-            }
-
-            return strErrMsg;
-        }
-
-        /// <summary>
         /// 「ネットワーク設定取得2」コマンドの要求を送信
         /// </summary>
         public string SendCmd_GetNwConfig2(out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword, out string strServerIpAddr, out bool isClient)
         {
             byte[] aReqData = null;
             byte[] aResData = null;
-            byte[] aIpAddr = new byte[4];
+            byte[] abyIpAddr = new byte[4];
             char[] szCountryCode = new char[3];
             char[] szSsid = new char[33];
             char[] szPassword = new char[65];
@@ -769,13 +751,13 @@ namespace JigLib
             if (strErrMsg == null)
             {
                 Array.Copy(aResData, 0, szCountryCode, 0, szCountryCode.Length);
-                Array.Copy(aResData, 3, aIpAddr, 0, aIpAddr.Length);
+                Array.Copy(aResData, 3, abyIpAddr, 0, abyIpAddr.Length);
                 Array.Copy(aResData, 7, szSsid, 0, szSsid.Length);
                 Array.Copy(aResData, 40, szPassword, 0, szPassword.Length);
                 Array.Copy(aResData, 105, aServerIpAddr, 0, aServerIpAddr.Length);
 
                 strCountryCode = new string(szCountryCode);
-                strIpAddr = aIpAddr[0].ToString() + "." + aIpAddr[1].ToString() + "." + aIpAddr[2].ToString() + "." + aIpAddr[3].ToString();
+                strIpAddr = abyIpAddr[0].ToString() + "." + abyIpAddr[1].ToString() + "." + abyIpAddr[2].ToString() + "." + abyIpAddr[3].ToString();
                 strSsid = new string(szSsid);
                 strPassword = new string(szPassword);
                 strServerIpAddr = aServerIpAddr[0].ToString() + "." + aServerIpAddr[1].ToString() + "." + aServerIpAddr[2].ToString() + "." + aServerIpAddr[3].ToString();
@@ -784,6 +766,173 @@ namespace JigLib
                 {
                     isClient = true;
                 }
+            }
+
+            return strErrMsg;
+        }
+
+        /// <summary>
+        /// 「ネットワーク設定変更3」コマンドの要求を送信
+        /// </summary>
+        public string SendCmd_SetNwConfig3(string strCountryCode, string strIpAddr, string strSsid, string strPassword, string strServerIpAddr, bool isClient, string strGMailAddress, string strGMailAppPassword, string strToEMailAddress, byte mailintervalHour)
+        {
+            byte[] aReqData = new byte[261];
+            byte[] aResData = null;
+            char[] szCountryCode = new char[3];
+            byte[] abyIpAddr = new byte[4];
+            char[] szSsid = new char[33];
+            char[] szPassword = new char[65];
+            byte[] abyServerIpAddr = new byte[4];
+            byte byIsClient = 0;
+            char[] szGMailAddress = new char[65];
+            char[] szGMailAppPassword = new char[20];
+            char[] szToEMailAddress = new char[65];
+            string strErrMsg;
+
+            Array.Clear(szCountryCode, 0, szCountryCode.Length);
+            Array.Clear(szSsid, 0, szSsid.Length);
+            Array.Clear(szPassword, 0, szPassword.Length);
+            Array.Clear(szGMailAddress, 0, szGMailAddress.Length);
+            Array.Clear(szGMailAppPassword, 0, szGMailAppPassword.Length);
+            Array.Clear(szToEMailAddress, 0, szToEMailAddress.Length);
+
+            // カントリーコード
+            if (strCountryCode.ToCharArray().Length != szCountryCode.Length - 1)
+            {
+                strErrMsg = "Invalid parameter. (Country code)";
+                goto End;
+            }
+            Array.Copy(strCountryCode.ToCharArray(), 0, szCountryCode, 0, strCountryCode.ToCharArray().Length);
+
+            // IPアドレス
+            strErrMsg = ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr);
+            if (strErrMsg != null)
+            {
+                goto End;
+            }
+
+            // SSID
+            if (strSsid.ToCharArray().Length > szSsid.Length - 1)
+            {
+                strErrMsg = "Invalid parameter. (SSID)";
+                goto End;
+            }
+            Array.Copy(strSsid.ToCharArray(), 0, szSsid, 0, strSsid.ToCharArray().Length);
+
+            // パスワード
+            if (strPassword.ToCharArray().Length > szPassword.Length - 1)
+            {
+                strErrMsg = "Invalid parameter. (Password)";
+                goto End;
+            }
+            Array.Copy(strPassword.ToCharArray(), 0, szPassword, 0, strPassword.ToCharArray().Length);
+
+            // サーバーのIPアドレス
+            strErrMsg = ConvertIpAddrStringToByteArray(strServerIpAddr, out abyServerIpAddr);
+            if (strErrMsg != null)
+            {
+                goto End;
+            }
+
+            // Gmailアドレス
+            if (strGMailAddress.ToCharArray().Length > szGMailAddress.Length - 1)
+            {
+                strErrMsg = "Invalid parameter. (My Gmail Address)";
+                goto End;
+            }
+            Array.Copy(strGMailAddress.ToCharArray(), 0, szGMailAddress, 0, strGMailAddress.ToCharArray().Length);
+
+            // Googleアカウントのアプリパスワード
+            if (strGMailAppPassword.ToCharArray().Length > szGMailAppPassword.Length - 1)
+            {
+                strErrMsg = "Invalid parameter. (Gmail Account App Password)";
+                goto End;
+            }
+            Array.Copy(strGMailAppPassword.ToCharArray(), 0, szGMailAppPassword, 0, strGMailAppPassword.ToCharArray().Length);
+
+            // 宛先E-Mailアドレス
+            if (strToEMailAddress.ToCharArray().Length > szToEMailAddress.Length - 1)
+            {
+                strErrMsg = "Invalid parameter. (To E-Mail Address)";
+                goto End;
+            }
+            Array.Copy(strToEMailAddress.ToCharArray(), 0, szToEMailAddress, 0, strToEMailAddress.ToCharArray().Length);
+
+            // 要求データ
+            Array.Copy(ConvertCharAryToByteAry(szCountryCode), 0, aReqData, 0, szCountryCode.Length);
+            Array.Copy(abyIpAddr, 0, aReqData, 3, abyIpAddr.Length);
+            Array.Copy(ConvertCharAryToByteAry(szSsid), 0, aReqData, 7, szSsid.Length);
+            Array.Copy(ConvertCharAryToByteAry(szPassword), 0, aReqData, 40, szPassword.Length);
+            Array.Copy(abyServerIpAddr, 0, aReqData, 105, abyServerIpAddr.Length);
+            if (isClient)
+            {
+                byIsClient = 1;
+            }
+            aReqData[109] = byIsClient;
+            Array.Copy(ConvertCharAryToByteAry(szGMailAddress), 0, aReqData, 110, szGMailAddress.Length);
+            Array.Copy(ConvertCharAryToByteAry(szGMailAppPassword), 0, aReqData, 175, szGMailAppPassword.Length);
+            Array.Copy(ConvertCharAryToByteAry(szToEMailAddress), 0, aReqData, 195, szToEMailAddress.Length);
+            Array.Copy(BitConverter.GetBytes(mailintervalHour), 0, aReqData, 260, 1);
+
+            strErrMsg = SendCmd(E_FRM_CMD.SET_NW_CONFIG3, aReqData, out aResData);
+
+            End:
+            return strErrMsg;
+        }
+
+        /// <summary>
+        /// 「ネットワーク設定取得3」コマンドの要求を送信
+        /// </summary>
+        public string SendCmd_GetNwConfig3(out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword, out string strServerIpAddr, out bool isClient, out string strGMailAddress, out string strGMailAppPassword, out string strToEMailAddress, out byte mailIntervalHour)
+        {
+            byte[] aReqData = null;
+            byte[] aResData = null;
+            byte[] aIpAddr = new byte[4];
+            char[] szCountryCode = new char[3];
+            char[] szSsid = new char[33];
+            char[] szPassword = new char[65];
+            byte[] abyServerIpAddr = new byte[4];
+            char[] szGMailAddress = new char[65];
+            char[] szGMailAppPassword = new char[20];
+            char[] szToEMailAddress = new char[65];
+            string strErrMsg;
+
+            strCountryCode = null;
+            strIpAddr = null;
+            strSsid = null;
+            strPassword = null;
+            strServerIpAddr = null;
+            isClient = false;
+            strGMailAddress = null;
+            strGMailAppPassword = null;
+            strToEMailAddress = null;
+            mailIntervalHour = 0;
+
+            strErrMsg = SendCmd(E_FRM_CMD.GET_NW_CONFIG3, aReqData, out aResData);
+            if (strErrMsg == null)
+            {
+                Array.Copy(aResData, 0, szCountryCode, 0, szCountryCode.Length);
+                Array.Copy(aResData, 3, aIpAddr, 0, aIpAddr.Length);
+                Array.Copy(aResData, 7, szSsid, 0, szSsid.Length);
+                Array.Copy(aResData, 40, szPassword, 0, szPassword.Length);
+                Array.Copy(aResData, 105, abyServerIpAddr, 0, abyServerIpAddr.Length);
+                Array.Copy(aResData, 110, szGMailAddress, 0, szGMailAddress.Length);
+                Array.Copy(aResData, 175, szGMailAppPassword, 0, szGMailAppPassword.Length);
+                Array.Copy(aResData, 195, szToEMailAddress, 0, szToEMailAddress.Length);
+
+                strCountryCode = new string(szCountryCode);
+                strIpAddr = aIpAddr[0].ToString() + "." + aIpAddr[1].ToString() + "." + aIpAddr[2].ToString() + "." + aIpAddr[3].ToString();
+                strSsid = new string(szSsid);
+                strPassword = new string(szPassword);
+                strServerIpAddr = abyServerIpAddr[0].ToString() + "." + abyServerIpAddr[1].ToString() + "." + abyServerIpAddr[2].ToString() + "." + abyServerIpAddr[3].ToString();
+                if (aResData[109] == 1)
+                {
+                    isClient = true;
+                }
+                strGMailAddress = new string(szGMailAddress);
+                strGMailAppPassword = new string(szGMailAppPassword);
+                strToEMailAddress = new string(szToEMailAddress);
+                mailIntervalHour = aResData[260];
             }
 
             return strErrMsg;
@@ -951,13 +1100,25 @@ namespace JigLib
         {
             char[] aSeparator = { '.' }; // セパレータ
             string strErrMsg = ConvertStringToValArray(strText, aSeparator, 10, out aVal);
+            bool isErr = false;
+
             if (strErrMsg == null)
             {
                 if (aVal.Length != 4)
                 {
-                    strErrMsg = "Invalid parameter. (IP address)";
+                    isErr = true;
                 }
             }
+            else
+            {
+                isErr = true;
+            }
+
+            if (isErr)
+            {
+                strErrMsg = "Invalid parameter. (IP address)";
+            }
+
             return strErrMsg;
         }
 
@@ -990,6 +1151,21 @@ namespace JigLib
             }
 
             return strErrMsg;
+        }
+
+        /// <summary>
+        /// char型の配列をbyte型の配列に変換する
+        /// </summary>
+        private byte[] ConvertCharAryToByteAry(char[] achArray)
+        {
+            byte[] abyArray = new byte[achArray.Length];
+
+            for (int i = 0; i < achArray.Length; i++)
+            {
+                abyArray[i] = (byte)achArray[i];
+            }
+
+            return abyArray;
         }
     }
 }

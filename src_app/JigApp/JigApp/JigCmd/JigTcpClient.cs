@@ -79,6 +79,7 @@ namespace JigLib
                     bRet = Task.WaitAll(tasks, TCP_CONNECT_TIMEOUT);
                     if (true == bRet) // 接続に成功 
                     {
+                        //client.NoDelay = true; // Nagleアルゴリズムを無効化
                         _stream = client.GetStream(); // ストリームを取得
                         _stream.WriteTimeout = SOCKET_WRITE_TIMEOUT; // 書き込みタイムアウト時間
                         _stream.ReadTimeout = SOCKET_READ_TIMEOUT;   // 読み取りタイムアウト時間 

@@ -185,7 +185,7 @@ namespace JigApp
             this.groupBox1.Size = new System.Drawing.Size(850, 98);
             this.groupBox1.TabIndex = 60;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Communication setting";
+            this.groupBox1.Text = "Communication Setting";
             // 
             // label5
             // 
@@ -240,7 +240,7 @@ namespace JigApp
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(186, 21);
             this.label7.TabIndex = 63;
-            this.label7.Text = "send/receive log";
+            this.label7.Text = "Send/Receive Log";
             // 
             // label2
             // 
@@ -283,7 +283,7 @@ namespace JigApp
             this.groupBox2.Size = new System.Drawing.Size(850, 230);
             this.groupBox2.TabIndex = 69;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "send";
+            this.groupBox2.Text = "Send";
             // 
             // groupBox3
             // 
@@ -296,7 +296,7 @@ namespace JigApp
             this.groupBox3.Size = new System.Drawing.Size(850, 104);
             this.groupBox3.TabIndex = 70;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "receive";
+            this.groupBox3.Text = "Receive";
             // 
             // label9
             // 

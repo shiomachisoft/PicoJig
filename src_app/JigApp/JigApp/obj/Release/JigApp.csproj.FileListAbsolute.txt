@@ -1,0 +1,17 @@
+C:\Users\desk\Desktop\例外\JigApp\JigApp\bin\Release\PicoJigApp.exe.config
+C:\Users\desk\Desktop\例外\JigApp\JigApp\bin\Release\PicoJigApp.exe
+C:\Users\desk\Desktop\例外\JigApp\JigApp\bin\Release\PicoJigApp.pdb
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.csproj.AssemblyReference.cache
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.FormAdc.resources
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.FormGpio.resources
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.FormI2c.resources
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.FormMain.resources
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.FormNwConfig.resources
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.FormPwm.resources
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.FormSpi.resources
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.FormUart.resources
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.Properties.Resources.resources
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.csproj.GenerateResource.cache
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\JigApp.csproj.CoreCompileInputs.cache
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\PicoJigApp.exe
+C:\Users\desk\Desktop\例外\JigApp\JigApp\obj\Release\PicoJigApp.pdb

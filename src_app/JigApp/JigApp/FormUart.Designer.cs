@@ -173,7 +173,7 @@ namespace JigApp
             this.groupBox1.Size = new System.Drawing.Size(830, 246);
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Communication setting";
+            this.groupBox1.Text = "Communication Setting";
             // 
             // label8
             // 
@@ -214,7 +214,7 @@ namespace JigApp
             this.label_sendData.Name = "label_sendData";
             this.label_sendData.Size = new System.Drawing.Size(505, 42);
             this.label_sendData.TabIndex = 37;
-            this.label_sendData.Text = "send data:Hex(00-FF) separator:space or comma\r\ne.g. 00,01,FE,FF\r\n";
+            this.label_sendData.Text = "Send Data:Hex(00-FF) separator:space or comma\r\ne.g. 00,01,FE,FF\r\n";
             // 
             // label_log
             // 
@@ -223,7 +223,7 @@ namespace JigApp
             this.label_log.Name = "label_log";
             this.label_log.Size = new System.Drawing.Size(197, 21);
             this.label_log.TabIndex = 38;
-            this.label_log.Text = "send/receive log:";
+            this.label_log.Text = "Send/Receive Log:";
             // 
             // button_Clear
             // 

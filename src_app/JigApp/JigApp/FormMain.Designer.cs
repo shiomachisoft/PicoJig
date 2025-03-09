@@ -199,7 +199,7 @@ namespace JigApp
             this.groupBox1.Size = new System.Drawing.Size(477, 323);
             this.groupBox1.TabIndex = 31;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "connect";
+            this.groupBox1.Text = "Connect";
             // 
             // radioButton_UsbMode
             // 
@@ -281,7 +281,7 @@ namespace JigApp
             this.groupBox2.Size = new System.Drawing.Size(477, 193);
             this.groupBox2.TabIndex = 32;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "APP/FW Information";
+            this.groupBox2.Text = "App/FW Information";
             // 
             // label7
             // 
@@ -290,7 +290,7 @@ namespace JigApp
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(142, 21);
             this.label7.TabIndex = 39;
-            this.label7.Text = "APP Version:";
+            this.label7.Text = "App Version:";
             // 
             // label_AppVer
             // 
@@ -308,7 +308,7 @@ namespace JigApp
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(109, 21);
             this.label5.TabIndex = 38;
-            this.label5.Text = "APP Name:";
+            this.label5.Text = "App Name:";
             // 
             // label3
             // 
@@ -353,7 +353,7 @@ namespace JigApp
             this.button_EraseFlash.Size = new System.Drawing.Size(330, 65);
             this.button_EraseFlash.TabIndex = 34;
             this.button_EraseFlash.TabStop = false;
-            this.button_EraseFlash.Text = "Erase setting data in flash memory";
+            this.button_EraseFlash.Text = "erase setting data in flash memory";
             this.button_EraseFlash.UseVisualStyleBackColor = true;
             this.button_EraseFlash.Click += new System.EventHandler(this.button_EraseFlash_Click);
             // 

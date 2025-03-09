@@ -115,8 +115,12 @@ namespace JigLib
                     _tskRecv = null;
                     if (_port.IsOpen) // ポートがオープン済みの場合
                     {
-                        // ポートをクローズ
-                        _port.Close();
+                        try
+                        {
+                            // ポートをクローズ
+                            _port.Close();
+                        }
+                        catch { }
                     }
                     _isConnected = false;
                 }
