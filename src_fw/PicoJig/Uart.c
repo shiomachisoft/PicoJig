@@ -13,7 +13,7 @@
 
 // [ファイルスコープ変数]
 static bool f_isSentFirstByte = false; // 1byte目を送信済みか否か
-static UCHAR f_aNotifyData[UART_DATA_MAX_SIZE] = {0}; // UART通信フレームのデータ部
+static UCHAR f_aNotifyData[UART_DATA_MAX_SIZE] = {0}; // UART受信通知フレームのデータ部
 
 // [関数プロトタイプ宣言]
 static void UART_Interrupt();
@@ -101,13 +101,13 @@ static void UART_Interrupt()
 // UARTメイン処理
 void UART_Main()
 {
-    // UART受信データ取り出し⇒USB送信
+    // UART受信データ取り出し⇒USB/無線送信(UART受信通知フレームの送信)
     UART_Recv();
     // 1byte目のUART送信
     UART_SendFirstbyte(); 
 }
 
-// UART受信データ取り出し⇒USB送信
+// UART受信データ取り出し⇒USB/無線送信(UART受信通知フレームの送信)
 static void UART_Recv()
 {
     UCHAR data;
@@ -125,7 +125,7 @@ static void UART_Recv()
     }
     size = i;
     if (size > 0) {
-        // 通知フレームの送信
+        // UART受信通知フレームの送信
         FRM_MakeAndSendNotifyFrm(FRM_HEADER_NOTIFY_UART_RECV, size, f_aNotifyData);
     }
 }

@@ -50,9 +50,10 @@
 // 割り込みの優先度
 #define CMN_IRQ_PRIORITY_UART 0 // UART(最優先)
 
+// キューサイズ
 #define CMN_QUE_DATA_MAX_UART_SEND      1024
 #define CMN_QUE_DATA_MAX_UART_RECV      1024
-#define CMN_QUE_DATA_MAX_I2C_REQ        8
+#define CMN_QUE_DATA_MAX_I2C_REQ        8       // ST_I2C_REQ構造体の数。ST_I2C_REQ 1個につきI2Cデータのbyte数はI2C_DATA_MAX_SIZE。
 #define CMN_QUE_DATA_MAX_USB_WL_SEND    2048
 #define CMN_QUE_DATA_MAX_WL_RECV        1024
 

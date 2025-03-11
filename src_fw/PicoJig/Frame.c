@@ -170,7 +170,7 @@ void FRM_SendMain()
 			break; // キューが空
 		}
 	}
-	size = i; // USB送信サイズ
+	size = i; 
 
 
 	if (size > 0) {
