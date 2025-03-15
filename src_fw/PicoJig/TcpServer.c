@@ -301,6 +301,13 @@ err_t tcp_server_send_data(uint8_t* buffer_sent, uint32_t size)
         return tcp_server_result(&f_state, -1);
         // <=====
     }
+    // 追加
+    // =====>
+    else {
+        tcp_output(f_state.client_pcb);
+    }
+    // <=====
+
     return ERR_OK;
 }
 

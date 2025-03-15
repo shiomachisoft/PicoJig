@@ -7,7 +7,7 @@
 #define MY_BOARD_PICO_W
 
 // FWバージョン
-#define FW_VER 0x25030100
+#define FW_VER 0x25031500
 
 // FW名
 #ifdef MY_BOARD_PICO_W
