@@ -176,7 +176,7 @@ namespace JigApp
             // [接続状態のモニタ]
             if ((!Program.PrpJigCmd.IsConnected()) && (label_ConnectStatus.Text == STR_LBL_CONNECT))
             {
-                // マイコンとの接続がUI操作以外の要因で切断された場合
+                // マイコンとの接続が切断された場合
                 AppendAppLogText(true, "Connection status is abnormal.");
                 // 再接続する
                 Reconnect();
@@ -263,7 +263,7 @@ namespace JigApp
         /// <summary>
         /// 接続する
         /// </summary>
-        private async void Connect()
+        private void Connect()
         {
             string strMakerName = STR_NOT_DISPLAYED; // メーカー名
             string strFwName = STR_NOT_DISPLAYED;    // FW名
@@ -288,37 +288,32 @@ namespace JigApp
             }
 
             AppendAppLogText(false, "Try connecting...");
-
-            this.Enabled = false;
-            strErrMsg = await Task.Run(() =>
+          
+            DateTime dt_start = DateTime.Now;
+            DateTime dt_end;
+            TimeSpan ts;
+            do
             {
-                DateTime dt_start = DateTime.Now;
-                DateTime dt_end;
-                TimeSpan ts;
-                do
-                {
-                    // 接続する
-                    strErrMsg = Program.PrpJigCmd.Connect((Object)strParam);
-                    if (strErrMsg == null)
-                    {
-                        break;
-                    }
-                    dt_end = DateTime.Now;
-                    ts = dt_end - dt_start;
-                } while (ts.Seconds < RECONNECT_TIME);
-                
+                // 接続する
+                strErrMsg = Program.PrpJigCmd.Connect((Object)strParam);
                 if (strErrMsg == null)
                 {
-                    //「FW情報取得」コマンドの要求を送信
-                    strErrMsg = Program.PrpJigCmd.SendCmd_GetFwInfo(out strMakerName, out strFwName, out strFwVer, out strBoardId);
-                    if (strErrMsg != null)
-                    {
-                        strErrMsg = "Firmware information could not be gotten from the microcontroller after connection.\n\n" + strErrMsg;
-                    }
+                    break;
                 }
-                return strErrMsg;
-            });
-            this.Enabled = true;
+                dt_end = DateTime.Now;
+                ts = dt_end - dt_start;
+            } while (ts.Seconds < RECONNECT_TIME);
+                
+            if (strErrMsg == null)
+            {
+                //「FW情報取得」コマンドの要求を送信
+                strErrMsg = Program.PrpJigCmd.SendCmd_GetFwInfo(out strMakerName, out strFwName, out strFwVer, out strBoardId);
+                if (strErrMsg != null)
+                {
+                    strErrMsg = "Firmware information could not be gotten from the microcontroller after connection.\n\n" + strErrMsg;
+                }
+            }
+            
             if (strErrMsg == null) // コマンドが成功した場合
             {
                 // [表示を更新]
@@ -605,27 +600,20 @@ namespace JigApp
         /// <summary>
         /// 「設定データ消去」ボタンを押した時
         /// </summary>
-        private async void button_EraseFlash_Click(object sender, EventArgs e)
+        private void button_EraseFlash_Click(object sender, EventArgs e)
         {
             string strErrMsg;
 
             // 確認メッセージを表示
-            if (DialogResult.No == UI.ShowYesNoMsg(this, "Do you want to save settings to flash memory?\n\n[Note]\nIf you want to erase the setting data saved in the flash memory, press the \"Erase setting data in flash memory\" button on the main screen."))
+            if (DialogResult.No == UI.ShowYesNoMsg(this, "Do you want to erase the setting data in the flash memory?\n\n(The microcontroller will be reset.)"))
             {
                 return;
             }
 
-            this.Enabled = false;
-            strErrMsg = await Task.Run(() =>
-            {
-                //「FLASH消去」コマンドの要求を送信
-                return Program.PrpJigCmd.SendCmd_EraseFlash();
-
-            });
+            //「FLASH消去」コマンドの要求を送信
+            strErrMsg = Program.PrpJigCmd.SendCmd_EraseFlash();
             if (strErrMsg == null)
             {
-                string strInfoMsg = "Setting changes are complete.\nThe microcontroller will be reset.\n\nPlease wait from a few seconds to several tens of seconds.";
-                UI.ShowInfoMsg(this, strInfoMsg);
                 // 再接続する
                 Reconnect();
             }
@@ -633,7 +621,6 @@ namespace JigApp
             {
                 UI.ShowErrMsg(this, strErrMsg);
             }
-            this.Enabled = true;
         }
 
         /// <summary>

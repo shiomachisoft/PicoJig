@@ -184,7 +184,10 @@ void FRM_SendMain()
 		}
 		else if (tcp_server_is_connected()) { // TCP接続済み
 			// TCP送信
-			tcp_server_send_data(f_aSendData, size);
+			if (ERR_OK != tcp_server_send_data(f_aSendData, size)) {
+				// FWエラーを設定
+				CMN_SetErrorBits(CMN_ERR_BIT_WL_SEND_ERR, true);				
+			}
 		}
 		else {
 			// 無処理

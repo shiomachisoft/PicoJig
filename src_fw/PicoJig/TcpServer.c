@@ -90,16 +90,21 @@ bool tcp_server_is_link_up()
 static int tcp_server_init()
 {
     int err = -1;
+#if 0      
     ST_FLASH_DATA* pstFlashData;
+#endif
 
     do {
+#if 0             
         // 電源起動時のFLASHデータを取得
         pstFlashData = FLASH_GetDataAtPowerOn();
-        // CYW43を初期化 
+        // CYW43を初期化    
         err = cyw43_arch_init_with_country(CYW43_COUNTRY(pstFlashData->stNwConfig.szCountryCode[0], 
                                                          pstFlashData->stNwConfig.szCountryCode[1], 
                                                          pstFlashData->stNwConfig.szCountryCode[2]
                                                          ));
+#endif
+        err = cyw43_arch_init();
         if (err != 0) break;
 
         cyw43_arch_enable_sta_mode();

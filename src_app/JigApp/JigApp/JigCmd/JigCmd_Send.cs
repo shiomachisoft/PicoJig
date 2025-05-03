@@ -1,6 +1,7 @@
 ﻿// Copyright © 2024 Shiomachi Software. All rights reserved.
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -516,14 +517,20 @@ namespace JigLib
             {
                 errBits = BitConverter.ToUInt32(aResData, 0);
                 lstErrMsg.Clear();
-                for (int i = 0; i < FW_ERR_MSG_ARY.Length; i++)
+                for (int i = 0; i < 32/*FW_ERR_MSG_ARY.Length*/; i++)
                 {
                     if ((errBits & (1 << i)) != 0)
                     {
-                        lstErrMsg.Add(FW_ERR_MSG_ARY[i]);
-                    }
+                        if (i < FW_ERR_MSG_ARY.Length)
+                        {
+                            lstErrMsg.Add(FW_ERR_MSG_ARY[i]);
+                        }
+                        else
+                        {
+                            lstErrMsg.Add("Undefined error");
+                        }
+                    } 
                 }
-
             }
 
             return strErrMsg;
@@ -654,9 +661,9 @@ namespace JigLib
         /// <summary>
         /// 「ネットワーク設定変更2」コマンドの要求を送信
         /// </summary>
-        public string SendCmd_SetNwConfig2(string strCountryCode, string strIpAddr, string strSsid, string strPassword, string strServerIpAddr, bool isClient)
+        public string SendCmd_SetNwConfig2(bool isWifi, string strCountryCode, string strIpAddr, string strSsid, string strPassword, string strServerIpAddr, bool isClient)
         {
-            byte[] aReqData = new byte[110];
+            byte[] aReqData = new byte[111];
             byte[] aResData = null;
             char[] szCountryCode = new char[3];
             byte[] abyIpAddr = new byte[4];
@@ -664,6 +671,7 @@ namespace JigLib
             char[] szPassword = new char[65];
             byte[] abyServerIpAddr = new byte[4];
             byte byIsClient = 0;
+            byte byIsWifi = 0;
             string strErrMsg;
 
             Array.Clear(szCountryCode, 0, szCountryCode.Length);
@@ -709,16 +717,21 @@ namespace JigLib
             }
 
             // 要求データ
-            Array.Copy(ConvertCharAryToByteAry(szCountryCode), 0, aReqData, 0, szCountryCode.Length);
-            Array.Copy(abyIpAddr, 0, aReqData, 3, abyIpAddr.Length);
-            Array.Copy(ConvertCharAryToByteAry(szSsid), 0, aReqData, 7, szSsid.Length);
-            Array.Copy(ConvertCharAryToByteAry(szPassword), 0, aReqData, 40, szPassword.Length);
-            Array.Copy(abyServerIpAddr, 0, aReqData, 105, abyServerIpAddr.Length);
+            if (isWifi)
+            {
+                byIsWifi = 1;
+            }
+            aReqData[0] = byIsWifi;
+            Array.Copy(ConvertCharAryToByteAry(szCountryCode), 0, aReqData, 1, szCountryCode.Length);
+            Array.Copy(abyIpAddr, 0, aReqData, 4, abyIpAddr.Length);
+            Array.Copy(ConvertCharAryToByteAry(szSsid), 0, aReqData, 8, szSsid.Length);
+            Array.Copy(ConvertCharAryToByteAry(szPassword), 0, aReqData, 41, szPassword.Length);
+            Array.Copy(abyServerIpAddr, 0, aReqData, 106, abyServerIpAddr.Length);
             if (isClient)
             {
                 byIsClient = 1;
             }
-            aReqData[109] = byIsClient;
+            aReqData[110] = byIsClient;
 
             strErrMsg = SendCmd(E_FRM_CMD.SET_NW_CONFIG2, aReqData, out aResData);
 
@@ -729,7 +742,7 @@ namespace JigLib
         /// <summary>
         /// 「ネットワーク設定取得2」コマンドの要求を送信
         /// </summary>
-        public string SendCmd_GetNwConfig2(out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword, out string strServerIpAddr, out bool isClient)
+        public string SendCmd_GetNwConfig2(out bool isWifi, out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword, out string strServerIpAddr, out bool isClient)
         {
             byte[] aReqData = null;
             byte[] aResData = null;
@@ -746,15 +759,21 @@ namespace JigLib
             strPassword = null;
             strServerIpAddr = null;
             isClient = false;
+            isWifi = false;
 
             strErrMsg = SendCmd(E_FRM_CMD.GET_NW_CONFIG2, aReqData, out aResData);
             if (strErrMsg == null)
             {
-                Array.Copy(aResData, 0, szCountryCode, 0, szCountryCode.Length);
-                Array.Copy(aResData, 3, abyIpAddr, 0, abyIpAddr.Length);
-                Array.Copy(aResData, 7, szSsid, 0, szSsid.Length);
-                Array.Copy(aResData, 40, szPassword, 0, szPassword.Length);
-                Array.Copy(aResData, 105, aServerIpAddr, 0, aServerIpAddr.Length);
+                if (aResData[0] == 1)
+                {
+                    isWifi = true;
+                }
+
+                Array.Copy(aResData, 1, szCountryCode, 0, szCountryCode.Length);
+                Array.Copy(aResData, 4, abyIpAddr, 0, abyIpAddr.Length);
+                Array.Copy(aResData, 8, szSsid, 0, szSsid.Length);
+                Array.Copy(aResData, 41, szPassword, 0, szPassword.Length);
+                Array.Copy(aResData, 106, aServerIpAddr, 0, aServerIpAddr.Length);
 
                 strCountryCode = new string(szCountryCode);
                 strIpAddr = abyIpAddr[0].ToString() + "." + abyIpAddr[1].ToString() + "." + abyIpAddr[2].ToString() + "." + abyIpAddr[3].ToString();
@@ -762,7 +781,7 @@ namespace JigLib
                 strPassword = new string(szPassword);
                 strServerIpAddr = aServerIpAddr[0].ToString() + "." + aServerIpAddr[1].ToString() + "." + aServerIpAddr[2].ToString() + "." + aServerIpAddr[3].ToString();
 
-                if (aResData[109] == 1)
+                if (aResData[110] == 1)
                 {
                     isClient = true;
                 }

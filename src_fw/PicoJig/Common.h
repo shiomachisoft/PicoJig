@@ -70,6 +70,7 @@
 #define CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_UART_RECV   (1 << 9)  // バッファに空きがないので要求データを破棄した(UART受信)
 #define CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_I2C_REQ     (1 << 10) // バッファに空きがないので要求データを破棄した(I2C送信/受信)
 #define CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_WL_RECV     (1 << 11) // バッファに空きがないので要求データを破棄した(無線受信)
+#define CMN_ERR_BIT_WL_SEND_ERR                     (1 << 12) // 無線送信が失敗した
 
 // [列挙体]
 // キューの種類

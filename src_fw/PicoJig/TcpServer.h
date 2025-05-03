@@ -37,7 +37,7 @@ typedef struct TCP_SERVER_T_ {
 
 // ネットワーク設定
 typedef struct _ST_NW_CONFIG {
-    char  szCountryCode[3]; // カントリーコード
+    char  szCountryCode[3]; // カントリーコード ※未使用
     UCHAR aIpAddr[4];       // IPアドレス
     char  szSsid[33];       // APのSSID
     char  szPassword[65];   // APのパスワード

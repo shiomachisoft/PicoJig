@@ -70,18 +70,20 @@ namespace JigLib
             "UART:Break error",
             "UART:Overrun error",
             "I2C:address not acknowledged, or, no device present.",
-            //"I2C通信でタイムアウト",
+            // I2C通信でタイムアウト
             "Timeout in I2C communication",
-            //"バッファに空きがないので要求データを破棄した(USB/無線送信)",
+            // バッファに空きがないので要求データを破棄した(USB/無線送信)
             "The requested data was discarded because there was no space in the buffer (USB/wireless transmission)",
-            //"バッファに空きがないので要求データを破棄した(UART送信)",
+            // バッファに空きがないので要求データを破棄した(UART送信)
             "The requested data was discarded because there was no space in the buffer (UART transmission)",
-            //"バッファに空きがないので要求データを破棄した(UART受信)",
+            // バッファに空きがないので要求データを破棄した(UART受信)
             "The requested data was discarded because there was no space in the buffer (UART reception)",
-            //"バッファに空きがないので要求データを破棄した(I2C送信/受信)",
+            // バッファに空きがないので要求データを破棄した(I2C送信/受信)
             "The requested data was discarded because there was no space in the buffer (I2C transmission/reception)",
-            //"バッファに空きがないので要求データを破棄した(無線受信)"
+            // バッファに空きがないので要求データを破棄した(無線受信)
             "Requested data was discarded because there was no space in the buffer (wireless reception)",
+            // 無線送信が失敗した
+            "Wireless transmission (BLE/TCP) failed."
         };
 
         /// <summary>
