@@ -1,7 +1,6 @@
 ﻿// Copyright © 2024 Shiomachi Software. All rights reserved.
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -793,9 +792,9 @@ namespace JigLib
         /// <summary>
         /// 「ネットワーク設定変更3」コマンドの要求を送信
         /// </summary>
-        public string SendCmd_SetNwConfig3(string strCountryCode, string strIpAddr, string strSsid, string strPassword, string strServerIpAddr, bool isClient, string strGMailAddress, string strGMailAppPassword, string strToEMailAddress, byte mailintervalHour)
+        public string SendCmd_SetNwConfig3(bool isWifi, string strCountryCode, string strIpAddr, string strSsid, string strPassword, string strServerIpAddr, bool isClient, string strGMailAddress, string strGMailAppPassword, string strToEMailAddress, byte mailintervalHour)
         {
-            byte[] aReqData = new byte[261];
+            byte[] aReqData = new byte[262];
             byte[] aResData = null;
             char[] szCountryCode = new char[3];
             byte[] abyIpAddr = new byte[4];
@@ -803,6 +802,7 @@ namespace JigLib
             char[] szPassword = new char[65];
             byte[] abyServerIpAddr = new byte[4];
             byte byIsClient = 0;
+            byte byIsWifi = 0;
             char[] szGMailAddress = new char[65];
             char[] szGMailAppPassword = new char[20];
             char[] szToEMailAddress = new char[65];
@@ -878,20 +878,25 @@ namespace JigLib
             Array.Copy(strToEMailAddress.ToCharArray(), 0, szToEMailAddress, 0, strToEMailAddress.ToCharArray().Length);
 
             // 要求データ
-            Array.Copy(ConvertCharAryToByteAry(szCountryCode), 0, aReqData, 0, szCountryCode.Length);
-            Array.Copy(abyIpAddr, 0, aReqData, 3, abyIpAddr.Length);
-            Array.Copy(ConvertCharAryToByteAry(szSsid), 0, aReqData, 7, szSsid.Length);
-            Array.Copy(ConvertCharAryToByteAry(szPassword), 0, aReqData, 40, szPassword.Length);
-            Array.Copy(abyServerIpAddr, 0, aReqData, 105, abyServerIpAddr.Length);
+            if (isWifi)
+            {
+                byIsWifi = 1;
+            }
+            aReqData[0] = byIsWifi;
+            Array.Copy(ConvertCharAryToByteAry(szCountryCode), 0, aReqData, 1, szCountryCode.Length);
+            Array.Copy(abyIpAddr, 0, aReqData, 4, abyIpAddr.Length);
+            Array.Copy(ConvertCharAryToByteAry(szSsid), 0, aReqData, 8, szSsid.Length);
+            Array.Copy(ConvertCharAryToByteAry(szPassword), 0, aReqData, 41, szPassword.Length);
+            Array.Copy(abyServerIpAddr, 0, aReqData, 106, abyServerIpAddr.Length);
             if (isClient)
             {
                 byIsClient = 1;
             }
-            aReqData[109] = byIsClient;
-            Array.Copy(ConvertCharAryToByteAry(szGMailAddress), 0, aReqData, 110, szGMailAddress.Length);
-            Array.Copy(ConvertCharAryToByteAry(szGMailAppPassword), 0, aReqData, 175, szGMailAppPassword.Length);
-            Array.Copy(ConvertCharAryToByteAry(szToEMailAddress), 0, aReqData, 195, szToEMailAddress.Length);
-            Array.Copy(BitConverter.GetBytes(mailintervalHour), 0, aReqData, 260, 1);
+            aReqData[110] = byIsClient;
+            Array.Copy(ConvertCharAryToByteAry(szGMailAddress), 0, aReqData, 111, szGMailAddress.Length);
+            Array.Copy(ConvertCharAryToByteAry(szGMailAppPassword), 0, aReqData, 176, szGMailAppPassword.Length);
+            Array.Copy(ConvertCharAryToByteAry(szToEMailAddress), 0, aReqData, 196, szToEMailAddress.Length);
+            Array.Copy(BitConverter.GetBytes(mailintervalHour), 0, aReqData, 261, 1);
 
             strErrMsg = SendCmd(E_FRM_CMD.SET_NW_CONFIG3, aReqData, out aResData);
 
@@ -902,7 +907,7 @@ namespace JigLib
         /// <summary>
         /// 「ネットワーク設定取得3」コマンドの要求を送信
         /// </summary>
-        public string SendCmd_GetNwConfig3(out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword, out string strServerIpAddr, out bool isClient, out string strGMailAddress, out string strGMailAppPassword, out string strToEMailAddress, out byte mailIntervalHour)
+        public string SendCmd_GetNwConfig3(out bool isWifi, out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword, out string strServerIpAddr, out bool isClient, out string strGMailAddress, out string strGMailAppPassword, out string strToEMailAddress, out byte mailIntervalHour)
         {
             byte[] aReqData = null;
             byte[] aResData = null;
@@ -922,6 +927,7 @@ namespace JigLib
             strPassword = null;
             strServerIpAddr = null;
             isClient = false;
+            isWifi = false;
             strGMailAddress = null;
             strGMailAppPassword = null;
             strToEMailAddress = null;
@@ -930,28 +936,33 @@ namespace JigLib
             strErrMsg = SendCmd(E_FRM_CMD.GET_NW_CONFIG3, aReqData, out aResData);
             if (strErrMsg == null)
             {
-                Array.Copy(aResData, 0, szCountryCode, 0, szCountryCode.Length);
-                Array.Copy(aResData, 3, aIpAddr, 0, aIpAddr.Length);
-                Array.Copy(aResData, 7, szSsid, 0, szSsid.Length);
-                Array.Copy(aResData, 40, szPassword, 0, szPassword.Length);
-                Array.Copy(aResData, 105, abyServerIpAddr, 0, abyServerIpAddr.Length);
-                Array.Copy(aResData, 110, szGMailAddress, 0, szGMailAddress.Length);
-                Array.Copy(aResData, 175, szGMailAppPassword, 0, szGMailAppPassword.Length);
-                Array.Copy(aResData, 195, szToEMailAddress, 0, szToEMailAddress.Length);
+                if (aResData[0] == 1)
+                {
+                    isWifi = true;
+                }
+
+                Array.Copy(aResData, 1, szCountryCode, 0, szCountryCode.Length);
+                Array.Copy(aResData, 4, aIpAddr, 0, aIpAddr.Length);
+                Array.Copy(aResData, 8, szSsid, 0, szSsid.Length);
+                Array.Copy(aResData, 41, szPassword, 0, szPassword.Length);
+                Array.Copy(aResData, 106, abyServerIpAddr, 0, abyServerIpAddr.Length);
+                Array.Copy(aResData, 111, szGMailAddress, 0, szGMailAddress.Length);
+                Array.Copy(aResData, 176, szGMailAppPassword, 0, szGMailAppPassword.Length);
+                Array.Copy(aResData, 196, szToEMailAddress, 0, szToEMailAddress.Length);
 
                 strCountryCode = new string(szCountryCode);
                 strIpAddr = aIpAddr[0].ToString() + "." + aIpAddr[1].ToString() + "." + aIpAddr[2].ToString() + "." + aIpAddr[3].ToString();
                 strSsid = new string(szSsid);
                 strPassword = new string(szPassword);
                 strServerIpAddr = abyServerIpAddr[0].ToString() + "." + abyServerIpAddr[1].ToString() + "." + abyServerIpAddr[2].ToString() + "." + abyServerIpAddr[3].ToString();
-                if (aResData[109] == 1)
+                if (aResData[110] == 1)
                 {
                     isClient = true;
                 }
                 strGMailAddress = new string(szGMailAddress);
                 strGMailAppPassword = new string(szGMailAppPassword);
                 strToEMailAddress = new string(szToEMailAddress);
-                mailIntervalHour = aResData[260];
+                mailIntervalHour = aResData[261];
             }
 
             return strErrMsg;

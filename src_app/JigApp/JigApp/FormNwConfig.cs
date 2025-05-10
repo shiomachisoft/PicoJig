@@ -50,7 +50,7 @@ namespace JigApp
             // タイトル
             this.Text = _strTitle + " - " + Program.PrpJigCmd.PrpConnectName;
 
-            if (Str.PrpFwName != Str.STR_FW_NAME_PICOBRG)
+            if (!((Str.PrpFwName == Str.STR_FW_NAME_PICOBRG) || (Str.PrpFwName == Str.STR_FW_NAME_PICOIOT)))
             {
                 radioButton_BLE.Visible = false;
                 radioButton_Wifi.Visible = false;
@@ -103,7 +103,7 @@ namespace JigApp
                         return Program.PrpJigCmd.SendCmd_GetNwConfig2(out isWifi, out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient);
                     case E_NW_CONFIG.NW_CONFIG3:
                         //「ネットワーク設定取得3」コマンドの要求を送信
-                        return Program.PrpJigCmd.SendCmd_GetNwConfig3(out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient, out strGMailAddress, out strGMailAppPassword, out strToEMailAddress, out mailIntervalHour);
+                        return Program.PrpJigCmd.SendCmd_GetNwConfig3(out isWifi, out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient, out strGMailAddress, out strGMailAppPassword, out strToEMailAddress, out mailIntervalHour);
                     default:
                         //「ネットワーク設定取得」コマンドの要求を送信
                         return Program.PrpJigCmd.SendCmd_GetNwConfig(out strCountryCode, out strIpAddr, out strSsid, out strPassword);
@@ -117,12 +117,9 @@ namespace JigApp
                 textBox_IpAddr.Text = strIpAddr;
                 textBox_SSID.Text = strSsid;
                 textBox_Password.Text = strPassword;
-                if (_eNwConfig == E_NW_CONFIG.NW_CONFIG2)
-                {
-                    radioButton_Wifi.Checked = isWifi;
-                }
                 if ((_eNwConfig == E_NW_CONFIG.NW_CONFIG2) || (_eNwConfig == E_NW_CONFIG.NW_CONFIG3))
                 {
+                    radioButton_Wifi.Checked = isWifi;
                     radioButton_Server.Checked = !isClient;
                     radioButton_Client.Checked = isClient;
                     textBox_ServerIpAddr.Enabled = isClient;
@@ -165,7 +162,7 @@ namespace JigApp
             else if (_eNwConfig == E_NW_CONFIG.NW_CONFIG3)
             {
                 //「ネットワーク設定設定変更3」コマンドの要求を送信                                                                                                                                                                                                                  
-                strErrMsg = Program.PrpJigCmd.SendCmd_SetNwConfig3(strCountryCode, textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim(), textBox_ServerIpAddr.Text.Trim(), radioButton_Client.Checked, textBox_GMailAddress.Text.Trim(), textBox_GMailAppPassword.Text.Trim(), textBox_ToEMailAddress.Text.Trim(), (byte)numericUpDown_MailIntervalHour.Value);
+                strErrMsg = Program.PrpJigCmd.SendCmd_SetNwConfig3(radioButton_Wifi.Checked, strCountryCode, textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim(), textBox_ServerIpAddr.Text.Trim(), radioButton_Client.Checked, textBox_GMailAddress.Text.Trim(), textBox_GMailAppPassword.Text.Trim(), textBox_ToEMailAddress.Text.Trim(), (byte)numericUpDown_MailIntervalHour.Value);
             }
             else
             {

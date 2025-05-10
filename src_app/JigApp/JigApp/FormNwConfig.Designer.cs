@@ -41,8 +41,6 @@
             this.textBox_ServerIpAddr = new System.Windows.Forms.TextBox();
             this.label_ServerIpAddr = new System.Windows.Forms.Label();
             this.groupBox_WiFi = new System.Windows.Forms.GroupBox();
-            this.groupBox_TcpSocketCom = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox_EMail = new System.Windows.Forms.GroupBox();
             this.numericUpDown_MailIntervalHour = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
@@ -52,18 +50,20 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.groupBox_TcpSocketCom = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.radioButton_BLE = new System.Windows.Forms.RadioButton();
             this.radioButton_Wifi = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox_WiFi.SuspendLayout();
-            this.groupBox_TcpSocketCom.SuspendLayout();
             this.groupBox_EMail.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_MailIntervalHour)).BeginInit();
+            this.groupBox_TcpSocketCom.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBox_IpAddr
             // 
-            this.textBox_IpAddr.Location = new System.Drawing.Point(221, 31);
+            this.textBox_IpAddr.Location = new System.Drawing.Point(221, 34);
             this.textBox_IpAddr.Name = "textBox_IpAddr";
             this.textBox_IpAddr.Size = new System.Drawing.Size(200, 28);
             this.textBox_IpAddr.TabIndex = 43;
@@ -72,7 +72,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(18, 32);
+            this.label8.Location = new System.Drawing.Point(18, 35);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(197, 21);
             this.label8.TabIndex = 45;
@@ -80,7 +80,7 @@
             // 
             // button_SetConfig
             // 
-            this.button_SetConfig.Location = new System.Drawing.Point(337, 631);
+            this.button_SetConfig.Location = new System.Drawing.Point(339, 687);
             this.button_SetConfig.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.button_SetConfig.Name = "button_SetConfig";
             this.button_SetConfig.Size = new System.Drawing.Size(174, 50);
@@ -95,14 +95,14 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(19, 33);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 21);
+            this.label2.Size = new System.Drawing.Size(153, 21);
             this.label2.TabIndex = 49;
-            this.label2.Text = "SSID:";
+            this.label2.Text = "SSID(2.4GHz):";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(19, 68);
+            this.label3.Location = new System.Drawing.Point(19, 71);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(109, 21);
             this.label3.TabIndex = 50;
@@ -110,17 +110,17 @@
             // 
             // textBox_SSID
             // 
-            this.textBox_SSID.Location = new System.Drawing.Point(143, 26);
+            this.textBox_SSID.Location = new System.Drawing.Point(178, 29);
             this.textBox_SSID.Name = "textBox_SSID";
-            this.textBox_SSID.Size = new System.Drawing.Size(650, 28);
+            this.textBox_SSID.Size = new System.Drawing.Size(615, 28);
             this.textBox_SSID.TabIndex = 51;
             this.textBox_SSID.TabStop = false;
             // 
             // textBox_Password
             // 
-            this.textBox_Password.Location = new System.Drawing.Point(143, 65);
+            this.textBox_Password.Location = new System.Drawing.Point(178, 68);
             this.textBox_Password.Name = "textBox_Password";
-            this.textBox_Password.Size = new System.Drawing.Size(650, 28);
+            this.textBox_Password.Size = new System.Drawing.Size(615, 28);
             this.textBox_Password.TabIndex = 52;
             this.textBox_Password.TabStop = false;
             // 
@@ -181,36 +181,15 @@
             // 
             this.groupBox_WiFi.Controls.Add(this.groupBox1);
             this.groupBox_WiFi.Controls.Add(this.textBox_IpAddr);
+            this.groupBox_WiFi.Controls.Add(this.groupBox_EMail);
             this.groupBox_WiFi.Controls.Add(this.label8);
-            this.groupBox_WiFi.Location = new System.Drawing.Point(12, 49);
+            this.groupBox_WiFi.Controls.Add(this.groupBox_TcpSocketCom);
+            this.groupBox_WiFi.Location = new System.Drawing.Point(12, 68);
             this.groupBox_WiFi.Name = "groupBox_WiFi";
-            this.groupBox_WiFi.Size = new System.Drawing.Size(826, 203);
+            this.groupBox_WiFi.Size = new System.Drawing.Size(826, 603);
             this.groupBox_WiFi.TabIndex = 61;
             this.groupBox_WiFi.TabStop = false;
             this.groupBox_WiFi.Text = "Wi-Fi";
-            // 
-            // groupBox_TcpSocketCom
-            // 
-            this.groupBox_TcpSocketCom.Controls.Add(this.label6);
-            this.groupBox_TcpSocketCom.Controls.Add(this.radioButton_Server);
-            this.groupBox_TcpSocketCom.Controls.Add(this.textBox_ServerIpAddr);
-            this.groupBox_TcpSocketCom.Controls.Add(this.radioButton_Client);
-            this.groupBox_TcpSocketCom.Controls.Add(this.label_ServerIpAddr);
-            this.groupBox_TcpSocketCom.Location = new System.Drawing.Point(12, 265);
-            this.groupBox_TcpSocketCom.Name = "groupBox_TcpSocketCom";
-            this.groupBox_TcpSocketCom.Size = new System.Drawing.Size(826, 140);
-            this.groupBox_TcpSocketCom.TabIndex = 62;
-            this.groupBox_TcpSocketCom.TabStop = false;
-            this.groupBox_TcpSocketCom.Text = "TCP Socket Communication";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(18, 30);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(109, 21);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "PicoW is:";
             // 
             // groupBox_EMail
             // 
@@ -222,16 +201,16 @@
             this.groupBox_EMail.Controls.Add(this.label7);
             this.groupBox_EMail.Controls.Add(this.label5);
             this.groupBox_EMail.Controls.Add(this.label1);
-            this.groupBox_EMail.Location = new System.Drawing.Point(12, 419);
+            this.groupBox_EMail.Location = new System.Drawing.Point(12, 383);
             this.groupBox_EMail.Name = "groupBox_EMail";
-            this.groupBox_EMail.Size = new System.Drawing.Size(826, 201);
+            this.groupBox_EMail.Size = new System.Drawing.Size(804, 201);
             this.groupBox_EMail.TabIndex = 63;
             this.groupBox_EMail.TabStop = false;
             this.groupBox_EMail.Text = "E-Mail";
             // 
             // numericUpDown_MailIntervalHour
             // 
-            this.numericUpDown_MailIntervalHour.Location = new System.Drawing.Point(281, 152);
+            this.numericUpDown_MailIntervalHour.Location = new System.Drawing.Point(336, 152);
             this.numericUpDown_MailIntervalHour.Maximum = new decimal(new int[] {
             24,
             0,
@@ -257,15 +236,15 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(18, 154);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(252, 21);
+            this.label10.Size = new System.Drawing.Size(318, 21);
             this.label10.TabIndex = 67;
-            this.label10.Text = "Sending Mail Interval:";
+            this.label10.Text = "Sending Mail Interval(hour):";
             // 
             // textBox_ToEMailAddress
             // 
             this.textBox_ToEMailAddress.Location = new System.Drawing.Point(244, 107);
             this.textBox_ToEMailAddress.Name = "textBox_ToEMailAddress";
-            this.textBox_ToEMailAddress.Size = new System.Drawing.Size(570, 28);
+            this.textBox_ToEMailAddress.Size = new System.Drawing.Size(548, 28);
             this.textBox_ToEMailAddress.TabIndex = 66;
             this.textBox_ToEMailAddress.TabStop = false;
             // 
@@ -273,7 +252,7 @@
             // 
             this.textBox_GMailAppPassword.Location = new System.Drawing.Point(244, 70);
             this.textBox_GMailAppPassword.Name = "textBox_GMailAppPassword";
-            this.textBox_GMailAppPassword.Size = new System.Drawing.Size(570, 28);
+            this.textBox_GMailAppPassword.Size = new System.Drawing.Size(548, 28);
             this.textBox_GMailAppPassword.TabIndex = 65;
             this.textBox_GMailAppPassword.TabStop = false;
             // 
@@ -281,7 +260,7 @@
             // 
             this.textBox_GMailAddress.Location = new System.Drawing.Point(244, 35);
             this.textBox_GMailAddress.Name = "textBox_GMailAddress";
-            this.textBox_GMailAddress.Size = new System.Drawing.Size(570, 28);
+            this.textBox_GMailAddress.Size = new System.Drawing.Size(548, 28);
             this.textBox_GMailAddress.TabIndex = 64;
             this.textBox_GMailAddress.TabStop = false;
             // 
@@ -312,11 +291,34 @@
             this.label1.TabIndex = 64;
             this.label1.Text = "Your Gmail Address:";
             // 
+            // groupBox_TcpSocketCom
+            // 
+            this.groupBox_TcpSocketCom.Controls.Add(this.label6);
+            this.groupBox_TcpSocketCom.Controls.Add(this.radioButton_Server);
+            this.groupBox_TcpSocketCom.Controls.Add(this.textBox_ServerIpAddr);
+            this.groupBox_TcpSocketCom.Controls.Add(this.radioButton_Client);
+            this.groupBox_TcpSocketCom.Controls.Add(this.label_ServerIpAddr);
+            this.groupBox_TcpSocketCom.Location = new System.Drawing.Point(12, 215);
+            this.groupBox_TcpSocketCom.Name = "groupBox_TcpSocketCom";
+            this.groupBox_TcpSocketCom.Size = new System.Drawing.Size(804, 140);
+            this.groupBox_TcpSocketCom.TabIndex = 62;
+            this.groupBox_TcpSocketCom.TabStop = false;
+            this.groupBox_TcpSocketCom.Text = "TCP Socket Communication";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(18, 30);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(109, 21);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "PicoW is:";
+            // 
             // radioButton_BLE
             // 
             this.radioButton_BLE.AutoSize = true;
             this.radioButton_BLE.Checked = true;
-            this.radioButton_BLE.Location = new System.Drawing.Point(12, 12);
+            this.radioButton_BLE.Location = new System.Drawing.Point(12, 19);
             this.radioButton_BLE.Name = "radioButton_BLE";
             this.radioButton_BLE.Size = new System.Drawing.Size(68, 25);
             this.radioButton_BLE.TabIndex = 64;
@@ -327,7 +329,7 @@
             // radioButton_Wifi
             // 
             this.radioButton_Wifi.AutoSize = true;
-            this.radioButton_Wifi.Location = new System.Drawing.Point(101, 12);
+            this.radioButton_Wifi.Location = new System.Drawing.Point(101, 19);
             this.radioButton_Wifi.Name = "radioButton_Wifi";
             this.radioButton_Wifi.Size = new System.Drawing.Size(90, 25);
             this.radioButton_Wifi.TabIndex = 65;
@@ -337,11 +339,9 @@
             // FormNwConfig
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(849, 693);
+            this.ClientSize = new System.Drawing.Size(851, 759);
             this.Controls.Add(this.radioButton_Wifi);
             this.Controls.Add(this.radioButton_BLE);
-            this.Controls.Add(this.groupBox_EMail);
-            this.Controls.Add(this.groupBox_TcpSocketCom);
             this.Controls.Add(this.groupBox_WiFi);
             this.Controls.Add(this.button_SetConfig);
             this.Font = new System.Drawing.Font("ＭＳ ゴシック", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
@@ -357,11 +357,11 @@
             this.groupBox1.PerformLayout();
             this.groupBox_WiFi.ResumeLayout(false);
             this.groupBox_WiFi.PerformLayout();
-            this.groupBox_TcpSocketCom.ResumeLayout(false);
-            this.groupBox_TcpSocketCom.PerformLayout();
             this.groupBox_EMail.ResumeLayout(false);
             this.groupBox_EMail.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_MailIntervalHour)).EndInit();
+            this.groupBox_TcpSocketCom.ResumeLayout(false);
+            this.groupBox_TcpSocketCom.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
