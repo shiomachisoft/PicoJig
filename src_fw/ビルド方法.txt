@@ -2,7 +2,7 @@
 
 <事前準備>
 Windows上でVisual Studio Code(VS Code)に拡張機能「Raspberry Pi Pico」をインストールする。
-※バージョン0.17.5でビルドできることを確認済み。
+※拡張機能「Raspberry Pi Pico」のバージョン0.17.5でビルドできることを確認済み。
 
 <ビルド手順>
 ①VS Codeを「新しいウィンドウ」で開く。
