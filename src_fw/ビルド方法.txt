@@ -2,7 +2,9 @@
 
 <Ž–‘O€”õ>
 Windowsã‚ÅVisual Studio Code(VS Code)‚ÉŠg’£‹@”\uRaspberry Pi Picov‚ðƒCƒ“ƒXƒg[ƒ‹‚·‚éB
-¦Šg’£‹@”\uRaspberry Pi Picov‚Ìƒo[ƒWƒ‡ƒ“0.17.5‚Åƒrƒ‹ƒh‚Å‚«‚é‚±‚Æ‚ðŠm”FÏ‚ÝB
+¦‰º‹L‚Ìƒo[ƒWƒ‡ƒ“‚Åƒrƒ‹ƒh‚Å‚«‚é‚±‚Æ‚ðŠm”FÏ‚ÝB
+EVS CodeF1.100.1
+EŠg’£‹@”\uRaspberry Pi PicovF0.17.5
 
 <ƒrƒ‹ƒhŽè‡>
 ‡@VS Code‚ðuV‚µ‚¢ƒEƒBƒ“ƒhƒEv‚ÅŠJ‚­B
@@ -11,7 +13,8 @@ Windowsã‚ÅVisual Studio Code(VS Code)‚ÉŠg’£‹@”\uRaspberry Pi Picov‚ðƒCƒ“ƒXƒg
 ‡CuSelect Pico SDK versionv‚É‚Â‚¢‚ÄAuv2.1.1v‚ð‘I‘ð‚·‚éB
 ‡DuImportv‚ð‰Ÿ‚·B
 ‡EŠg’£‹@”\uRaspberry Pi Picov‚ÅuSwitch Boardv‚É‚Â‚¢‚ÄAupico_wv‚ð‘I‘ð‚·‚éB
-  ¦PicoJig‚ÆPicoJig-WL‚Ì‚Ç‚¿‚ç‚Åƒrƒ‹ƒh‚·‚éê‡‚Å‚àupico_wv‚ð‘I‘ð‚µ‚Ü‚·B
+  ¦’ˆÓF
+    PicoJig‚ÆPicoJig-WL‚Ì‚Ç‚¿‚ç‚Åƒrƒ‹ƒh‚·‚éê‡‚Å‚àupico_wv‚ð‘I‘ð‚µ‚Ü‚·B
 ‡FVer.h‚É‚Â‚¢‚ÄA•K—v‚É‰ž‚¶‚ÄˆÈ‰º‚ÌÝ’è‚ðs‚¤B
   œPicoJig-WL‚Æ‚µ‚Äƒrƒ‹ƒh‚·‚éê‡
     #define MY_BOARD_PICO_W ‚ðƒRƒƒ“ƒgƒAƒEƒg‚µ‚È‚¢
