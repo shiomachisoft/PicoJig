@@ -30,7 +30,7 @@ bool CMN_Enqueue(ULONG iQue, PVOID pData, ULONG size, bool bSpinLock)
 		// FWエラーを設定
 		switch (iQue) {
 		case CMN_QUE_KIND_USB_WL_SEND: // USB/無線送信
-			 errorBit = CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_USB_WL_SEND;
+			errorBit = CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_USB_WL_SEND;
 			break;
 		case CMN_QUE_KIND_UART_SEND:   // UART送信
 			errorBit = CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_UART_SEND;
@@ -42,7 +42,7 @@ bool CMN_Enqueue(ULONG iQue, PVOID pData, ULONG size, bool bSpinLock)
 			errorBit = CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_I2C_REQ;
 			break;
 		case CMN_QUE_KIND_WL_RECV:	   // 無線受信
-			 errorBit = CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_WL_RECV;
+			errorBit = CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_WL_RECV;
 			break;			
 		default:
 			// ここに来ない
