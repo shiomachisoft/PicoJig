@@ -172,7 +172,6 @@ void FRM_SendMain()
 	}
 	size = i; 
 
-
 	if (size > 0) {
 		// USB優先
 		if (stdio_usb_connected()) { // USB接続済み

@@ -38,5 +38,4 @@ typedef struct _ST_FW_INFO {
 
 #pragma pack()
 
-
 #endif
