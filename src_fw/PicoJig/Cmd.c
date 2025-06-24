@@ -32,10 +32,9 @@ static void CMD_ExecReqCmd_GetFwInfo(ST_FRM_REQ_FRAME *pstReqFrm);
 static void CMD_ExecReqCmd_SetNwConfig(ST_FRM_REQ_FRAME *pstReqFrm);
 static void CMD_ExecReqCmd_GetNwConfig(ST_FRM_REQ_FRAME *pstReqFrm);
 
-// 要求コマンド実行
+// 要求コマンドの実行
 void CMD_ExecReqCmd(ST_FRM_REQ_FRAME *pstReqFrm)
 {   
-    // 要求コマンドの実行
     switch (pstReqFrm->cmd) 
     {
     // FW情報取得コマンド
