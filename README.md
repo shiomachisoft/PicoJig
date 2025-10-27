@@ -5,6 +5,8 @@
 - (2) PCアプリからPico WにUSBまたはWi-Fi経由でコマンドを送信することで、Pico Wに任意のUART/SPI/I2C/GPIO/PWMデータを送信させることができます。 
 - (3) Pico Wが受信したUART/SPI/I2C/GPIO/ADCデータをUSBまたはWi-Fi経由でPCアプリに渡し、PCアプリで表示します。
 - (4) Pico Wに対するWi-Fi設定等の各種設定は、専用PCアプリを使用し、Pico WのFlashメモリに保存します。
+
+- [画面キャプチャ](https://sites.google.com/view/shiomachisoft/raspberry-pi-pico%E3%81%AE%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0/picojig)
   
 ### 1-2. PicoJig  
 マイコン基板はRaspberry Pi Picoを使用します。  
