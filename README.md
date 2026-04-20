@@ -11,9 +11,9 @@ This repository provides documentation in both **English** and **Japanese**. Ple
 
 | Document Name / ドキュメント名 | English | 日本語 | Description / 概要 |
 | :--- | :---: | :---: | :--- |
-| **PicoJig / PicoJig-WL Manual** | [English](./docs/en/01_GUIApp_FW_Manual/manual_en.md) | [日本語](./docs/ja/01_GUIアプリ_FW_マニュアル/manual_ja.md) | FW & GUI App setup, usage, and system overview.<br>(FW・GUIアプリの設定や使い方の総合マニュアル) |
-| **PicoJigLib.dll User Guide** | [English](./docs/en/02_Library_User_Guide/library_en.md) | [日本語](./docs/ja/02_ライブラリ利用ガイド/library_ja.md) | API reference for the C# DLL library.<br>(自作アプリに組み込むためのC# DLLリファレンス) |
-| **JigLibSample App Manual** | [English](./docs/en/03_Sample_Program_User_Guide/sample_en.md) | [日本語](./docs/ja/03_サンプルプログラム利用ガイド/sample_ja.md) | Tutorial for the console-based sample application.<br>(ライブラリを活用したコンソールアプリのチュートリアル) |
+| **PicoJig / PicoJig-WL Manual** | [English](./docs/en/01_GUIApp_FW_Manual/README.md) | [日本語](./docs/ja/01_GUIアプリ_FW_マニュアル/README.md) | FW & GUI App setup, usage, and system overview.<br>(FW・GUIアプリの設定や使い方の総合マニュアル) |
+| **PicoJigLib.dll User Guide** | [English](./docs/en/02_Library_User_Guide/README.md) | [日本語](./docs/ja/02_ライブラリ利用ガイド/README.md) | API reference for the C# DLL library.<br>(自作アプリに組み込むためのC# DLLリファレンス) |
+| **JigLibSample App Manual** | [English](./docs/en/03_Sample_Program_User_Guide/README.md) | [日本語](./docs/ja/03_サンプルプログラム利用ガイド/README.md) | Tutorial for the console-based sample application.<br>(ライブラリを活用したコンソールアプリのチュートリアル) |
 
 ---
 
