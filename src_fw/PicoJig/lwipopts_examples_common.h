@@ -1,33 +1,33 @@
-#ifndef _LWIPOPTS_EXAMPLE_COMMONH_H
-#define _LWIPOPTS_EXAMPLE_COMMONH_H
+#ifndef _LWIPOPTS_EXAMPLES_COMMON_H
+#define _LWIPOPTS_EXAMPLES_COMMON_H
 
 
-// Common settings used in most of the pico_w examples
-// (see https://www.nongnu.org/lwip/2_1_x/group__lwip__opts.html for details)
+// Common settings used in most of the pico_w examples / ほとんどのpico_wの例で使用される共通設定
+// (see https://www.nongnu.org/lwip/2_1_x/group__lwip__opts.html for details) / (詳細は https://www.nongnu.org/lwip/2_1_x/group__lwip__opts.html を参照)
 
-// ★追加
+// Added / ★追加
 // =====>
 //#define MEMP_SANITY_CHECK 0
 //#define LWIP_DISABLE_TCP_SANITY_CHECKS  1
 //#define LWIP_DISABLE_MEMP_SANITY_CHECKS 1
 
-// TCPの接続台数を制限
-#define MEMP_NUM_TCP_PCB        1
-#define MEMP_NUM_TCP_PCB_LISTEN 1
+// Limit the number of TCP connections / TCPの接続台数を制限
+//#define MEMP_NUM_TCP_PCB        1
+//#define MEMP_NUM_TCP_PCB_LISTEN 1
 // <=====
 
-// allow override in some examples
+// allow override in some examples / いくつかの例でオーバーライドを許可する
 #ifndef NO_SYS
 #define NO_SYS                      1
 #endif
-// allow override in some examples
+// allow override in some examples / いくつかの例でオーバーライドを許可する
 #ifndef LWIP_SOCKET
 #define LWIP_SOCKET                 0
 #endif
 #if PICO_CYW43_ARCH_POLL
 #define MEM_LIBC_MALLOC             1
 #else
-// MEM_LIBC_MALLOC is incompatible with non polling versions
+// MEM_LIBC_MALLOC is incompatible with non polling versions / MEM_LIBC_MALLOCは非ポーリングバージョンとは互換性がありません
 #define MEM_LIBC_MALLOC             0
 #endif
 #define MEM_ALIGNMENT               4
@@ -53,7 +53,7 @@
 #define LINK_STATS                  0
 // #define ETH_PAD_SIZE                2
 #define LWIP_CHKSUM_ALGORITHM       3
-// 変更
+// Modified / 変更
 // =====>
 //#define LWIP_DHCP                   1
 #define LWIP_DHCP                   0
@@ -67,7 +67,7 @@
 #define DHCP_DOES_ARP_CHECK         0
 #define LWIP_DHCP_DOES_ACD_CHECK    0
 
-// ★変更
+// Modified / ★変更
 // =====>
 /*
 #ifndef NDEBUG
@@ -110,4 +110,4 @@
 #define SLIP_DEBUG                  LWIP_DBG_OFF
 #define DHCP_DEBUG                  LWIP_DBG_OFF
 
-#endif /* __LWIPOPTS_H__ */
+#endif /* _LWIPOPTS_EXAMPLES_COMMON_H */

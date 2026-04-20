@@ -1,19 +1,16 @@
 ﻿// Copyright © 2024 Shiomachi Software. All rights reserved.
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using JigLib;
 
 namespace JigApp
 {
     /// <summary>
-    /// 文字列操作のクラス
+    /// String operation class / 文字列操作のクラス
     /// </summary>
     public static class Str
     {
@@ -23,39 +20,44 @@ namespace JigApp
         public const string STR_FW_NAME_PICOIOT = "PicoIot";
 
         /// <summary>
-        /// FW名
+        /// FW name / FW名
         /// </summary>
         public static string PrpFwName { get; set; } = string.Empty;
 
         /// <summary>
-        /// 16進数文字列をbyte型の配列に変換
+        /// Convert hex string to byte array / 16進数文字列をbyte型の配列に変換
         /// </summary>
         /// <remarks>
-        /// セパレータ:スペース/タブ/CRLF/CR
+        /// Separator: Space/Tab/CRLF/CR / セパレータ:スペース/タブ/CRLF/CR
         /// </remarks>
         public static string ConvertHexStringToByteArray(string strText, out byte[] aVal)
         {
-            char[] aSeparator = { ' ', ',', '\t', '\r' }; // セパレータ    
+            char[] aSeparator = { ' ', ',', '\t', '\r', '\n' }; // Separator / セパレータ    
             return ConvertStringToValArray(strText, aSeparator, 16, out aVal);
         }
 
         /// <summary>
-        /// 文字列をbyte型の配列に変換
+        /// Convert string to byte array / 文字列をbyte型の配列に変換
         /// </summary>
         public static string ConvertStringToValArray(string strText, char[] aSeparator, int baseNumber, out byte[] aVal)
         {
-            string[] astrSplit; // 分割後の文字列
+            string[] astrSplit; // Split string / 分割後の文字列
             string strErrMsg = null;
 
-            // 文字列をセパレータで分割
-            strText = strText.Replace("\r\n", "\r");
-            astrSplit = strText.Split(aSeparator);
+            // Split string by separator / 文字列をセパレータで分割
+            astrSplit = strText.Split(aSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-            // [文字列をbyte型の配列に変換]
-            // 要素数が分割された文字列の数であるbyte型配列を用意
-            aVal = new byte[astrSplit.Count()];
-            // 分割された文字列の数だけ、文字列をbyte型に変換
-            for (int i = 0; i < astrSplit.Count(); i++)
+            if (astrSplit.Length == 0)
+            {
+                aVal = new byte[0];
+                return "No valid transmission data has been entered.";
+            }
+
+            // [Convert string to byte array] / [文字列をbyte型の配列に変換]
+            // Prepare byte array with the number of split strings / 要素数が分割された文字列の数であるbyte型配列を用意
+            aVal = new byte[astrSplit.Length];
+            // Convert string to byte type for the number of split strings / 分割された文字列の数だけ、文字列をbyte型に変換
+            for (int i = 0; i < astrSplit.Length; i++)
             {
                 try
                 {
@@ -64,6 +66,7 @@ namespace JigApp
                 catch (Exception ex)
                 {
                     strErrMsg = ex.Message;
+                    break;
                 }
             }
 
@@ -72,27 +75,27 @@ namespace JigApp
     }
 
     /// <summary>
-    /// UI操作のクラス
+    /// UI operation class / UI操作のクラス
     /// </summary>
     public static class UI
     {
         /// <summary>
-        /// モニタ用の'赤'を返す
+        /// Return 'Red' for monitor / モニタ用の'赤'を返す
         /// </summary>
         public static Color MonRed { get; set; } = Color.FromArgb(255, 150, 150);
 
         /// <summary>
-        /// モニタ用の'緑'を返す
+        /// Return 'Green' for monitor / モニタ用の'緑'を返す
         /// </summary>
         public static Color MonGreen { get; set; } = Color.FromArgb(150, 255, 150);
 
         /// <summary>
-        /// モニタ用の'青'を返す
+        /// Return 'Blue' for monitor / モニタ用の'青'を返す
         /// </summary>
         public static Color MonBlue { get; set; } = Color.FromArgb(150, 150, 255);
 
         /// <summary>
-        /// 通知のメッセージボックスを表示
+        /// Display info message box / 通知のメッセージボックスを表示
         /// </summary>
         public static void ShowInfoMsg(Form frm, string strMsg)
         {
@@ -100,7 +103,7 @@ namespace JigApp
         }
 
         /// <summary>
-        /// Yes/No確認のメッセージボックスを表示
+        /// Display Yes/No confirmation message box / Yes/No確認のメッセージボックスを表示
         /// </summary>
         public static DialogResult ShowYesNoMsg(Form frm, string strMsg)
         {
@@ -108,7 +111,7 @@ namespace JigApp
         }
 
         /// <summary>
-        /// 警告のメッセージボックスを表示
+        /// Display warning message box / 警告のメッセージボックスを表示
         /// </summary>
         public static void ShowWarnMsg(Form frm, string strMsg)
         {
@@ -116,7 +119,7 @@ namespace JigApp
         }
 
         /// <summary>
-        /// エラーのメッセージボックスを表示
+        /// Display error message box / エラーのメッセージボックスを表示
         /// </summary>
         public static void ShowErrMsg(Form frm, string strMsg)
         {
@@ -125,7 +128,7 @@ namespace JigApp
         }
 
         /// <summary>
-        /// 引数の文字列と一致するコンボボックスのアイテムを選択する
+        /// Select combo box item that matches argument string / 引数の文字列と一致するコンボボックスのアイテムを選択する
         /// </summary>
         public static void SelectComboBoxItem(ComboBox combBox, string strText)
         {
@@ -141,10 +144,33 @@ namespace JigApp
                 }
             }
         }
+
+        /// <summary>
+        /// Allow only half-width characters when key is pressed in text box / テキストボックスがキープレスされた時に半角のみ許可
+        /// </summary>
+        public static void TextBox_HalfWidth_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char c = e.KeyChar;
+
+            // Allow backspace (0x08 among control characters) / バックスペースは許可(制御文字のうち 0x08)
+            if (c == '\b') return;
+
+            // Allow Ctrl + A(0x01), C(0x03), V(0x16), X(0x18), Z(0x1A) / Ctrl + A(0x01), C(0x03), V(0x16), X(0x18), Z(0x1A) を許可
+            if ((Control.ModifierKeys & Keys.Control) == Keys.Control)
+            {
+                if (c == 0x01 || c == 0x03 || c == 0x16 || c == 0x18 || c == 0x1A) return;
+            }
+
+            // Allow printable ASCII characters (0x20-0x7E) ... Alphanumeric and symbols / 表示可能なASCII文字(0x20〜0x7E)を許可・・・英数字と記号
+            if (c >= 0x20 && c <= 0x7E) return;
+
+            // Disable others (full-width or control characters) / それ以外(全角や制御文字)は無効化
+            e.Handled = true;
+        }
     }
 
     /// <summary>
-    /// 通信ログマネージャのクラス
+    /// Communication log manager class / 通信ログマネージャのクラス
     /// </summary>
     public class LogViewMng
     {
@@ -152,43 +178,47 @@ namespace JigApp
         private const string STR_R = "[R]";
 
         /// <summary>
-        /// 受信データのモニタ用タスクの終了待ちタイムアウト時間(ms)
+        /// Timeout time for receive data monitor task to end (ms) / 受信データのモニタ用タスクの終了待ちタイムアウト時間(ms)
         /// </summary>
         private const int MONITOR_TASK_END_TIMEOUT = 3000;
         /// <summary>
-        /// Monitor()のwhile文のディレイ(ms)
+        /// Delay for while loop in Monitor() (ms) / Monitor()のwhile文のディレイ(ms)
         /// </summary>
         private const int MON_DELAY = 50;
+        /// <summary>
+        /// Maximum number of bytes to reflect in UI at once / 一度にUIへ反映する最大バイト数
+        /// </summary>
+        private const int MAX_RECV_BUFFER_SIZE = 4096;
 
         /// <summary>
-        /// ポートをクローズ中か否か
+        /// Whether the port is being closed / ポートをクローズ中か否か
         /// </summary>
         private bool _isClosing = false;
         /// <summary>
-        /// 最後のログの種類は送信か否か
+        /// Whether the last log type is send / 最後のログの種類は送信か否か
         /// </summary>
         private bool _isLastLogSending = true;
         /// <summary>
-        /// 受信データのモニタ用タスク
+        /// Task for receive data monitor / 受信データのモニタ用タスク
         /// </summary>
         /// <remarks>
-        /// 受信データを検出した場合、通信ログを更新
+        /// If receive data is detected, update communication log / 受信データを検出した場合、通信ログを更新
         /// </remarks>
         private Task _tskMonitor = null;
         /// <summary>
-        /// 通信ログを表示するテキストボックス
+        /// Text box for displaying communication log / 通信ログを表示するテキストボックス
         /// </summary>
         private TextBox _textBox_Log = null;
         /// <summary>
-        /// 受信データのキュー
+        /// Receive data queue / 受信データのキュー
         /// </summary>
         private BlockingCollection<byte> _recvDataQue = null;
 
         /// <summary>
-        /// コンストラクタ
+        /// Constructor / コンストラクタ
         /// </summary>
         /// <remarks>
-        /// 通信ログを表示するテキストボックスと受信データのキューを登録
+        /// Register text box for displaying communication log and receive data queue / 通信ログを表示するテキストボックスと受信データのキューを登録
         /// </remarks>
         public LogViewMng(TextBox textBox_Log, BlockingCollection<byte> recvDataQue = null)
         {
@@ -197,7 +227,7 @@ namespace JigApp
         }
 
         /// <summary>
-        /// 受信データのモニタ用タスクを開始
+        /// Start receive data monitor task / 受信データのモニタ用タスクを開始
         /// </summary>
         public void StartMonitor()
         {
@@ -206,26 +236,33 @@ namespace JigApp
         }
 
         /// <summary>
-        /// 受信データのモニタ用タスクを終了
+        /// End receive data monitor task / 受信データのモニタ用タスクを終了
         /// </summary>
-        public async void EndMonitor()
+        public void EndMonitor()
         {
             if (_tskMonitor != null)
             {
-                await Task.Run(() =>
+                _isClosing = true;
+                Task.Run(() =>
                 {
-                    _isClosing = true;
-                    _tskMonitor.Wait(MONITOR_TASK_END_TIMEOUT);
+                    try
+                    {
+                        _tskMonitor.Wait(MONITOR_TASK_END_TIMEOUT);
+                    }
+                    catch (Exception)
+                    {
+                        // Ignore exceptions during teardown / 終了時の例外は無視する
+                    }
                 });
             }
         }
 
         /// <summary>
-        /// 通信ログを表示するテキストボックスにログを追加
+        /// Add log to text box for displaying communication log / 通信ログを表示するテキストボックスにログを追加
         /// </summary>
         public void Add(bool isRecv, byte[] aData)
         {
-            if (_textBox_Log.Text != string.Empty)
+            if (_textBox_Log.TextLength > 0)
             {
                 _textBox_Log.AppendText("\r\n");
             }
@@ -241,48 +278,56 @@ namespace JigApp
                 _isLastLogSending = true;
             }
 
-            foreach (byte data in aData)
+            if (aData != null)
             {
-                _textBox_Log.AppendText(data.ToString("X2") + " ");
+                _textBox_Log.AppendText(string.Join(" ", aData.Select(b => b.ToString("X2"))) + " ");
             }
         }
 
         /// <summary>
-        /// 受信データのモニタ
+        /// Receive data monitor / 受信データのモニタ
         /// </summary>
         /// <remarks>
-        /// 受信データがある場合、通信ログを表示するテキストボックスに受信データのログを追加
+        /// If there is receive data, add receive data log to text box for displaying communication log / 受信データがある場合、通信ログを表示するテキストボックスに受信データのログを追加
         /// </remarks> 
         private void Monitor()
         {
-            byte data;
-
             while (!_isClosing)
             {
-                if (_recvDataQue.TryTake(out data))
+                if (_recvDataQue.TryTake(out byte data, MON_DELAY))
                 {
-                    _textBox_Log.Invoke((MethodInvoker)(() =>
+                    System.Collections.Generic.List<byte> buffer = new System.Collections.Generic.List<byte>();
+                    buffer.Add(data);
+                    while (buffer.Count < MAX_RECV_BUFFER_SIZE && _recvDataQue.TryTake(out byte nextData))
                     {
+                        buffer.Add(nextData);
+                    }
 
-                        if ((_textBox_Log.Text != string.Empty) && (_isLastLogSending == true))
+                    if (_textBox_Log.IsDisposed) break;
+
+                    try
+                    {
+                        _textBox_Log.Invoke((MethodInvoker)(() =>
                         {
-                            _textBox_Log.AppendText("\r\n");
-                        }
+                            if ((_textBox_Log.TextLength > 0) && (_isLastLogSending == true))
+                            {
+                                _textBox_Log.AppendText("\r\n");
+                            }
 
-                        if (_isLastLogSending == true)
-                        {
-                            _textBox_Log.AppendText(STR_R);
-                        }
-                          
-                        _textBox_Log.AppendText(data.ToString("X2") + " ");
-                            
-                        _isLastLogSending = false;
+                            if (_isLastLogSending == true)
+                            {
+                                _textBox_Log.AppendText(STR_R);
+                            }
 
-                    }));
-                }
-                else
-                {
-                    Thread.Sleep(MON_DELAY);
+                            _textBox_Log.AppendText(string.Join(" ", buffer.Select(b => b.ToString("X2"))) + " ");
+
+                            _isLastLogSending = false;
+                        }));
+                    }
+                    catch (Exception)
+                    {
+                        break;
+                    }
                 }
             }
         }

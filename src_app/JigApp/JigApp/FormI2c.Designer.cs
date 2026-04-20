@@ -65,7 +65,7 @@ namespace JigApp
             this.button_Send.Size = new System.Drawing.Size(150, 50);
             this.button_Send.TabIndex = 19;
             this.button_Send.TabStop = false;
-            this.button_Send.Text = "send";
+            this.button_Send.Text = "Send";
             this.button_Send.UseVisualStyleBackColor = true;
             this.button_Send.Click += new System.EventHandler(this.button_Send_Click);
             // 
@@ -99,7 +99,7 @@ namespace JigApp
             this.button_Recv.Size = new System.Drawing.Size(150, 50);
             this.button_Recv.TabIndex = 20;
             this.button_Recv.TabStop = false;
-            this.button_Recv.Text = "receive";
+            this.button_Recv.Text = "Receive";
             this.button_Recv.UseVisualStyleBackColor = true;
             this.button_Recv.Click += new System.EventHandler(this.button_Recv_Click);
             // 
@@ -111,7 +111,7 @@ namespace JigApp
             this.button_SetConfig.Size = new System.Drawing.Size(174, 50);
             this.button_SetConfig.TabIndex = 48;
             this.button_SetConfig.TabStop = false;
-            this.button_SetConfig.Text = "setting change";
+            this.button_SetConfig.Text = "Change Settings";
             this.button_SetConfig.UseVisualStyleBackColor = true;
             this.button_SetConfig.Click += new System.EventHandler(this.button_SetConfig_Click);
             // 
@@ -143,9 +143,9 @@ namespace JigApp
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(11, 130);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(219, 21);
+            this.label1.Size = new System.Drawing.Size(230, 21);
             this.label1.TabIndex = 56;
-            this.label1.Text = "7bit slave address:";
+            this.label1.Text = "7-bit Slave Address:";
             // 
             // numericUpDown_RecvSize
             // 
@@ -170,9 +170,9 @@ namespace JigApp
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(14, 33);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(142, 21);
+            this.label3.Size = new System.Drawing.Size(153, 21);
             this.label3.TabIndex = 59;
-            this.label3.Text = "receive size";
+            this.label3.Text = "Receive Size:";
             // 
             // groupBox1
             // 
@@ -185,7 +185,7 @@ namespace JigApp
             this.groupBox1.Size = new System.Drawing.Size(850, 98);
             this.groupBox1.TabIndex = 60;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Communication Setting";
+            this.groupBox1.Text = "Communication Settings";
             // 
             // label5
             // 
@@ -203,7 +203,7 @@ namespace JigApp
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(164, 21);
             this.label4.TabIndex = 64;
-            this.label4.Text = "frequency(Hz):";
+            this.label4.Text = "Frequency(Hz):";
             // 
             // numericUpDown_SlaveAddr
             // 
@@ -229,18 +229,18 @@ namespace JigApp
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(14, 34);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(505, 42);
+            this.label6.Size = new System.Drawing.Size(527, 42);
             this.label6.TabIndex = 62;
-            this.label6.Text = "send data:Hex(00-FF) separator:space or comma\r\ne.g. 00,01,FE,FF";
+            this.label6.Text = "Send Data: Hex(00-FF) separator: space or comma\r\ne.g. 00 01 FE FF";
             // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(12, 567);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(186, 21);
+            this.label7.Size = new System.Drawing.Size(197, 21);
             this.label7.TabIndex = 63;
-            this.label7.Text = "Send/Receive Log";
+            this.label7.Text = "Send/Receive Log:";
             // 
             // label2
             // 
@@ -259,7 +259,7 @@ namespace JigApp
             this.button_Clear.Size = new System.Drawing.Size(150, 50);
             this.button_Clear.TabIndex = 67;
             this.button_Clear.TabStop = false;
-            this.button_Clear.Text = "clear";
+            this.button_Clear.Text = "Clear";
             this.button_Clear.UseVisualStyleBackColor = true;
             this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
             // 
@@ -270,7 +270,7 @@ namespace JigApp
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(175, 21);
             this.label8.TabIndex = 68;
-            this.label8.Text = "send size:1-256";
+            this.label8.Text = "Send Size:1-256";
             // 
             // groupBox2
             // 

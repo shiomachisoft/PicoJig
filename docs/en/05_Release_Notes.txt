@@ -1,0 +1,13 @@
+[20260401]
+
+Released the C# library (PicoJigLib) and a sample program using it.
+
+Changed the method to select the build target (PicoJig or PicoJig_WL) for the FW source code.
+
+For details, refer to "FW_Build_Guide.txt".
+
+Updated the Pico SDK version to v2.2.0.
+
+Fixed minor bugs and improved performance for both the PC app and FW.
+
+Converted the documentation to Markdown format.

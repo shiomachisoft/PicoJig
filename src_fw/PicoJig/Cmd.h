@@ -4,7 +4,7 @@
 
 #include "Common.h"
 
-// [関数プロトタイプ宣言]
+// [Function prototype declarations] / [関数プロトタイプ宣言]
 void CMD_ExecReqCmd(ST_FRM_REQ_FRAME *pstReqFrm);
 
 #endif

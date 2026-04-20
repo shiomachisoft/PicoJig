@@ -1,7 +1,7 @@
 // Copyright © 2024 Shiomachi Software. All rights reserved.
 #include "Common.h"
 
-// ADCを初期化
+// Initialize ADC / ADCを初期化
 void ADC_Init()
 {
     adc_init();

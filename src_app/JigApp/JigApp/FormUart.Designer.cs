@@ -60,7 +60,7 @@ namespace JigApp
             this.button_Send.Size = new System.Drawing.Size(150, 50);
             this.button_Send.TabIndex = 17;
             this.button_Send.TabStop = false;
-            this.button_Send.Text = "send";
+            this.button_Send.Text = "Send";
             this.button_Send.UseVisualStyleBackColor = true;
             this.button_Send.Click += new System.EventHandler(this.button_Send_Click);
             // 
@@ -94,7 +94,7 @@ namespace JigApp
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(175, 21);
             this.label1.TabIndex = 18;
-            this.label1.Text = "baud rate(bps):";
+            this.label1.Text = "Baud Rate(bps):";
             // 
             // label2
             // 
@@ -103,35 +103,35 @@ namespace JigApp
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(87, 21);
             this.label2.TabIndex = 19;
-            this.label2.Text = "parity:";
+            this.label2.Text = "Parity:";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(13, 133);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(109, 21);
+            this.label3.Size = new System.Drawing.Size(120, 21);
             this.label3.TabIndex = 20;
-            this.label3.Text = "stop bit:";
+            this.label3.Text = "Stop Bits:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(13, 98);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(120, 21);
+            this.label4.Size = new System.Drawing.Size(142, 21);
             this.label4.TabIndex = 24;
-            this.label4.Text = "data bit:8";
+            this.label4.Text = "Data Bits: 8";
             // 
             // button_SetConfig
             // 
-            this.button_SetConfig.Location = new System.Drawing.Point(628, 178);
+            this.button_SetConfig.Location = new System.Drawing.Point(611, 178);
             this.button_SetConfig.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.button_SetConfig.Name = "button_SetConfig";
-            this.button_SetConfig.Size = new System.Drawing.Size(190, 50);
+            this.button_SetConfig.Size = new System.Drawing.Size(207, 50);
             this.button_SetConfig.TabIndex = 27;
             this.button_SetConfig.TabStop = false;
-            this.button_SetConfig.Text = "setting change";
+            this.button_SetConfig.Text = "Change Settings";
             this.button_SetConfig.UseVisualStyleBackColor = true;
             this.button_SetConfig.Click += new System.EventHandler(this.button_SetConfig_Click);
             // 
@@ -173,7 +173,7 @@ namespace JigApp
             this.groupBox1.Size = new System.Drawing.Size(830, 246);
             this.groupBox1.TabIndex = 36;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Communication Setting";
+            this.groupBox1.Text = "Communication Settings";
             // 
             // label8
             // 
@@ -212,9 +212,9 @@ namespace JigApp
             this.label_sendData.AutoSize = true;
             this.label_sendData.Location = new System.Drawing.Point(15, 280);
             this.label_sendData.Name = "label_sendData";
-            this.label_sendData.Size = new System.Drawing.Size(505, 42);
+            this.label_sendData.Size = new System.Drawing.Size(527, 42);
             this.label_sendData.TabIndex = 37;
-            this.label_sendData.Text = "Send Data:Hex(00-FF) separator:space or comma\r\ne.g. 00,01,FE,FF\r\n";
+            this.label_sendData.Text = "Send Data: Hex(00-FF) separator: space or comma\r\ne.g. 00 01 FE FF\r\n";
             // 
             // label_log
             // 
@@ -233,7 +233,7 @@ namespace JigApp
             this.button_Clear.Size = new System.Drawing.Size(150, 50);
             this.button_Clear.TabIndex = 39;
             this.button_Clear.TabStop = false;
-            this.button_Clear.Text = "clear";
+            this.button_Clear.Text = "Clear";
             this.button_Clear.UseVisualStyleBackColor = true;
             this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
             // 
@@ -249,7 +249,7 @@ namespace JigApp
             this.label_sendSize.Name = "label_sendSize";
             this.label_sendSize.Size = new System.Drawing.Size(175, 21);
             this.label_sendSize.TabIndex = 70;
-            this.label_sendSize.Text = "send size:1-256";
+            this.label_sendSize.Text = "Send Size:1-256";
             // 
             // FormUart
             // 

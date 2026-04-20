@@ -1,11 +1,5 @@
 ﻿// Copyright © 2024 Shiomachi Software. All rights reserved.
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,12 +8,12 @@ namespace JigApp
     public partial class FormPwm : Form
     {
         /// <summary>
-        /// フォームのタイトル
+        /// Form title / フォームのタイトル
         /// </summary>
         private string _strTitle;
 
         /// <summary>
-        /// コンストラクタ
+        /// Constructor / コンストラクタ
         /// </summary>
         public FormPwm()
         {
@@ -28,71 +22,85 @@ namespace JigApp
         }
 
         /// <summary>
-        /// フォームのロード時
+        /// When the form is loaded / フォームのロード時
         /// </summary>
         private void FormPwm_Load(object sender, EventArgs e)
         {
-            // タイトルを表示
+            // Display title / タイトルを表示
             this.Text = _strTitle + " - " + Program.PrpJigCmd.PrpConnectName;
         }
 
         /// <summary>
-        /// 「開始」ボタンを押した時
+        /// When the "Start" button is pressed / 「開始」ボタンを押した時
         /// </summary>
         private async void button_Start_Click(object sender, EventArgs e)
         {
-            float divider; // クロック分周器
-            UInt16 wrap;   // 分解能
-            UInt16 level;  // Highの期間     
-            string strErrMsg;
-
-            // クロック分周器を取得
-            divider = (float)numericUpDown_Divider.Value;
-            // 分解能を取得
-            wrap = (UInt16)numericUpDown_Wrap.Value;
-            // Highの期間を取得
-            level = (UInt16)numericUpDown_Level.Value;
-      
-            this.Enabled = false;
-            strErrMsg = await Task.Run(() =>
+            try
             {
-                //「PWM開始」コマンドの要求を送信
-                return Program.PrpJigCmd.SendCmd_StartPwm(divider, wrap, level);
-            });
-            this.Enabled = true;
+                float clkdiv;  // Clock divider / クロック分周器
+                UInt16 wrap;   // Wrap value / ラップ値
+                UInt16 level;  // Compare value / 比較値     
+                string strErrMsg;
 
-            if (strErrMsg == null)
-            {
-                // 無処理
+                // Get clock divider / クロック分周器を取得
+                clkdiv = (float)numericUpDown_Divider.Value;
+                // Get wrap value / ラップ値を取得
+                wrap = (UInt16)numericUpDown_Wrap.Value;
+                // Get compare value / 比較値を取得
+                level = (UInt16)numericUpDown_Level.Value;
+          
+                this.Enabled = false;
+                strErrMsg = await Task.Run(() =>
+                {
+                    // Send request for "Start PWM" command / 「PWM開始」コマンドの要求を送信
+                    return Program.PrpJigCmd.SendCmd_StartPwm(clkdiv, wrap, level);
+                });
+                if (this.IsDisposed) return;
+                
+                if (strErrMsg != null)
+                {
+                    UI.ShowErrMsg(this, strErrMsg);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                UI.ShowErrMsg(this, strErrMsg);
+                if (!this.IsDisposed) UI.ShowErrMsg(this, $"Start PWM Error: {ex.Message}");
+            }
+            finally
+            {
+                if (!this.IsDisposed) this.Enabled = true;
             }
         }
 
         /// <summary>
-        /// 「停止」ボタンを押した時
+        /// When the "Stop" button is pressed / 「停止」ボタンを押した時
         /// </summary>
         private async void button_Stop_Click(object sender, EventArgs e)
         {
-            string strErrMsg;
-
-            this.Enabled = false;
-            strErrMsg = await Task.Run(() =>
+            try
             {
-                //「PWM停止」コマンドの要求を送信
-                return Program.PrpJigCmd.SendCmd_StopPwm();
-            });
-            this.Enabled = true;
+                string strErrMsg;
 
-            if (strErrMsg == null)
-            {
-                // 無処理
+                this.Enabled = false;
+                strErrMsg = await Task.Run(() =>
+                {
+                    // Send request for "Stop PWM" command / 「PWM停止」コマンドの要求を送信
+                    return Program.PrpJigCmd.SendCmd_StopPwm();
+                });
+                if (this.IsDisposed) return;
+                
+                if (strErrMsg != null)
+                {
+                    UI.ShowErrMsg(this, strErrMsg);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                UI.ShowErrMsg(this, strErrMsg);
+                if (!this.IsDisposed) UI.ShowErrMsg(this, $"Stop PWM Error: {ex.Message}");
+            }
+            finally
+            {
+                if (!this.IsDisposed) this.Enabled = true;
             }
         }
     }

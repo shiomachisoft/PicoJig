@@ -85,7 +85,7 @@ namespace JigApp
             this.button_Connect.Size = new System.Drawing.Size(170, 50);
             this.button_Connect.TabIndex = 10;
             this.button_Connect.TabStop = false;
-            this.button_Connect.Text = "connect";
+            this.button_Connect.Text = "Connect";
             this.button_Connect.UseVisualStyleBackColor = true;
             this.button_Connect.Click += new System.EventHandler(this.button_Connect_Click);
             // 
@@ -219,19 +219,20 @@ namespace JigApp
             this.radioButton_Wifi.AutoSize = true;
             this.radioButton_Wifi.Location = new System.Drawing.Point(18, 141);
             this.radioButton_Wifi.Name = "radioButton_Wifi";
-            this.radioButton_Wifi.Size = new System.Drawing.Size(277, 25);
+            this.radioButton_Wifi.Size = new System.Drawing.Size(288, 25);
             this.radioButton_Wifi.TabIndex = 41;
-            this.radioButton_Wifi.Text = "Wi-Fi Mode(PicoW Only)";
+            this.radioButton_Wifi.Text = "Wi-Fi Mode (PicoW Only)";
             this.radioButton_Wifi.UseVisualStyleBackColor = true;
             // 
             // textBox_ServerIpAddr
             // 
-            this.textBox_ServerIpAddr.Location = new System.Drawing.Point(46, 200);
+            this.textBox_ServerIpAddr.Location = new System.Drawing.Point(46, 202);
             this.textBox_ServerIpAddr.Name = "textBox_ServerIpAddr";
             this.textBox_ServerIpAddr.Size = new System.Drawing.Size(200, 28);
             this.textBox_ServerIpAddr.TabIndex = 39;
             this.textBox_ServerIpAddr.TabStop = false;
             this.textBox_ServerIpAddr.Text = "192.168.10.100";
+            this.textBox_ServerIpAddr.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_HalfWidth_KeyPress);
             // 
             // label_ConnectStatus
             // 
@@ -243,7 +244,7 @@ namespace JigApp
             this.label_ConnectStatus.Name = "label_ConnectStatus";
             this.label_ConnectStatus.Size = new System.Drawing.Size(154, 50);
             this.label_ConnectStatus.TabIndex = 39;
-            this.label_ConnectStatus.Text = "disconnected";
+            this.label_ConnectStatus.Text = "Disconnected";
             this.label_ConnectStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label8
@@ -251,9 +252,9 @@ namespace JigApp
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(42, 176);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(417, 21);
+            this.label8.Size = new System.Drawing.Size(340, 21);
             this.label8.TabIndex = 41;
-            this.label8.Text = "IP address of the destination server:";
+            this.label8.Text = "Destination server IP address:";
             // 
             // label4
             // 
@@ -353,7 +354,7 @@ namespace JigApp
             this.button_EraseFlash.Size = new System.Drawing.Size(330, 65);
             this.button_EraseFlash.TabIndex = 34;
             this.button_EraseFlash.TabStop = false;
-            this.button_EraseFlash.Text = "erase setting data in flash memory";
+            this.button_EraseFlash.Text = "Erase settings in flash memory";
             this.button_EraseFlash.UseVisualStyleBackColor = true;
             this.button_EraseFlash.Click += new System.EventHandler(this.button_EraseFlash_Click);
             // 
@@ -391,7 +392,7 @@ namespace JigApp
             this.button_ClearFwErr.Size = new System.Drawing.Size(121, 50);
             this.button_ClearFwErr.TabIndex = 37;
             this.button_ClearFwErr.TabStop = false;
-            this.button_ClearFwErr.Text = "clear";
+            this.button_ClearFwErr.Text = "Clear";
             this.button_ClearFwErr.UseVisualStyleBackColor = true;
             this.button_ClearFwErr.Click += new System.EventHandler(this.button_ClearFwErr_Click);
             // 
@@ -434,7 +435,7 @@ namespace JigApp
             this.button_ClearAppLog.Size = new System.Drawing.Size(121, 50);
             this.button_ClearAppLog.TabIndex = 41;
             this.button_ClearAppLog.TabStop = false;
-            this.button_ClearAppLog.Text = "clear";
+            this.button_ClearAppLog.Text = "Clear";
             this.button_ClearAppLog.UseVisualStyleBackColor = true;
             this.button_ClearAppLog.Click += new System.EventHandler(this.button_ClearAppLog_Click);
             // 
@@ -514,4 +515,3 @@ namespace JigApp
         private System.Windows.Forms.Button button_ClearAppLog;
     }
 }
-

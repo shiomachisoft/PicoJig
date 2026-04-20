@@ -2,38 +2,37 @@
 #ifndef VER_H
 #define VER_H
 
-// [define]
-// ↓PicoJig-WLとしてビルドする場合は有効にする
-#define MY_BOARD_PICO_W
+#include "Common.h"
 
-// FWバージョン
-#define FW_VER 0x25050100
+// [define] / [定義]
+// FW version / FWバージョン
+#define FW_VER 0x26040100
 
-// FW名
+// FW name / FW名
 #ifdef MY_BOARD_PICO_W
-#define FW_NAME "PicoJig_WL" // FW名のサイズは、NULL文字含めてFW_NAME_BUF_SIZEのサイズ以内
+#define FW_NAME "PicoJig_WL" // FW name size must be within FW_NAME_BUF_SIZE including NULL character / FW名のサイズは、NULL文字含めてFW_NAME_BUF_SIZEのサイズ以内
 #else
-#define FW_NAME "PicoJig" // FW名のサイズは、NULL文字含めてFW_NAME_BUF_SIZEのサイズ以内
+#define FW_NAME "PicoJig" // FW name size must be within FW_NAME_BUF_SIZE including NULL character / FW名のサイズは、NULL文字含めてFW_NAME_BUF_SIZEのサイズ以内
 #endif
 
-// FW名のバッファサイズ
+// Buffer size for FW name / FW名のバッファサイズ
 #define FW_NAME_BUF_SIZE 16
 
-// メーカー名
+// Maker name / メーカー名
 #define MAKER_NAME "SHIOMACHI_SOFT"
 
-// メーカー名のバッファサイズ
+// Buffer size for maker name / メーカー名のバッファサイズ
 #define MAKER_NAME_BUF_SIZE 16
 
 #pragma pack(1)
 
-// [構造体]
-// FW情報
+// [Structs] / [構造体]
+// FW info / FW情報
 typedef struct _ST_FW_INFO {
-    char szMakerName[MAKER_NAME_BUF_SIZE];  // メーカー名
-    char szFwName[FW_NAME_BUF_SIZE];        // FW名
-    ULONG fwVer;                            // FWバージョン
-    pico_unique_board_id_t board_id;        // ユニークボードID
+    char szMakerName[MAKER_NAME_BUF_SIZE];  // Maker name / メーカー名
+    char szFwName[FW_NAME_BUF_SIZE];        // FW name / FW名
+    ULONG fwVer;                            // FW version / FWバージョン
+    pico_unique_board_id_t board_id;        // Unique board ID / ユニークボードID
 } ST_FW_INFO;
 
 #pragma pack()

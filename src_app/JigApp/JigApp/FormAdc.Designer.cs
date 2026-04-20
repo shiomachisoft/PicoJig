@@ -44,7 +44,7 @@ namespace JigApp
             // label_Adc0
             // 
             this.label_Adc0.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label_Adc0.Location = new System.Drawing.Point(15, 34);
+            this.label_Adc0.Location = new System.Drawing.Point(15, 37);
             this.label_Adc0.Name = "label_Adc0";
             this.label_Adc0.Size = new System.Drawing.Size(150, 25);
             this.label_Adc0.TabIndex = 0;
@@ -54,7 +54,7 @@ namespace JigApp
             // label_Adc1
             // 
             this.label_Adc1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label_Adc1.Location = new System.Drawing.Point(15, 97);
+            this.label_Adc1.Location = new System.Drawing.Point(15, 100);
             this.label_Adc1.Name = "label_Adc1";
             this.label_Adc1.Size = new System.Drawing.Size(150, 25);
             this.label_Adc1.TabIndex = 1;
@@ -64,7 +64,7 @@ namespace JigApp
             // label_Adc2
             // 
             this.label_Adc2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label_Adc2.Location = new System.Drawing.Point(15, 163);
+            this.label_Adc2.Location = new System.Drawing.Point(15, 166);
             this.label_Adc2.Name = "label_Adc2";
             this.label_Adc2.Size = new System.Drawing.Size(150, 25);
             this.label_Adc2.TabIndex = 2;
@@ -74,7 +74,7 @@ namespace JigApp
             // label_Temp
             // 
             this.label_Temp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label_Temp.Location = new System.Drawing.Point(15, 233);
+            this.label_Temp.Location = new System.Drawing.Point(15, 236);
             this.label_Temp.Name = "label_Temp";
             this.label_Temp.Size = new System.Drawing.Size(150, 25);
             this.label_Temp.TabIndex = 3;
@@ -93,7 +93,7 @@ namespace JigApp
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(98, 21);
             this.label1.TabIndex = 4;
-            this.label1.Text = "ADC0:[V]";
+            this.label1.Text = "ADC0: [V]";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label2
@@ -103,7 +103,7 @@ namespace JigApp
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(98, 21);
             this.label2.TabIndex = 5;
-            this.label2.Text = "ADC1:[V]";
+            this.label2.Text = "ADC1: [V]";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label4
@@ -111,9 +111,9 @@ namespace JigApp
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(11, 212);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(472, 21);
+            this.label4.Size = new System.Drawing.Size(362, 21);
             this.label4.TabIndex = 7;
-            this.label4.Text = "ADC4(temperature sensor):[degrees Celsius]";
+            this.label4.Text = "ADC4 (Temperature Sensor): [deg C]";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
@@ -123,7 +123,7 @@ namespace JigApp
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(98, 21);
             this.label3.TabIndex = 8;
-            this.label3.Text = "ADC2:[V]";
+            this.label3.Text = "ADC2: [V]";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // FormAdc

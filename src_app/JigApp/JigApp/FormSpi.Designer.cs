@@ -79,7 +79,7 @@ namespace JigApp
             this.button_Send.Size = new System.Drawing.Size(150, 50);
             this.button_Send.TabIndex = 16;
             this.button_Send.TabStop = false;
-            this.button_Send.Text = "send";
+            this.button_Send.Text = "Send";
             this.button_Send.UseVisualStyleBackColor = true;
             this.button_Send.Click += new System.EventHandler(this.button_Send_Click);
             // 
@@ -90,19 +90,19 @@ namespace JigApp
             this.button_Clear.Size = new System.Drawing.Size(150, 50);
             this.button_Clear.TabIndex = 17;
             this.button_Clear.TabStop = false;
-            this.button_Clear.Text = "clear";
+            this.button_Clear.Text = "Clear";
             this.button_Clear.UseVisualStyleBackColor = true;
             this.button_Clear.Click += new System.EventHandler(this.button_Clear_Click);
             // 
             // button_SetConfig
             // 
-            this.button_SetConfig.Location = new System.Drawing.Point(633, 176);
+            this.button_SetConfig.Location = new System.Drawing.Point(587, 176);
             this.button_SetConfig.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.button_SetConfig.Name = "button_SetConfig";
-            this.button_SetConfig.Size = new System.Drawing.Size(180, 50);
+            this.button_SetConfig.Size = new System.Drawing.Size(226, 50);
             this.button_SetConfig.TabIndex = 46;
             this.button_SetConfig.TabStop = false;
-            this.button_SetConfig.Text = "setting change";
+            this.button_SetConfig.Text = "Change Settings";
             this.button_SetConfig.UseVisualStyleBackColor = true;
             this.button_SetConfig.Click += new System.EventHandler(this.button_SetConfig_Click);
             // 
@@ -155,7 +155,7 @@ namespace JigApp
             this.groupBox1.Size = new System.Drawing.Size(828, 242);
             this.groupBox1.TabIndex = 55;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Communication Setting";
+            this.groupBox1.Text = "Communication Settings";
             // 
             // label10
             // 
@@ -173,7 +173,7 @@ namespace JigApp
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(164, 21);
             this.label4.TabIndex = 55;
-            this.label4.Text = "frequency(Hz):";
+            this.label4.Text = "Frequency(Hz):";
             // 
             // label7
             // 
@@ -191,25 +191,25 @@ namespace JigApp
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(230, 21);
             this.label9.TabIndex = 61;
-            this.label9.Text = "byte order:MSB First";
+            this.label9.Text = "Bit Order: MSB First";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(15, 161);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(120, 21);
+            this.label5.Size = new System.Drawing.Size(142, 21);
             this.label5.TabIndex = 56;
-            this.label5.Text = "data bit:8";
+            this.label5.Text = "Data Bits: 8";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(14, 268);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(505, 42);
+            this.label6.Size = new System.Drawing.Size(527, 42);
             this.label6.TabIndex = 56;
-            this.label6.Text = "Send Data:Hex(00-FF) separator:space or comma\r\ne.g. 00,01,FE,FF\r\n";
+            this.label6.Text = "Send Data: Hex(00-FF) separator: space or comma\r\ne.g. 00 01 FE FF\r\n";
             // 
             // label3
             // 
@@ -227,7 +227,7 @@ namespace JigApp
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(175, 21);
             this.label11.TabIndex = 69;
-            this.label11.Text = "send size:1-256";
+            this.label11.Text = "Send Size:1-256";
             // 
             // FormSpi
             // 

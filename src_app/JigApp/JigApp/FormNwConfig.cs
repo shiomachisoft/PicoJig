@@ -1,11 +1,5 @@
-﻿// Copyright © 2024 Shiomachi Software. All rights reserved.
+﻿﻿// Copyright © 2024 Shiomachi Software. All rights reserved.
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -14,12 +8,12 @@ namespace JigApp
     public partial class FormNwConfig : Form
     {
         /// <summary>
-        /// フォームのタイトル
+        /// Form title / フォームのタイトル
         /// </summary>
         private string _strTitle;
 
         /// <summary>
-        /// ネットワーク設定変更/取得コマンドのバージョン
+        /// Version of network configuration change/get command / ネットワーク設定変更/取得コマンドのバージョン
         /// </summary>
         enum E_NW_CONFIG : int
         {
@@ -29,12 +23,12 @@ namespace JigApp
         }
 
         /// <summary>
-        /// ネットワーク設定変更/取得コマンドのバージョン
+        /// Version of network configuration change/get command / ネットワーク設定変更/取得コマンドのバージョン
         /// </summary>
         private E_NW_CONFIG _eNwConfig = E_NW_CONFIG.NW_CONFIG;
 
         /// <summary>
-        /// コンストラクタ
+        /// Constructor / コンストラクタ
         /// </summary>
         public FormNwConfig()
         {
@@ -43,11 +37,11 @@ namespace JigApp
         }
 
         /// <summary>
-        /// フォームのロード時
+        /// When the form is loaded / フォームのロード時
         /// </summary>
         private void FormNwConfig_Load(object sender, EventArgs e)
         {
-            // タイトル
+            // Title / タイトル
             this.Text = _strTitle + " - " + Program.PrpJigCmd.PrpConnectName;
 
             if (!((Str.PrpFwName == Str.STR_FW_NAME_PICOBRG) || (Str.PrpFwName == Str.STR_FW_NAME_PICOIOT)))
@@ -60,6 +54,8 @@ namespace JigApp
             {
                 _eNwConfig = E_NW_CONFIG.NW_CONFIG2;
                 groupBox_EMail.Visible = false;
+                label_Name.Visible = false;
+                textBox_Name.Visible = false;
             }
             else if (Str.PrpFwName == Str.STR_FW_NAME_PICOIOT)
             {
@@ -69,126 +65,177 @@ namespace JigApp
             {
                 groupBox_TcpSocketCom.Visible = false;
                 groupBox_EMail.Visible = false;
+                label_Name.Visible = false;
+                textBox_Name.Visible = false;
             }
 
-            // 通信設定を取得
+            // Get communication settings / 通信設定を取得
             GetConfig();
         }
 
         /// <summary>
-        /// ネットワーク設定を取得
+        /// Get network settings / ネットワーク設定を取得
         /// </summary>
         private async void GetConfig()
         {
-            string strCountryCode = null;
-            string strIpAddr = null;
-            string strSsid = null;
-            string strPassword = null;
-            string strServerIpAddr = null;
-            bool isClient = false;
-            bool isWifi = false;
-            string strGMailAddress = null;
-            string strGMailAppPassword = null;
-            string strToEMailAddress = null;
-            byte mailIntervalHour = 1;
-            string strErrMsg = null;
-
-            this.Enabled = false;
-            strErrMsg = await Task.Run(() =>
+            try
             {
-                switch (_eNwConfig)
-                {
-                    case E_NW_CONFIG.NW_CONFIG2:
-                        //「ネットワーク設定取得2」コマンドの要求を送信
-                        return Program.PrpJigCmd.SendCmd_GetNwConfig2(out isWifi, out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient);
-                    case E_NW_CONFIG.NW_CONFIG3:
-                        //「ネットワーク設定取得3」コマンドの要求を送信
-                        return Program.PrpJigCmd.SendCmd_GetNwConfig3(out isWifi, out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient, out strGMailAddress, out strGMailAppPassword, out strToEMailAddress, out mailIntervalHour);
-                    default:
-                        //「ネットワーク設定取得」コマンドの要求を送信
-                        return Program.PrpJigCmd.SendCmd_GetNwConfig(out strCountryCode, out strIpAddr, out strSsid, out strPassword);
-                }
-            });
-            this.Enabled = true;
+                string strCountryCode = null;
+                string strIpAddr = null;
+                string strSsid = null;
+                string strPassword = null;
+                string strServerIpAddr = null;
+                bool isClient = false;
+                bool isWifi = false;
+                string strGMailAddress = null;
+                string strGMailAppPassword = null;
+                string strToEMailAddress = null;
+                byte mailIntervalHour = 1;
+                string strName = null;
+                string strErrMsg = null;
 
-            if (strErrMsg == null)
-            {
-                // ネットワーク設定の表示を更新
-                textBox_IpAddr.Text = strIpAddr;
-                textBox_SSID.Text = strSsid;
-                textBox_Password.Text = strPassword;
-                if ((_eNwConfig == E_NW_CONFIG.NW_CONFIG2) || (_eNwConfig == E_NW_CONFIG.NW_CONFIG3))
+                this.Enabled = false;
+                strErrMsg = await Task.Run(() =>
                 {
-                    radioButton_Wifi.Checked = isWifi;
-                    radioButton_Server.Checked = !isClient;
-                    radioButton_Client.Checked = isClient;
-                    textBox_ServerIpAddr.Enabled = isClient;
-                    textBox_ServerIpAddr.Text = strServerIpAddr;
+                    switch (_eNwConfig)
+                    {
+                        case E_NW_CONFIG.NW_CONFIG2:
+                            // Send request for "Get Network Config 2" command / 「ネットワーク設定取得2」コマンドの要求を送信
+                            return Program.PrpJigCmd.SendCmd_GetNwConfig2(out isWifi, out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient);
+                        case E_NW_CONFIG.NW_CONFIG3:
+                            // Send request for "Get Network Config 3" command / 「ネットワーク設定取得3」コマンドの要求を送信
+                            return Program.PrpJigCmd.SendCmd_GetNwConfig3(out isWifi, out strCountryCode, out strIpAddr, out strSsid, out strPassword, out strServerIpAddr, out isClient, out strGMailAddress, out strGMailAppPassword, out strToEMailAddress, out mailIntervalHour, out strName);
+                        default:
+                            // Send request for "Get Network Config" command / 「ネットワーク設定取得」コマンドの要求を送信
+                            return Program.PrpJigCmd.SendCmd_GetNwConfig(out strCountryCode, out strIpAddr, out strSsid, out strPassword);
+                    }
+                });
+                if (this.IsDisposed) return;
+                
+                if (strErrMsg == null)
+                {
+                    // Update network settings display / ネットワーク設定の表示を更新
+                    textBox_IpAddr.Text = strIpAddr;
+                    textBox_SSID.Text = strSsid;
+                    textBox_Password.Text = strPassword;
+                    if ((_eNwConfig == E_NW_CONFIG.NW_CONFIG2) || (_eNwConfig == E_NW_CONFIG.NW_CONFIG3))
+                    {
+                        radioButton_Wifi.Checked = isWifi;
+                        radioButton_Server.Checked = !isClient;
+                        radioButton_Client.Checked = isClient;
+                        textBox_ServerIpAddr.Enabled = isClient;
+                        textBox_ServerIpAddr.Text = strServerIpAddr;
+                    }
+                    if (_eNwConfig == E_NW_CONFIG.NW_CONFIG3)
+                    {
+                        textBox_GMailAddress.Text = strGMailAddress;
+                        textBox_GMailAppPassword.Text = strGMailAppPassword;
+                        textBox_ToEMailAddress.Text = strToEMailAddress;
+                        numericUpDown_MailIntervalHour.Value = mailIntervalHour;
+                        textBox_Name.Text = strName;
+                    }
                 }
-                if (_eNwConfig == E_NW_CONFIG.NW_CONFIG3)
+                else
                 {
-                    textBox_GMailAddress.Text = strGMailAddress;
-                    textBox_GMailAppPassword.Text = strGMailAppPassword;
-                    textBox_ToEMailAddress.Text = strToEMailAddress;
-                    numericUpDown_MailIntervalHour.Value = mailIntervalHour;
+                    UI.ShowErrMsg(this, strErrMsg);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                UI.ShowErrMsg(this, strErrMsg);
+                if (!this.IsDisposed) UI.ShowErrMsg(this, $"GetConfig Error: {ex.Message}");
+            }
+            finally
+            {
+                if (!this.IsDisposed) this.Enabled = true;
             }
         }
 
         /// <summary>
-        /// 「設定の変更」ボタンを押した時
+        /// When the "Change Settings" button is pressed / 「設定の変更」ボタンを押した時
         /// </summary>
-        private void button_SetConfig_Click(object sender, EventArgs e)
+        private async void button_SetConfig_Click(object sender, EventArgs e)
         {
-            string strErrMsg;
+            try
+            {
+                string strErrMsg;
+                string strName = textBox_Name.Text.Trim();
+                string strCountryCode = "XX"; // Country code is sent to the microcontroller, but it is not used on the microcontroller side. / カントリーコードはマイコンに送信するが、マイコン側ではカントリーコードは未使用。
 
-            // 確認メッセージを表示
-            if (DialogResult.No == UI.ShowYesNoMsg(this, "Do you want to save settings to flash memory?\n\n(The microcontroller will be reset.)"))
-            {
-                return;
-            }
+                // Display confirmation message / 確認メッセージを表示
+                if (DialogResult.No == UI.ShowYesNoMsg(this, "Do you want to save settings to flash memory?\n\n(The microcontroller will be reset.)"))
+                {
+                    return;
+                }
 
-            string strCountryCode = "JP"; // カントリーコードはマイコンに送信するが、マイコン側ではカントリーコードは未使用。
+                // Get values of UI controls (Must be executed on UI thread) / UIコントロールの値を取得(UIスレッドで実行する必要があるため)
+                bool isWifi = radioButton_Wifi.Checked;
+                string strIpAddr = textBox_IpAddr.Text.Trim();
+                string strSsid = textBox_SSID.Text.Trim();
+                string strPassword = textBox_Password.Text.Trim();
+                string strServerIpAddr = textBox_ServerIpAddr.Text.Trim();
+                bool isClient = radioButton_Client.Checked;
+                string strGMailAddress = textBox_GMailAddress.Text.Trim();
+                string strGMailAppPassword = textBox_GMailAppPassword.Text.Trim();
+                string strToEMailAddress = textBox_ToEMailAddress.Text.Trim();
+                byte mailIntervalHour = (byte)numericUpDown_MailIntervalHour.Value;
 
-            if (_eNwConfig == E_NW_CONFIG.NW_CONFIG2)
-            {
-                //「ネットワーク設定設定変更2」コマンドの要求を送信
-                strErrMsg = Program.PrpJigCmd.SendCmd_SetNwConfig2(radioButton_Wifi.Checked, strCountryCode, textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim(), textBox_ServerIpAddr.Text.Trim(), radioButton_Client.Checked);
+                this.Enabled = false;
+                strErrMsg = await Task.Run(() =>
+                {
+                    if (_eNwConfig == E_NW_CONFIG.NW_CONFIG2)
+                    {
+                        // Send request for "Set Network Config 2" command / 「ネットワーク設定変更2」コマンドの要求を送信
+                        return Program.PrpJigCmd.SendCmd_SetNwConfig2(isWifi, strCountryCode, strIpAddr, strSsid, strPassword, strServerIpAddr, isClient);
+                    }
+                    else if (_eNwConfig == E_NW_CONFIG.NW_CONFIG3)
+                    {
+                        // Send request for "Set Network Config 3" command / 「ネットワーク設定変更3」コマンドの要求を送信
+                        return Program.PrpJigCmd.SendCmd_SetNwConfig3(isWifi, strCountryCode, strIpAddr, strSsid, strPassword, strServerIpAddr, isClient, strGMailAddress, strGMailAppPassword, strToEMailAddress, mailIntervalHour, strName);
+                    }
+                    else
+                    {
+                        // Send request for "Set Network Config" command / 「ネットワーク設定変更」コマンドの要求を送信
+                        return Program.PrpJigCmd.SendCmd_SetNwConfig(strCountryCode, strIpAddr, strSsid, strPassword);
+                    }
+                });
+                if (this.IsDisposed) return;
+                
+                if (strErrMsg == null)
+                {
+                    // Reconnect / 再接続する
+                    await FormMain.Inst.Reconnect();
+                }
+                else
+                {
+                    UI.ShowErrMsg(this, strErrMsg);
+                }
             }
-            else if (_eNwConfig == E_NW_CONFIG.NW_CONFIG3)
+            catch (Exception ex)
             {
-                //「ネットワーク設定設定変更3」コマンドの要求を送信                                                                                                                                                                                                                  
-                strErrMsg = Program.PrpJigCmd.SendCmd_SetNwConfig3(radioButton_Wifi.Checked, strCountryCode, textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim(), textBox_ServerIpAddr.Text.Trim(), radioButton_Client.Checked, textBox_GMailAddress.Text.Trim(), textBox_GMailAppPassword.Text.Trim(), textBox_ToEMailAddress.Text.Trim(), (byte)numericUpDown_MailIntervalHour.Value);
+                if (!this.IsDisposed) UI.ShowErrMsg(this, $"Set Config Error: {ex.Message}");
             }
-            else
+            finally
             {
-                //「ネットワーク設定設定変更」コマンドの要求を送信
-                strErrMsg = Program.PrpJigCmd.SendCmd_SetNwConfig(strCountryCode, textBox_IpAddr.Text.Trim(), textBox_SSID.Text.Trim(), textBox_Password.Text.Trim());
-            }
-            
-            if (strErrMsg == null)
-            {
-                // 再接続する
-                FormMain.Inst.Reconnect();
-            }
-            else
-            {
-                UI.ShowErrMsg(this, strErrMsg);
+                if (!this.IsDisposed) this.Enabled = true;
             }
         }
 
         /// <summary>
-        /// 「サーバー」ラジオボタンのチェック状態が変化した時
+        /// When the check state of the "Server" radio button changes / 「サーバー」ラジオボタンのチェック状態が変化した時
         /// </summary>
         private void radioButton_Server_CheckedChanged(object sender, EventArgs e)
         {
             RadioButton radio = (RadioButton)sender;
 
             textBox_ServerIpAddr.Enabled = !radio.Checked;
+        }
+
+        /// <summary>
+        /// Allow only half-width characters when key is pressed in text box / テキストボックスがキープレスされた時に半角のみ許可
+        /// </summary>
+        private void textBox_HalfWidth_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            UI.TextBox_HalfWidth_KeyPress(sender, e);
         }
     }
 }

@@ -1,172 +1,181 @@
 // Copyright © 2024 Shiomachi Software. All rights reserved.
 #include "Common.h"
 
-// [ファイルスコープ変数]
-static bool f_isWillClearWdtByCore1 = false; // CPUコア1によってWDTタイマをクリアする番か否か
+// [File scope variables] / [ファイルスコープ変数]
+static volatile bool f_isWillClearWdtByCore1 = false; // Whether it is CPU core 1's turn to clear the WDT timer / CPUコア1によってWDTタイマをクリアする番か否か
 
-// [関数プロトタイプ宣言]
-static void MAIN_Init();
-static void MAIN_MainLoop_Core0();
-static void MAIN_MainLoop_Core1();
-static void MAIN_ControlLed();
-static void MAIN_ExceptionHandler();
-static void MAIN_RegisterExceptionHandler();
+// [Function prototype declarations] / [関数プロトタイプ宣言]
+static void MN_Init();
+static void MN_MainLoop_Core0();
+static void MN_MainLoop_Core1();
+static void MN_ControlLed();
+static void MN_ExceptionHandler();
+static void MN_RegisterExceptionHandler();
 
-// メイン関数
+// Main function / メイン関数
 int main() 
 {
-	// 電源起動時の初期化
-	MAIN_Init();
+	// Initialization at power-on / 電源起動時の初期化
+	MN_Init();
 
-	// CPUコア1のメインループを開始
-	multicore_launch_core1(MAIN_MainLoop_Core1); 
+	// Start main loop of CPU core 1 / CPUコア1のメインループを開始
+	multicore_launch_core1(MN_MainLoop_Core1); 
 
-	// CPUコア0のメインループを開始
-	MAIN_MainLoop_Core0();
+	// Start main loop of CPU core 0 / CPUコア0のメインループを開始
+	MN_MainLoop_Core0();
 
 	return 0;
 }
 
-// CPUコア0のメインループ
-static void MAIN_MainLoop_Core0()
+// Main loop of CPU core 0 / CPUコア0のメインループ
+static void MN_MainLoop_Core0()
 {
-    while (1) 
+	while (1) 
 	{
-		if (!f_isWillClearWdtByCore1) { // CPUコア0によってWDTタイマをクリアする番の場合
-			// WDTタイマをクリア
+		if (!f_isWillClearWdtByCore1) { // If it is CPU core 0's turn to clear the WDT timer / CPUコア0によってWDTタイマをクリアする番の場合
+			// Clear WDT timer / WDTタイマをクリア
 			TIMER_WdtClear();
 			f_isWillClearWdtByCore1 = true;
 		}	
 
-		// USB/無線受信データ取り出し⇒コマンド解析・実行
+		// Extract USB/wireless receive data ⇒ Parse and execute command / USB/無線受信データ取り出し⇒コマンド解析・実行
 		FRM_RecvMain();
 
- 		// UARTメイン処理
+		// UART main processing / UARTメイン処理
 		UART_Main();
 
-		// I2Cメイン処理
-    	I2C_Main();
-    }
+		// I2C main processing / I2Cメイン処理
+		I2C_Main();
+	}
 }
 
-// CPUコア1のメインループ
-static void MAIN_MainLoop_Core1() 
+// Main loop of CPU core 1 / CPUコア1のメインループ
+static void MN_MainLoop_Core1() 
 {
+	// Initialization to accept lockout (pause) request from CPU core 0 during flash write / CPUコア0からのフラッシュ書き込み時のロックアウト(一時停止)要求を受け入れるための初期化
+	multicore_lockout_victim_init();
+
 	while (1) 
 	{
-		if (f_isWillClearWdtByCore1) { // CPUコア1によってWDTタイマをクリアする番の場合	
-			// WDTタイマをクリア
+		if (f_isWillClearWdtByCore1) { // If it is CPU core 1's turn to clear the WDT timer / CPUコア1によってWDTタイマをクリアする番の場合	
+			// Clear WDT timer / WDTタイマをクリア
 			TIMER_WdtClear();
 			f_isWillClearWdtByCore1 = false;
 		}	
 
-		// LEDを制御する
-		MAIN_ControlLed();
+		// Control LED / LEDを制御する
+		MN_ControlLed();
 
 #ifdef MY_BOARD_PICO_W
-		// TCPサーバーのメイン処理
+		// TCP server main processing / TCPサーバーのメイン処理
 		tcp_server_main();
 #endif
 
-		// USB/無線送信のメイン処理
+		// USB/wireless send main processing / USB/無線送信のメイン処理
 		FRM_SendMain();
 	}
 }
 
-// LEDを制御する
-static void MAIN_ControlLed()
+// Control LED / LEDを制御する
+static void MN_ControlLed()
 {
 	ULONG period;
 	static bool bLedOn = false;
 
-	// LEDのON/OFFを変更するタイミングか否かを取得
+	// Get whether it's time to change the LED ON/OFF state / LEDのON/OFFを変更するタイミングか否かを取得
 	if (true == TIMER_IsLedChangeTiming()) {
-		// ON/OFFのどちらにするかを決める
+		// Determine whether to turn ON/OFF / ON/OFFのどちらにするかを決める
 		period = TIMER_GetLedPeriod();
 		if (TIMER_LED_PERIOD_ERR == period) {
 			bLedOn = !bLedOn;	
 		}	
 		else {
+#ifdef MY_BOARD_PICO_W			
 			if (true == tcp_server_is_link_up()) {
 				bLedOn = true;
 			} 
 			else {
 				bLedOn = !bLedOn;	
 			}
+#else
+			bLedOn = !bLedOn;
+#endif
 		}
-		// LEDにON/OFFを出力	
+		// Output ON/OFF to LED / LEDにON/OFFを出力	
 #ifdef MY_BOARD_PICO_W
-		cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, bLedOn);	
+		if (tcp_server_is_inited()) { // Prevent crash by calling only after cyw43_arch_init succeeds / cyw43_arch_init成功後のみ呼び出すことでクラッシュを防ぐ
+			cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, bLedOn);	
+		}
 #else		
 		gpio_put(ONBOARD_LED, bLedOn);
 #endif
 	}
 }
 
-// 例外ハンドラ
-static void MAIN_ExceptionHandler()
+// Exception handler / 例外ハンドラ
+static void MN_ExceptionHandler()
 {
-	// watchdog_enable()を使用して即WDTタイムアウトで再起動する
+	// Reboot immediately by WDT timeout using watchdog_enable() / watchdog_enable()を使用して即WDTタイムアウトで再起動する
 	CMN_WdtEnableReboot();
 }
 
-// 電源起動時の初期化
-static void MAIN_Init()
+// Initialization at power-on / 電源起動時の初期化
+static void MN_Init()
 {
-	ST_FLASH_DATA *pstFlashData; // 電源起動時のFLASHデータ
+	ST_FLASH_DATA *pstFlashData; // FLASH data at power-on / 電源起動時のFLASHデータ
 
-	// 例外ハンドラを登録
-	MAIN_RegisterExceptionHandler();
+	// Register exception handler / 例外ハンドラを登録
+	MN_RegisterExceptionHandler();
 
-	// CDCを初期化
-    stdio_init_all();
+	// Initialize CDC / CDCを初期化
+	stdio_init_all();
 
-	// 共通ライブラリを初期化
+	// Initialize common library / 共通ライブラリを初期化
 	CMN_Init();	
 
-	// FLASHライブラリを初期化
+	// Initialize FLASH library / FLASHライブラリを初期化
 	FLASH_Init();
 	pstFlashData = FLASH_GetDataAtPowerOn();
 
-	// GPIOを初期化
+	// Initialize GPIO / GPIOを初期化
 	GPIO_Init(&pstFlashData->stGpioConfig);
 
-	// ADCを初期化
+	// Initialize ADC / ADCを初期化
 	ADC_Init();
 
-	// UARTを初期化
+	// Initialize UART / UARTを初期化
 	UART_Init(&pstFlashData->stUartConfig);
 
-	// SPIを初期化
+	// Initialize SPI / SPIを初期化
 	SPI_Init(&pstFlashData->stSpiConfig);
 
-	// I2Cを初期化
+	// Initialize I2C / I2Cを初期化
 	I2C_Init(&pstFlashData->stI2cConfig);
 
-	// PWMを初期化
+	// Initialize PWM / PWMを初期化
 	PWM_Init();
 
-	// USB/無線共通処理を初期化
+	// Initialize USB/wireless common processing / USB/無線共通処理を初期化
 	FRM_Init();
 
-	// タイマーを初期化
+	// Initialize timer / タイマーを初期化
 	TIMER_Init();
 
-	// 起動してからの安定待ち時間を待つ
+	// Wait for stabilization wait time after boot / 起動してからの安定待ち時間を待つ
 	while (!TIMER_IsStabilizationWaitTimePassed()) {}
 
-	if (watchdog_enable_caused_reboot()) { // watchdog_reboot()ではなくwatchdog_enable()のWDTタイムアウトで再起動していた場合
-		// FWエラーを設定
+	if (watchdog_enable_caused_reboot()) { // If rebooted by watchdog_enable() WDT timeout instead of watchdog_reboot() / watchdog_reboot()ではなくwatchdog_enable()のWDTタイムアウトで再起動していた場合
+		// Set FW error / FWエラーを設定
 		CMN_SetErrorBits(CMN_ERR_BIT_WDT_RESET, true);
 	}	
 }
 
-// 例外ハンドラを登録
-static void MAIN_RegisterExceptionHandler()
+// Register exception handler / 例外ハンドラを登録
+static void MN_RegisterExceptionHandler()
 {
-	exception_set_exclusive_handler(NMI_EXCEPTION, MAIN_ExceptionHandler);
-	exception_set_exclusive_handler(HARDFAULT_EXCEPTION, MAIN_ExceptionHandler);
-	exception_set_exclusive_handler(SVCALL_EXCEPTION, MAIN_ExceptionHandler);
-	exception_set_exclusive_handler(PENDSV_EXCEPTION, MAIN_ExceptionHandler);
-	exception_set_exclusive_handler(SYSTICK_EXCEPTION, MAIN_ExceptionHandler);	
+	exception_set_exclusive_handler(NMI_EXCEPTION, MN_ExceptionHandler);
+	exception_set_exclusive_handler(HARDFAULT_EXCEPTION, MN_ExceptionHandler);
+	exception_set_exclusive_handler(SVCALL_EXCEPTION, MN_ExceptionHandler);
+	exception_set_exclusive_handler(PENDSV_EXCEPTION, MN_ExceptionHandler);
+	exception_set_exclusive_handler(SYSTICK_EXCEPTION, MN_ExceptionHandler);	
 }

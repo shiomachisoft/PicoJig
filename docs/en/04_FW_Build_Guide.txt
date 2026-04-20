@@ -1,0 +1,34 @@
+Build Instructions
+
+[Prerequisites]
+Install the "Raspberry Pi Pico" extension in Visual Studio Code (VS Code) on Windows.
+
+Verified to build successfully with the following versions:
+
+VS Code: 1.114.0
+
+"Raspberry Pi Pico" extension: 0.19.0
+
+[Build Steps]
+
+Open VS Code in a "New Window".
+
+Click "Import Project" in the "Raspberry Pi Pico" extension.
+
+For "Location", select the PicoJig folder where the FW source files are stored.
+
+For "Select Pico SDK version", select "v2.2.0".
+
+Click "Import".
+
+For "Switch Board", select the following depending on your target:
+
+To build for PicoJig: pico
+
+To build for PicoJig_WL: pico_w
+
+Note: The output file name will be "PicoJig.uf2" in either case.
+
+For "Switch Build Type", select "Release" or "Debug" as needed.
+
+Click "Compile Project".

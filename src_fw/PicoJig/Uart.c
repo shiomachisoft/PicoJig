@@ -1,62 +1,64 @@
 // Copyright © 2024 Shiomachi Software. All rights reserved.
 #include "Common.h"
 
-// [define]
-#define UART_ID  uart0      // UARTのID
-#define UART_IRQ UART0_IRQ  // UARTのIRQ
+// [define] / [定義]
+#define UART_ID  uart0      // UART ID / UARTのID
+#define UART_IRQ UART0_IRQ  // UART IRQ / UARTのIRQ
 
-// デフォルト値
-#define UART_DEFAULT_BAUD_RATE 9600             // ボーレート
-#define UART_DEFAULT_DATA_BITS 8                // データビット長
-#define UART_DEFAULT_STOP_BITS 1                // ストップビット長
-#define UART_DEFAULT_PARITY    UART_PARITY_NONE // パリティ
+// Default values / デフォルト値
+#define UART_DEFAULT_BAUD_RATE 9600             // Baud rate / ボーレート
+#define UART_DEFAULT_DATA_BITS 8                // Data bit length / データビット長
+#define UART_DEFAULT_STOP_BITS 1                // Stop bit length / ストップビット長
+#define UART_DEFAULT_PARITY    UART_PARITY_NONE // Parity / パリティ
 
-// [ファイルスコープ変数]
-static bool f_isSentFirstByte = false; // 1byte目を送信済みか否か
-static UCHAR f_aNotifyData[UART_DATA_MAX_SIZE] = {0}; // UART受信通知フレームのデータ部
+// [File scope variables] / [ファイルスコープ変数]
+static volatile bool f_isSentFirstByte = false; // Whether the 1st byte has been sent or not / 1byte目を送信済みか否か
+static UCHAR f_aNotifyData[UART_DATA_MAX_SIZE] = {0}; // Data part of UART receive notification frame / UART受信通知フレームのデータ部
 
-// [関数プロトタイプ宣言]
+// [Function prototype declarations] / [関数プロトタイプ宣言]
 static void UART_Interrupt();
 static void UART_Recv();
 static void UART_SendFirstbyte();
 static inline bool UART_Send();
 
-// UART割り込み
+// UART interrupt / UART割り込み
 static void UART_Interrupt() 
 {
+    UCHAR rxData;
     ULONG errorBits = 0;    
     io_rw_32 dr;  // Data Register:UARTDR
     io_rw_32 rsr; // Receive Status Register/Error Clear Register:UARTRSR/UARTECR
-    io_rw_32 ris = uart_get_hw(UART_ID)->ris; // 割り込みステータスレジスタ
-
+    io_rw_32 ris = uart_get_hw(UART_ID)->ris; // Interrupt status register / 割り込みステータスレジスタ
+    
     if (ris & UART_UARTRIS_RXRIS_BITS) {
-        // UART受信割り込みの場合
+        // If UART receive interrupt / UART受信割り込みの場合
 
-        while  (uart_is_readable(UART_ID)) { // UARTの受信データがまだ存在する場合
+        while (uart_is_readable(UART_ID)) { // If UART receive data still exists / UARTの受信データがまだ存在する場合
             
-            // UARTの受信データ(1byte)を取り出し
+            // Extract UART receive data (1 byte) / UARTの受信データ(1byte)を取り出し
             dr = uart_get_hw(UART_ID)->dr;
 
-            // UARTエラーを取得      
+            // Get UART error / UARTエラーを取得      
             rsr = uart_get_hw(UART_ID)->rsr;
-            // rsrのビット
-            // 0x00000008 Overrun error
-            // 0x00000004 Break error
-            // 0x00000002 Parity error
-            // 0x00000001 Framing error            
+            // bits of rsr / rsrのビット
+            // 0x00000008 Overrun error / オーバーランエラー
+            // 0x00000004 Break error / ブレークエラー
+            // 0x00000002 Parity error / パリティエラー
+            // 0x00000001 Framing error / フレーミングエラー            
             rsr &= 0x0000000F;
-            // UARTエラーをクリア
-            uart_get_hw(UART_ID)->rsr = ~rsr;
+            // Clear UART error / UARTエラーをクリア
+            uart_get_hw(UART_ID)->rsr = 0;
   
-            if (!rsr) { // UARTエラーが発生していない場合
-                // UART受信データ1byteのエンキュー
-                (void)CMN_Enqueue(CMN_QUE_KIND_UART_RECV, (PVOID)&dr, sizeof(UCHAR), true);
+            if (!rsr) { // If no UART error occurred / UARTエラーが発生していない場合
+                rxData = (UCHAR)(dr & 0xFF);
+                // Enqueue 1 byte of UART receive data / UART受信データ1byteのエンキュー
+                (void)CMN_Enqueue(CMN_QUE_KIND_UART_RECV, (PVOID)&rxData, true);
             }
 
             if (TIMER_IsStabilizationWaitTimePassed()) { 
-                // 起動してからの安定待ち時間が経過していた場合
+                // If stabilization wait time after boot has passed / 起動してからの安定待ち時間が経過していた場合
 
-                // FWエラーを設定
+                // Set FW error / FWエラーを設定
                 if (rsr & (1 << 0)) {
                     errorBits |= CMN_ERR_BIT_UART_FRAMING_ERR;
                 }        
@@ -69,45 +71,47 @@ static void UART_Interrupt()
                 if (rsr & (1 << 3)) {
                     errorBits |= CMN_ERR_BIT_UART_OVERRUN_ERR;
                 }                         
-                CMN_SetErrorBits(errorBits, true);
             }
         }
+
+        // Record error only once after the loop ends / ループ終了後に1回だけエラーを記録する
+        CMN_SetErrorBits(errorBits, true);
     }
 
     if (ris & UART_UARTRIS_TXRIS_BITS) {
-        // UART送信割り込みの場合
+        // If UART send interrupt / UART送信割り込みの場合
    
-        // 次の1byteのUART送信
+        // Send next 1 byte of UART / 次の1byteのUART送信
         if (!UART_Send()) { 
-            // UART送信データのキューが空の場合(UART送信データがもう無い場合) 
+            // If UART send data queue is empty (no more UART send data) / UART送信データのキューが空の場合(UART送信データがもう無い場合) 
             
-            f_isSentFirstByte = false; // 1byte目は未送信   
+            f_isSentFirstByte = false; // 1st byte is not sent / 1byte目は未送信   
 
-            // UART送信割り込みをクリア
-            uart_get_hw(UART_ID)->icr = UART_UARTICR_TXIC_BITS ;
-            // 備考:
-            // ・UART送信割り込み(UARTTXINTR)について※
-            //   送信FIFOに送信データが存在しない場合は、送信割り込みが HIGH にアサートされる。
-            //   送信FIFOに1回の書き込みを実行するか、割り込みをクリアすると、送信割り込みがクリアされる。
+            // Clear UART send interrupt / UART送信割り込みをクリア
+            uart_get_hw(UART_ID)->icr = UART_UARTICR_TXIC_BITS;
+            // Note: / 備考:
+            // - Regarding UART send interrupt (UARTTXINTR)* / ・UART送信割り込み(UARTTXINTR)について※
+            //   If there is no send data in the transmit FIFO, the send interrupt is asserted HIGH. / 送信FIFOに送信データが存在しない場合は、送信割り込みが HIGH にアサートされる。
+            //   The send interrupt is cleared by either performing a single write to the transmit FIFO or clearing the interrupt. / 送信FIFOに1回の書き込みを実行するか、割り込みをクリアすると、送信割り込みがクリアされる。
             //
-            // ・UART受信割り込み(UARTRXINTR)について※
-            //   受信FIFOの読み取りだけでクリアされる。
+            // - Regarding UART receive interrupt (UARTRXINTR)* / ・UART受信割り込み(UARTRXINTR)について※
+            //   Cleared simply by reading the receive FIFO. / 受信FIFOの読み取りだけでクリアされる。
             //
-            // ※FIFOが無効(深さが1)の場合
+            // *If FIFO is disabled (depth of 1) / ※FIFOが無効(深さが1)の場合
         }  
     }
 }
 
-// UARTメイン処理
+// UART main processing / UARTメイン処理
 void UART_Main()
 {
-    // UART受信データ取り出し⇒USB/無線送信(UART受信通知フレームの送信)
+    // Extract UART receive data ⇒ USB/wireless send (send UART receive notification frame) / UART受信データ取り出し⇒USB/無線送信(UART受信通知フレームの送信)
     UART_Recv();
-    // 1byte目のUART送信
+    // Send 1st byte of UART / 1byte目のUART送信
     UART_SendFirstbyte(); 
 }
 
-// UART受信データ取り出し⇒USB/無線送信(UART受信通知フレームの送信)
+// Extract UART receive data ⇒ USB/wireless send (send UART receive notification frame) / UART受信データ取り出し⇒USB/無線送信(UART受信通知フレームの送信)
 static void UART_Recv()
 {
     UCHAR data;
@@ -115,8 +119,8 @@ static void UART_Recv()
     ULONG size;
 
     for (i = 0; i < UART_DATA_MAX_SIZE; i++) { 
-        // UART受信データ1byteのデキュー
-        if (CMN_Dequeue(CMN_QUE_KIND_UART_RECV, &data, sizeof(UCHAR), true)) { 
+        // Dequeue 1 byte of UART receive data / UART受信データ1byteのデキュー
+        if (CMN_Dequeue(CMN_QUE_KIND_UART_RECV, &data, true)) { 
             f_aNotifyData[i] = data;  
         }
         else {
@@ -125,32 +129,32 @@ static void UART_Recv()
     }
     size = i;
     if (size > 0) {
-        // UART受信通知フレームの送信
+        // Send UART receive notification frame / UART受信通知フレームの送信
         FRM_MakeAndSendNotifyFrm(FRM_HEADER_NOTIFY_UART_RECV, size, f_aNotifyData);
     }
 }
 
-// 1byte目のUART送信
+// Send 1st byte of UART / 1byte目のUART送信
 static void UART_SendFirstbyte()
 {
-    if (!f_isSentFirstByte) {  // 1byte目をまだ送信済みではない場合
-        if (uart_is_writable(UART_ID)) { // UART送信可能な場合
-            // UART送信データ取り出し⇒UART送信
-            (void)UART_Send(); // true:UART送信割り込みのデキューと同期する
+    if (!f_isSentFirstByte) {  // If 1st byte has not been sent yet / 1byte目をまだ送信していない場合
+        if (uart_is_writable(UART_ID)) { // If UART send is possible / UART送信可能な場合
+            // Extract UART send data ⇒ UART send / UART送信データ取り出し⇒UART送信
+            (void)UART_Send(); // true: Synchronize with dequeue of UART send interrupt / true:UART送信割り込みのデキューと同期する
         }
     }
 }
 
-// UART送信データ取り出し⇒UART送信
+// Extract UART send data ⇒ UART send / UART送信データ取り出し⇒UART送信
 static inline bool UART_Send()
 {
     UCHAR data;
-    bool isSent = false; // 送信したか否か
+    bool isSent = false; // Whether sent or not / 送信したか否か
 
-     // UART送信データ1byteのデキュー
-    if (CMN_Dequeue(CMN_QUE_KIND_UART_SEND, &data, sizeof(UCHAR), true)) {   
-        f_isSentFirstByte = true; // 1byteを送信済み
-        // UART送信(1byte)
+    // Dequeue 1 byte of UART send data / UART送信データ1byteのデキュー
+    if (CMN_Dequeue(CMN_QUE_KIND_UART_SEND, &data, true)) {   
+        f_isSentFirstByte = true; // 1 byte has been sent / 1byteを送信済み
+        // UART send (1 byte) / UART送信(1byte)
         uart_get_hw(UART_ID)->dr = (io_rw_32)data;
         isSent = true;
     }
@@ -158,33 +162,32 @@ static inline bool UART_Send()
     return isSent;
 }
 
-// ST_UART_CONFIG構造体にデフォルト値を格納
+// Store default values in ST_UART_CONFIG structure / ST_UART_CONFIG構造体にデフォルト値を格納
 void UART_SetDefault(ST_UART_CONFIG *pstConfig)
 {
-    pstConfig->baudrate = UART_DEFAULT_BAUD_RATE; // ボーレート
-    pstConfig->dataBits = UART_DEFAULT_DATA_BITS; // データビット長
-    pstConfig->stopBits = UART_DEFAULT_STOP_BITS; // ストップビット長
-    pstConfig->parity   = UART_DEFAULT_PARITY;    // パリティ
+    pstConfig->baudrate = UART_DEFAULT_BAUD_RATE; // Baud rate / ボーレート
+    pstConfig->dataBits = UART_DEFAULT_DATA_BITS; // Data bit length / データビット長
+    pstConfig->stopBits = UART_DEFAULT_STOP_BITS; // Stop bit length / ストップビット長
+    pstConfig->parity   = UART_DEFAULT_PARITY;    // Parity / パリティ
 }
 
-// UARTを初期化
+// Initialize UART / UARTを初期化
 void UART_Init(ST_UART_CONFIG *pstConfig)
 {
-    // UARTを初期化
-    uart_init(UART_ID, pstConfig->baudrate);  // ボーレート
-    // ピンの機能設定
+    // Initialize UART / UARTを初期化
+    uart_init(UART_ID, pstConfig->baudrate);  // Baud rate / ボーレート
+    // Set pin function / ピンの機能設定
     gpio_set_function(UART_TX, GPIO_FUNC_UART);
     gpio_set_function(UART_RX, GPIO_FUNC_UART);
-    // CTS/RTSを無効に設定
+    // Disable CTS/RTS / CTS/RTSを無効に設定
     uart_set_hw_flow(UART_ID, false, false);
-    // 通信設定
+    // Communication config / 通信設定
     uart_set_format(UART_ID, pstConfig->dataBits, pstConfig->stopBits, pstConfig->parity);
-    // サンプルプログラムに合わせてUARTのFIFOを無効に設定
+    // Disable UART FIFO according to sample program / サンプルプログラムに合わせてUARTのFIFOを無効に設定
     uart_set_fifo_enabled(UART_ID, false);
-    // 割り込み設定
+    // Interrupt config / 割り込み設定
     irq_set_exclusive_handler(UART_IRQ, UART_Interrupt);
-    irq_set_priority(UART_IRQ, CMN_IRQ_PRIORITY_UART); // 割り込みの優先度
-    irq_set_enabled(UART_IRQ, true); // 実行中のCPUコア上の指定の割り込みを有効   
-    uart_set_irq_enables(UART_ID, true, true); // UARTのRX・TX割り込みを有効
+    irq_set_priority(UART_IRQ, CMN_IRQ_PRIORITY_UART); // Interrupt priority / 割り込みの優先度
+    irq_set_enabled(UART_IRQ, true); // Enable specified interrupt on the executing CPU core / 実行中のCPUコア上の指定の割り込みを有効   
+    uart_set_irq_enables(UART_ID, true, true); // Enable UART RX/TX interrupts / UARTのRX・TX割り込みを有効
 }
-

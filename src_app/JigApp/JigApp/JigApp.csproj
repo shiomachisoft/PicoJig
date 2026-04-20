@@ -103,12 +103,6 @@
     <Compile Include="FormUart.Designer.cs">
       <DependentUpon>FormUart.cs</DependentUpon>
     </Compile>
-    <Compile Include="JigCmd\JigCmd_Recv.cs" />
-    <Compile Include="JigCmd\JigCmd_Send.cs" />
-    <Compile Include="JigCmd\JigCmd_Common.cs" />
-    <Compile Include="JigCmd\JigCmd_Virtual.cs" />
-    <Compile Include="JigCmd\JigSerial.cs" />
-    <Compile Include="JigCmd\JigTcpClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormAdc.resx">
@@ -159,6 +153,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\JigLib\JigLib.csproj">
+      <Project>{8989b7ce-e170-4471-8dc4-b43300469121}</Project>
+      <Name>JigLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -2,29 +2,30 @@
 #ifndef TCP_SERVER_H
 #define TCP_SERVER_H
 
-// [define]
-// デフォルト値
-#define TCP_SERVER_DEFAULT_COUNTRY_CODE  "JP"       // カントリーコード
-#define TCP_SERVER_DEFAULT_IP_ADDR       0xC0A80A64 // IPアドレス
+#include "Common.h"
 
-// [列挙体]
-// フェーズ
+// [define] / [定義]
+// Default values / デフォルト値
+#define TCP_SERVER_DEFAULT_COUNTRY_CODE  "XX"       // Country code / カントリーコード
+#define TCP_SERVER_DEFAULT_IP_ADDR       0xC0A80A64 // IP address / IPアドレス
+
+#ifdef MY_BOARD_PICO_W
+// [Enums] / [列挙体]
+// Phase / フェーズ
 typedef enum _E_TCP_SERVER_PHASE {
-    E_TCP_SERVER_PHASE_NOT_INIT,        // 未初期化
-    E_TCP_SERVER_PHASE_INITED,          // 初期化済み
-    E_TCP_SERVER_PHASE_CONNECTING_AP,   // APへの接続処理を実行中
-    E_TCP_SERVER_PHASE_CONNECTED_AP,    // APに接続済み
-    E_TCP_SERVER_PHASE_TCP_OPENED,      // TCPオープン済み
-    E_TCP_SERVER_PHASE_TCP_ACCEPTED     // TCPアクセプト済み
+    E_TCP_SERVER_PHASE_NOT_INIT,        // Not initialized / 未初期化
+    E_TCP_SERVER_PHASE_INITED,          // Initialized / 初期化済み
+    E_TCP_SERVER_PHASE_CONNECTING_AP,   // Connecting to AP / APへの接続処理を実行中
+    E_TCP_SERVER_PHASE_CONNECTED_AP,    // Connected to AP / APに接続済み
+    E_TCP_SERVER_PHASE_TCP_OPENED,      // TCP opened / TCPオープン済み
+    E_TCP_SERVER_PHASE_TCP_ACCEPTED     // TCP accepted / TCPアクセプト済み
 } E_TCP_SERVER_PHASE;
 
-#pragma pack(1)
-
-// [構造体]
+// [Structs] / [構造体]
 typedef struct TCP_SERVER_T_ {
     struct tcp_pcb *server_pcb;
     struct tcp_pcb *client_pcb;
-    // 削除
+    // Deleted / 削除
     // =====>
     //bool complete;
     //uint8_t buffer_sent[TCP_BUF_SIZE];
@@ -35,21 +36,29 @@ typedef struct TCP_SERVER_T_ {
     // <======
 } TCP_SERVER_T;
 
-// ネットワーク設定
+#endif
+
+#pragma pack(1)
+
+// [Structs] / [構造体]
+// Network config / ネットワーク設定
 typedef struct _ST_NW_CONFIG {
-    char  szCountryCode[3]; // カントリーコード ※未使用
-    UCHAR aIpAddr[4];       // IPアドレス
-    char  szSsid[33];       // APのSSID
-    char  szPassword[65];   // APのパスワード
+    char  szCountryCode[3]; // Country code *unused / カントリーコード ※未使用
+    UCHAR aIpAddr[4];       // IP address / IPアドレス
+    char  szSsid[33];       // AP SSID / APのSSID
+    char  szPassword[65];   // AP password / APのパスワード
 } ST_NW_CONFIG;
 
 #pragma pack()
 
-// [関数プロトタイプ宣言]
+// [Function prototype declarations] / [関数プロトタイプ宣言]
+#ifdef MY_BOARD_PICO_W
 void tcp_server_main();
+bool tcp_server_is_inited();
 bool tcp_server_is_connected();
 bool tcp_server_is_link_up();
 err_t tcp_server_send_data(uint8_t* buffer_sent, uint32_t size);
 void tcp_server_set_default(ST_NW_CONFIG *pstConfig);
+#endif
 
 #endif

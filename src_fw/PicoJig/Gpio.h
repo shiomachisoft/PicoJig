@@ -4,8 +4,8 @@
 
 #include "Common.h"
 
-// [define]
-// GP番号
+// [define] / [定義]
+// GP numbers / GP番号
 #define GP_00 0     // UART0 TX
 #define GP_01 1     // UART0 RX
 #define GP_02 2     // PWM OUT
@@ -34,7 +34,7 @@
 #define GP_27 27    // ADC1
 #define GP_28 28    // ADC2
 
-// ピン(GP番号)の機能選択
+// Function selection for pins (GP numbers) / ピン(GP番号)の機能選択
 #define UART_TX     GP_00
 #define UART_RX     GP_01
 #define PWM_OUT     GP_02
@@ -49,24 +49,24 @@
 #define ADC1        GP_27
 #define ADC2        GP_28
 
-#pragma pack(1)
-
-// [構造体]
-// GPIOのGP番号と方向
+// [Structs] / [構造体]
+// GPIO GP number and direction / GPIOのGP番号と方向
 typedef struct _ST_GPIO_PIN{
-    ULONG gp;  // GP番号
-    bool  dir; // true:出力 false:入力
+    ULONG gp;  // GP number / GP番号
+    bool  dir; // true: output, false: input / true:出力 false:入力
 } ST_GPIO_PIN;
 
-// GPIO設定
+#pragma pack(1)
+
+// GPIO config / GPIO設定
 typedef struct _ST_GPIO_CONFIG {
-   ULONG pullDownBits;   // プルダウンかプルアップか 
-   ULONG initialValBits; // 電源ON時出力値
+   ULONG pullDownBits;   // Pull-down or pull-up / プルダウンかプルアップか 
+   ULONG initialOutValBits; // Output value at power-on / 電源ON時出力値
 } ST_GPIO_CONFIG;
 
 #pragma pack()
 
-// [関数プロトタイプ宣言]
+// [Function prototype declarations] / [関数プロトタイプ宣言]
 ULONG GPIO_GetInDirBits();
 ULONG GPIO_GetOutDirBits();
 void GPIO_SetDefault(ST_GPIO_CONFIG *pstConfig);

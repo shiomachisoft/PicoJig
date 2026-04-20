@@ -71,9 +71,9 @@ namespace JigApp
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(37, 267);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(142, 21);
+            this.label3.Size = new System.Drawing.Size(76, 21);
             this.label3.TabIndex = 5;
-            this.label3.Text = "high_period:";
+            this.label3.Text = "level:";
             // 
             // button_Start
             // 
@@ -82,7 +82,7 @@ namespace JigApp
             this.button_Start.Size = new System.Drawing.Size(150, 50);
             this.button_Start.TabIndex = 8;
             this.button_Start.TabStop = false;
-            this.button_Start.Text = "PWM start";
+            this.button_Start.Text = "Start PWM";
             this.button_Start.UseVisualStyleBackColor = true;
             this.button_Start.Click += new System.EventHandler(this.button_Start_Click);
             // 
@@ -93,7 +93,7 @@ namespace JigApp
             this.button_Stop.Size = new System.Drawing.Size(150, 50);
             this.button_Stop.TabIndex = 9;
             this.button_Stop.TabStop = false;
-            this.button_Stop.Text = "PWM stop";
+            this.button_Stop.Text = "Stop PWM";
             this.button_Stop.UseVisualStyleBackColor = true;
             this.button_Stop.Click += new System.EventHandler(this.button_Stop_Click);
             // 
@@ -198,9 +198,9 @@ namespace JigApp
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(32, 51);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(395, 21);
+            this.label8.Size = new System.Drawing.Size(329, 21);
             this.label8.TabIndex = 63;
-            this.label8.Text = "duty ratio = high_period / (wrap+1)";
+            this.label8.Text = "duty ratio = level / (wrap+1)";
             // 
             // label9
             // 
