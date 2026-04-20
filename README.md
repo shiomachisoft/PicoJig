@@ -50,7 +50,7 @@ The source code for all components - the firmware, PC GUI Application, C# Librar
 1.  Write the appropriate firmware (`.uf2`) to your Pico or Pico W:
     * **Pico:** `PicoJig_XXXXXXXX.uf2`
     * **Pico W:** `PicoJig_WL_XXXXXXXX.uf2`
-2.  Launch the PC GUI Application (`PicoJigApp.exe`) or the Sample Application (`PicoJigLibSample.exe`) to control the peripherals.
+2.  Launch the PC GUI Application (`PicoJigApp.exe`) or the Sample Application (`PicoJigLibSample.exe`) to control the microcontroller peripherals.
 
 *For details on pin usage and further instructions, please refer to the Documentation.*
 
@@ -89,6 +89,6 @@ The source code for all components - the firmware, PC GUI Application, C# Librar
 1.  適切なファームウェア（`.uf2`）を Pico または Pico W に書き込みます。
     * **Pico:** `PicoJig_XXXXXXXX.uf2`
     * **Pico W:** `PicoJig_WL_XXXXXXXX.uf2`
-2.  PC GUI アプリケーション (`PicoJigApp.exe`) またはサンプルアプリケーション (`PicoJigLibSample.exe`) を起動し、ペリフェラルを制御します。
+2.  PC GUI アプリケーション (`PicoJigApp.exe`) またはサンプルアプリケーション (`PicoJigLibSample.exe`) を起動し、マイコンのペリフェラルを制御します。
 
 *使用するピンや詳細な使い方については、ドキュメントをご参照ください。*
