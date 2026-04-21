@@ -112,6 +112,11 @@ Connected successfully via USB (COM).
 
 - **3: Set Wi-Fi Config**  
   IPアドレス、SSID、パスワードを設定してマイコンをリセットします。
+  
+  - **指定できるWi-FiルーターのSSIDの条件**
+    - 2.4GHz帯を使用するWi-Fi規格「IEEE 802.11b/g/n」に対応していること。間違えて5GHzの周波数帯のSSIDを指定しないようにご注意下さい。
+    - 暗号化方式はWPA2であること。  
+  
   - **入力:**   
     - 以下のプロンプトに対して値を入力します。（例: IP Address: `192.168.10.100`, SSID: `My_SSID`, SSID Password: `password`）
     ```text

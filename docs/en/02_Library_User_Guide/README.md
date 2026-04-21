@@ -63,6 +63,9 @@ Instantiate a derived class of JigCmd depending on the communication method.
   - strCountryCode: Country code *Sent to the MCU but currently unused. Please specify "XX".
   - strIpAddr: IP address (e.g., "192.168.1.10")
   - strSsid: SSID
+    - **Conditions for the Wi-Fi router SSID that can be specified**
+      - It must support the Wi-Fi standard "IEEE 802.11b/g/n" using the 2.4GHz band. Please be careful not to accidentally specify a 5GHz frequency band SSID.
+      - The encryption method must be WPA2.  
   - strPassword: Password  
   
   *Since the microcontroller will be reset when this method is executed, please refer to [Notes].

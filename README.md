@@ -44,7 +44,7 @@ This repository consists of the following main components:
 4.  **Sample Application (`PicoJigLibSample.exe`)** A console-based sample C# program demonstrating how to use `PicoJigLib.dll` to control the microcontroller peripherals.
 
 ### Source Code
-The source code for all components - the firmware, PC GUI Application, C# Library, and Sample Application - is completely open and publicly available in this repository.
+The source code for the firmware, PC application, and C# library is all publicly available.
 
 ### Quick Start
 1.  Write the appropriate firmware (`.uf2`) to your Pico or Pico W:
@@ -83,7 +83,7 @@ The source code for all components - the firmware, PC GUI Application, C# Librar
 4.  **サンプルアプリケーション (`PicoJigLibSample.exe`)** `PicoJigLib.dll` を使用してマイコンのペリフェラルを制御する方法を示す、コンソールベースの C# サンプルプログラムです。
 
 ### ソースコードについて
-ファームウェア、PC GUI アプリケーション、C# ライブラリ、サンプルアプリケーションのソースコードはすべて公開されています。
+ファームウェア、PCアプリ、C#ライブラリのソースコードはすべて公開されています。
 
 ### クイックスタート
 1.  適切なファームウェア（`.uf2`）を Pico または Pico W に書き込みます。

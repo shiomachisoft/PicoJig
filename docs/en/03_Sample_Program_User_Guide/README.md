@@ -112,6 +112,11 @@ Below is an overview of the user input required when executing each function and
 
 - **3: Set Wi-Fi Config**  
   Sets the IP address, SSID, and password, then resets the microcontroller.
+  
+  - **Conditions for the Wi-Fi router SSID that can be specified**
+    - It must support the Wi-Fi standard "IEEE 802.11b/g/n" using the 2.4GHz band. Please be careful not to accidentally specify a 5GHz frequency band SSID.
+    - The encryption method must be WPA2.   
+  
   - **Input:**   
     - Enter values for the following prompts. (e.g., IP Address: `192.168.10.100`, SSID: `My_SSID`, SSID Password: `password`)
     ```text

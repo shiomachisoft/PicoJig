@@ -297,11 +297,11 @@ The NW Config Window is displayed by pressing the [NW Config] button inside [8] 
 
 (2) Enter the SSID of the Wi-Fi router in the box [2].
 
-- * Conditions for the Wi-Fi router SSID that can be specified:
+- **Conditions for the Wi-Fi router SSID that can be specified**
 
   - It must support the Wi-Fi standard "IEEE 802.11b/g/n" using the 2.4GHz band. Please be careful not to accidentally specify a 5GHz frequency band SSID.
 
-  - **The encryption method must be WPA2.**
+  - The encryption method must be WPA2.
 
 (3) Enter the password of the Wi-Fi router in the box [3].
 
