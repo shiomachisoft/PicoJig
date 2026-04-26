@@ -127,7 +127,7 @@ Below is an overview of the user input required when executing each function and
     ```
   - **Display:**   
     After completion, automatic reconnection processing is performed.  
-    > *** Note:**  
+    > **Note:**  
     > If you are currently connected to the microcontroller via Wi-Fi (TCP/IP) communication, it is designed to automatically attempt reconnection using the **new IP address** changed here.
     ```text
     Wi-Fi configured.
@@ -301,7 +301,7 @@ Below is an overview of the user input required when executing each function and
     --- UART Receive ---
     No UART received data.
     ```
-  > *** Note**:  
+  > **Note:**  
   > UART received data is asynchronously stored in an internal queue (up to 4096 bytes).  
   > The data at the time "12" is selected from the menu is displayed on the screen.
 
@@ -408,8 +408,8 @@ Below is an overview of the user input required when executing each function and
   - **Input:**   
     - Enter numerical values for each prompt.
       - **Formula:**  
-        - PWM Frequency = 125MHz / ((Wrap + 1) * Clock divider)
-        - Duty Cycle = Compare value(Level) / (Wrap + 1)
+        - `PWM Frequency = 125MHz / ((Wrap + 1) * Clock divider)`
+        - `Duty Cycle = Compare value(Level) / (Wrap + 1)`
       - (e.g., To set PWM frequency to 100Hz and duty cycle to 50% -> Enter Clock divider: `250`, Wrap: `4999`, Compare value: `2500`)
     ```text
     --- Start PWM ---

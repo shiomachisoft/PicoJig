@@ -46,7 +46,7 @@ PicoJig, PicoJig-WL Manual
 
 # Terms of Use
 
-* When using PicoJig/PicoJig-WL, please check the terms of use at the following URL:
+\* When using PicoJig/PicoJig-WL, please check the terms of use at the following URL:  
 <https://sites.google.com/view/shiomachisoft/%E5%88%A9%E7%94%A8%E8%A6%8F%E7%B4%84>
 
 Please note that Shiomachi Software (creator of PicoJig/PicoJig-WL) shall not be held responsible for any trouble, loss, or damage caused by the use of PicoJig/PicoJig-WL or by executing the procedures described in this document.
@@ -97,13 +97,13 @@ PicoJig is a FW and PC app that controls GPIO/UART/SPI/I2C/ADC/PWM of Raspberry 
 
 (1) PicoJig_*XXXXXXXX*.uf2
 
-- * *XXXXXXXX* is the version date.
+- *XXXXXXXX* is the version date.
 
 - FW for PicoJig, to be written to the Pico.
 
 (2) PicoJig_WL_*XXXXXXXX*.uf2
 
-- * *XXXXXXXX* is the version date.
+- *XXXXXXXX* is the version date.
 
 - FW for PicoJig-WL, to be written to the Pico W.
 
@@ -121,9 +121,9 @@ The following is the procedure for writing the FW to the Pico or Pico W.
 
 - Note
 
-  - * When using PicoJig, write PicoJig_*XXXXXXXX*.uf2 to the Pico.
+  - When using PicoJig, write PicoJig_*XXXXXXXX*.uf2 to the Pico.
 
-  - * When using PicoJig-WL, write PicoJig_WL_*XXXXXXXX*.uf2 to the Pico W.
+  - When using PicoJig-WL, write PicoJig_WL_*XXXXXXXX*.uf2 to the Pico W.
 
 (1) While pressing the white button (BOOTSEL button) on the Pico (Pico W), connect the PC and Pico (Pico W) with a USB cable. Then, the RPI-RP2 drive will be recognized.
 
@@ -145,7 +145,7 @@ The FW will start when the Pico (Pico W) is powered on.
 
 - *In a Windows environment, .NET Framework 4.6.2 or later (4.x.x) must be enabled.* It is not compatible with `.NET 5` or higher.
 
-  - * Enabling `.NET Framework` is at your own risk.
+  - Enabling `.NET Framework` is at your own risk.
 
 - However, since `.NET Framework 4.8` is enabled by default in Windows 11, you basically do not need to do anything. You can check if `.NET Framework 4.8` is enabled in Windows as follows:
 
@@ -179,11 +179,11 @@ The FW will start when the Pico (Pico W) is powered on.
 
 ## Startup in USB Mode
 
-* USB mode can be used with both PicoJig and PicoJig-WL.
+\* USB mode can be used with both PicoJig and PicoJig-WL.  
 
 (1) After connecting the Pico with a USB cable, wait about 10 seconds and double-click PicoJigApp.exe in the PicoJigApp folder.
 
-- * The reason for waiting about 10 seconds is that it takes time for Windows to recognize the virtual COM of the Pico.
+- The reason for waiting about 10 seconds is that it takes time for Windows to recognize the virtual COM of the Pico.
 
 - Double-clicking PicoJigApp.exe will display the [Main Window].
 
@@ -196,17 +196,17 @@ The FW will start when the Pico (Pico W) is powered on.
 
 ## Startup in Wi-Fi Mode
 
-* Wi-Fi mode can only be used with PicoJig-WL.
+\* Wi-Fi mode can only be used with PicoJig-WL.  
 
 (1) First, follow the procedure in the [Startup in USB Mode] chapter to start in USB mode.
 
-- * To save Wi-Fi settings to the Flash memory of Pico W, you must first start in USB mode.
+- To save Wi-Fi settings to the Flash memory of Pico W, you must first start in USB mode.
 
 (2) Press the [NW Config] button inside [8] on the [Main Window] to display the [NW Config Window] and configure Wi-Fi settings.
 
-- *** Since Wi-Fi settings are saved in the Flash memory of Pico W, you do not need to do this every time.**
+- **Since Wi-Fi settings are saved in the Flash memory of Pico W, you do not need to do this every time.**
 
-- * For how to configure Wi-Fi settings, please refer to the [NW Config Window] chapter.
+- For how to configure Wi-Fi settings, please refer to the [NW Config Window] chapter.
 
 (3) After configuring Wi-Fi settings, confirm that the LED of Pico W is lit continuously instead of flashing (= connected to the Wi-Fi router).
 
@@ -222,7 +222,7 @@ The FW will start when the Pico (Pico W) is powered on.
 
 (7) Specify the IP address of the Pico W you want to connect to via TCP in [4] on the [Main Window].
 
-- * The network portion of the IP addresses of the PC and Pico W must be the same.
+- The network portion of the IP addresses of the PC and Pico W must be the same.
 
 (8) To establish a TCP connection with Pico W, confirm that the display of button [5] is "connect" before pressing button [5].
 
@@ -276,7 +276,7 @@ The following settings data are saved in the back of the Flash memory of Pico (P
 
 - I2C settings
 
-* If you are no longer using PicoJig/PicoJig-WL, it is recommended to erase the settings data saved in the back of the Flash memory using button [9] on the [Main Window].
+\* If you are no longer using PicoJig/PicoJig-WL, it is recommended to erase the settings data saved in the back of the Flash memory using button [9] on the [Main Window].  
 
 # Wi-Fi Settings
 
@@ -357,19 +357,19 @@ The GPIO Window is displayed by pressing the [GPIO] button inside [8] on the [Ma
 
 (3) Change the value (High/Low) of the output GPIO using the following procedure:
 
-- 1. Select High/Low for GP12 to GP22 using the buttons inside [3].
+1. Select High/Low for GP12 to GP22 using the buttons inside [3].
 
-- 2. Press button [4].
+2. Press button [4].
 
 (4) Change the GPIO settings using the following procedure:
 
-- 1. Select the built-in Pull-Up/Pull-Down for the input GPIO using the buttons inside [5].
+1. Select the built-in Pull-Up/Pull-Down for the input GPIO using the buttons inside [5].
 
-- 2. Select the output value upon power ON for the output GPIO using the buttons inside [6].
+2. Select the output value upon power ON for the output GPIO using the buttons inside [6].
 
-- 3. Press button [7].
+3. Press button [7].
 
-  - Pressing button [7] saves the settings data to the back of the Flash memory of Pico (Pico W).
+   - Pressing button [7] saves the settings data to the back of the Flash memory of Pico (Pico W).
 
 # ADC
 
@@ -411,25 +411,25 @@ The UART Window is displayed by pressing the [UART] button inside [8] on the [Ma
 
 (1) Change the UART settings using the following procedure:
 
-- 1. Select the baud rate at [1].
+1. Select the baud rate at [1].
 
-- 2. Select the stop bit at [2].
+2. Select the stop bit at [2].
 
-- 3. Select the parity at [3].
+3. Select the parity at [3].
 
-  - *** The data bits are fixed to 8.**
+   - **The data bits are fixed to 8.**
 
-- 4. Press button [4].
+4. Press button [4].
 
-  - Pressing button [4] saves the settings data to the back of the Flash memory of Pico (Pico W).
+   - Pressing button [4] saves the settings data to the back of the Flash memory of Pico (Pico W).
 
 (2) Perform UART transmission using the following procedure:
 
-- 1. Enter the transmission data in 2-digit hexadecimal (separated by space or comma) at [5].
+1. Enter the transmission data in 2-digit hexadecimal (separated by space or comma) at [5].
 
-  - * The transmission data size must be 1 to 256 bytes.
+   - The transmission data size must be 1 to 256 bytes.
 
-- 2. Press button [6].
+2. Press button [6].
 
 (3) The transmission/reception data log is displayed at [7].
 
@@ -455,28 +455,28 @@ The pins used for SPI are as follows:
 
 (2) Regarding CS:
 
-- 1. CS is Low while PicoJig is transmitting the SPI clock. Otherwise (when idle), CS is High.
+1. CS is Low while PicoJig is transmitting the SPI clock. Otherwise (when idle), CS is High.
 
-- 2. CS goes Low 5us before the SPI clock starts transmitting.
+2. CS goes Low 5us before the SPI clock starts transmitting.
 
-- 3. CS goes High 5us after the SPI clock transmission is completed.
+3. CS goes High 5us after the SPI clock transmission is completed.
 
-- 4. The CS pin is software-controlled using GPIO, rather than using the hardware SPI CSn function.
+4. The CS pin is software-controlled using GPIO, rather than using the hardware SPI CSn function.
 
-  - Reason:
+   - Reason:
 
-    When using the RP2040 as an SPI master, in Mode 0 and Mode 2, there is a special specification where CS toggles High/Low for each byte, as shown in the figure below. This is to avoid this unnecessary toggling behavior.
+     When using the RP2040 as an SPI master, in Mode 0 and Mode 2, there is a special specification where CS toggles High/Low for each byte, as shown in the figure below. This is to avoid this unnecessary toggling behavior.
 
-    In PicoJig, to keep CS stably Low during SPI clock transmission, outputs like 1 to 3 above are performed via GPIO control without using the SPI CSn function.
+     In PicoJig, to keep CS stably Low during SPI clock transmission, outputs like 1 to 3 above are performed via GPIO control without using the SPI CSn function.
 
      ![](./images/Pictures/cs.png)
 
-- 5. When PicoJig's communication partner (SPI slave) is also a Raspberry Pi Pico:
+5. When PicoJig's communication partner (SPI slave) is also a Raspberry Pi Pico:
 
-  - In this case, please use Mode 1 or Mode 3.
+   - In this case, please use Mode 1 or Mode 3.
 
-    - Reason:
-      When using the RP2040 as an SPI slave, Mode 0 and Mode 2 expect CS to go High for every byte. Since PicoJig keeps CS Low during communication, this expectation is not met, and communication fails. Therefore, you must use Mode 1 or Mode 3.
+     - Reason:
+       When using the RP2040 as an SPI slave, Mode 0 and Mode 2 expect CS to go High for every byte. Since PicoJig keeps CS Low during communication, this expectation is not met, and communication fails. Therefore, you must use Mode 1 or Mode 3.
 
 ## SPI Window
 
@@ -486,25 +486,25 @@ The SPI Window is displayed by pressing the [SPI] button inside [8] on the [Main
 
 (1) Change the SPI settings using the following procedure:
 
-- 1. Enter the frequency (Hz) at [1].
+1. Enter the frequency (Hz) at [1].
 
-- 2. Select the SPI mode at [2].
+2. Select the SPI mode at [2].
 
-  - *** Data bits are fixed at 8, and bit order is fixed at MSB first.**
+   - **Data bits are fixed at 8, and bit order is fixed at MSB first.**
 
-- 3. Press button [3].
+3. Press button [3].
 
-  - Pressing button [3] saves the settings data to the back of the Flash memory of Pico (Pico W).
+   - Pressing button [3] saves the settings data to the back of the Flash memory of Pico (Pico W).
 
 (2) Perform SPI transmission using the following procedure:
 
-- 1. Enter the transmission data in 2-digit hexadecimal (separated by space or comma) at [4].
+1. Enter the transmission data in 2-digit hexadecimal (separated by space or comma) at [4].
 
-  - * The transmission data size must be 1 to 256 bytes.
+   - The transmission data size must be 1 to 256 bytes.
 
-- 2. Press button [5].
+2. Press button [5].
 
-  - * Since it is an SPI transmission from a master, it receives simultaneously with the transmission.
+   - Since it is an SPI transmission from a master, it receives simultaneously with the transmission.
 
 (3) The transmission/reception data log is displayed at [6].
 
@@ -532,31 +532,31 @@ The I2C Window is displayed by pressing the [I2C] button inside [8] on the [Main
 
 (1) Change the I2C settings using the following procedure:
 
-- 1. Enter the frequency (Hz) at [1].
+1. Enter the frequency (Hz) at [1].
 
-- 2. Press button [2].
+2. Press button [2].
 
-  - Pressing button [2] saves the settings data to the back of the Flash memory of Pico (Pico W).
+   - Pressing button [2] saves the settings data to the back of the Flash memory of Pico (Pico W).
 
 (2) Perform I2C transmission using the following procedure:
 
-- 1. Enter the 7-bit slave address (hexadecimal) at [3].
+1. Enter the 7-bit slave address (hexadecimal) at [3].
 
-- 2. Enter the transmission data in 2-digit hexadecimal (separated by space or comma) at [4].
+2. Enter the transmission data in 2-digit hexadecimal (separated by space or comma) at [4].
 
-  - * The transmission data size must be 1 to 256 bytes.
+   - The transmission data size must be 1 to 256 bytes.
 
-- 3. Press button [5].
+3. Press button [5].
 
 (3) Perform I2C reception using the following procedure:
 
-- 1. Enter the 7-bit slave address (hexadecimal) at [3].
+1. Enter the 7-bit slave address (hexadecimal) at [3].
 
-- 2. Enter the reception data size at [6].
+2. Enter the reception data size at [6].
 
-  - * The reception data size must be 1 to 256 bytes.
+   - The reception data size must be 1 to 256 bytes.
 
-- 3. Press button [7].
+3. Press button [7].
 
 (4) The transmission/reception data log is displayed at [8].
 
@@ -578,16 +578,16 @@ The PWM Window is displayed by pressing the [PWM] button inside [8] on the [Main
 
 (1) Perform PWM output using the following procedure:
 
-- 1. Enter the clock divider at [1].
+1. Enter the clock divider at [1].
 
-- 2. Enter the wrap value at [2].
+2. Enter the wrap value at [2].
 
-- 3. Enter the level at [3].
+3. Enter the level at [3].
 
-  - PWM Frequency = 125MHz / ((Wrap Value + 1) * Clock Divider)
+   - `PWM Frequency = 125MHz / ((Wrap Value + 1) * Clock Divider)`
 
-  - Duty Cycle = Level / (Wrap Value + 1)
+   - `Duty Cycle = Level / (Wrap Value + 1)`
 
-- 4. Press button [4].
+4. Press button [4].
 
 (2) Pressing button [5] stops the PWM output.

@@ -68,7 +68,7 @@ Instantiate a derived class of JigCmd depending on the communication method.
       - The encryption method must be WPA2.  
   - strPassword: Password  
   
-  *Since the microcontroller will be reset when this method is executed, please refer to [Notes].
+  \* Since the microcontroller will be reset when this method is executed, please refer to [Notes].  
 
 - `string SendCmd_GetNwConfig(out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword)`
 
@@ -101,7 +101,7 @@ Instantiate a derived class of JigCmd depending on the communication method.
 ### Used Pins
 - Input GP numbers: GP3(Pin 5), GP4(Pin 6), GP5(Pin 7), GP8(Pin 11), GP9(Pin 12), GP10(Pin 14), GP11(Pin 15)
 - Output GP numbers: GP12(Pin 16), GP13(Pin 17), GP14(Pin 19), GP15(Pin 20), GP20(Pin 26), GP21(Pin 27), GP22(Pin 29)
-*Numbers in parentheses are physical pin numbers.
+\* Numbers in parentheses are physical pin numbers.  
 ### Bitmask
 The bitmask (bit data) handled by the arguments of each method represents the bit position (1 << GP number) corresponding to the target GP number.
 
@@ -118,7 +118,7 @@ The bitmask (bit data) handled by the arguments of each method represents the bi
   - pullDownBits: Internal pull-up/pull-down configuration bitmask of input GPIOs (Each bit 1: Pull-down, 0: Pull-up)
   - initialOutValBits: Output value bitmask of output GPIOs at power-on (Each bit 1: High, 0: Low)
 
-  *Since the microcontroller will be reset when this method is executed, please refer to [Notes].
+  \* Since the microcontroller will be reset when this method is executed, please refer to [Notes].  
 
 - `string SendCmd_GetGpio(out UInt32 inOutValBits)`
 
@@ -166,7 +166,7 @@ The bitmask (bit data) handled by the arguments of each method represents the bi
   - stopBits: Stop bit (1 or 2)
   - parity: Parity (0: None, 1: Even, 2: Odd)
   
-  *Since the microcontroller will be reset when this method is executed, please refer to [Notes].
+  \* Since the microcontroller will be reset when this method is executed, please refer to [Notes].  
 
 - `string SendCmd_SendUart(byte[] aReqData)`
 
@@ -203,7 +203,7 @@ The bitmask (bit data) handled by the arguments of each method represents the bi
   - phase: CPHA (0 or 1)
   - order: Bit order (Fixed to 1: MSB First)
   
-  *Since the microcontroller will be reset when this method is executed, please refer to [Notes].
+  \* Since the microcontroller will be reset when this method is executed, please refer to [Notes].  
 
 - `string SendCmd_SendSpi(byte[] aReqData, out byte[] aResData)`
 
@@ -227,7 +227,7 @@ The bitmask (bit data) handled by the arguments of each method represents the bi
   Sends a "Change I2C Communication Configuration" command request.
   - freq: Frequency (Hz)
   
-  *Since the microcontroller will be reset when this method is executed, please refer to [Notes].
+  \* Since the microcontroller will be reset when this method is executed, please refer to [Notes].  
 
 - `string SendCmd_SendI2c(byte slaveAddr, byte[] aReqData)`
 
@@ -255,8 +255,8 @@ The bitmask (bit data) handled by the arguments of each method represents the bi
   - level: Level (comparison value)
 
   The PWM frequency and duty cycle are calculated by the following formulas.
-  - PWM Frequency = 125MHz / ((Wrap value + 1) * Clock division ratio)
-  - Duty Cycle = Level / (Wrap value + 1)
+  - `PWM Frequency = 125MHz / ((Wrap value + 1) * Clock division ratio)`
+  - `Duty Cycle = Level / (Wrap value + 1)`
 
 - `string SendCmd_StopPwm()`
 

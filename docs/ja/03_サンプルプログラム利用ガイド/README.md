@@ -27,9 +27,9 @@
   - RX: GP1(2番)
 - **SPI (SPI0)**:
   - RX: GP16(21番) 
-  -  CSn: GP17(22番) 
+  - CSn: GP17(22番) 
   - SCK: GP18(24番) 
-  -  TX: GP19(25番)
+  - TX: GP19(25番)
 - **I2C (I2C1)**:
   - SDA: GP6(9番) 
   - SCL: GP7(10番)
@@ -408,8 +408,8 @@ Connected successfully via USB (COM).
   - **入力:**   
     - 各プロンプトに対して数値を入力します。
       - **計算式:**  
-        - PWM周波数 = 125MHz / ((Wrap + 1) * Clock divider)
-        - デューティー比 = Compare value(Level) / (Wrap + 1)
+        - `PWM周波数 = 125MHz / ((Wrap + 1) * Clock divider)`
+        - `デューティー比 = Compare value(Level) / (Wrap + 1)`
       - （例: PWM周波数100Hz・デューティー比50%にする場合 → Clock divider: `250`, Wrap: `4999`, Compare value: `2500` を入力）
     ```text
     --- Start PWM ---
@@ -491,4 +491,3 @@ Connected successfully via USB (COM).
 
 - **固定されているパラメータについて**  
   一部の通信設定（UARTのデータビット、SPIのデータビットおよびビットオーダーなど）は、ライブラリ仕様に基づきソースコード内で固定値として定義されています。
-
