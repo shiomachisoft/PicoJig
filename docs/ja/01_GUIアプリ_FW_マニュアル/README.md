@@ -109,9 +109,7 @@ PicoJigは、USB（仮想COM）経由でRaspberry Pi PicoのGPIO/UART/SPI/I2C/AD
 
 ## PCアプリ
 
-(1) PicoJigApp_*XXXXX*フォルダ
-
-- ※*XXXXX*はバージョンになります。
+(1) PicoJigAppフォルダ
 
 - このフォルダには、PicoJigApp（Windows PC上で実行するアプリ）のバイナリが含まれます。
 
@@ -141,7 +139,7 @@ PicoJigは、USB（仮想COM）経由でRaspberry Pi PicoのGPIO/UART/SPI/I2C/AD
 
 ## PC側のセットアップ
 
-(1) PicoJigApp_*XXXXX*フォルダをPCの適当な場所（デスクトップなど）に*フォルダごと*コピーして下さい。
+(1) PicoJigAppフォルダをPCの適当な場所（デスクトップなど）に*フォルダごと*コピーして下さい。
 
 (2) `.NET Framework`のバージョン確認
 
@@ -183,7 +181,7 @@ PicoJigは、USB（仮想COM）経由でRaspberry Pi PicoのGPIO/UART/SPI/I2C/AD
 
 ※USBモードは、PicoJigとPicoJig-WLの両方で使用できます。
 
-(1) PicoをUSBケーブルで接続してから10秒程度待った後にPicoJigApp_*XXXXX*フォルダの中のPicoJigApp.exeをダブルクリックします。
+(1) PicoをUSBケーブルで接続してから10秒程度待った後にPicoJigAppフォルダの中のPicoJigApp.exeをダブルクリックします。
 
 - ※10秒程度待つのは、WindowsがPicoの仮想COMを認識するのに時間がかかるためです。
 

@@ -109,9 +109,7 @@ PicoJig is a FW and PC app that controls GPIO/UART/SPI/I2C/ADC/PWM of Raspberry 
 
 ## PC App
 
-(1) PicoJigApp_*XXXXX* folder
-
-- * *XXXXX* is the version.
+(1) PicoJigApp folder
 
 - This folder contains the binaries of PicoJigApp (the app running on a Windows PC).
 
@@ -141,7 +139,7 @@ The FW will start when the Pico (Pico W) is powered on.
 
 ## PC Side Setup
 
-(1) Please copy the *entire* PicoJigApp_*XXXXX* folder to an appropriate location on your PC (such as the Desktop).
+(1) Please copy the *entire* PicoJigApp folder to an appropriate location on your PC (such as the Desktop).
 
 (2) Checking the `.NET Framework` version
 
@@ -183,7 +181,7 @@ The FW will start when the Pico (Pico W) is powered on.
 
 * USB mode can be used with both PicoJig and PicoJig-WL.
 
-(1) After connecting the Pico with a USB cable, wait about 10 seconds and double-click PicoJigApp.exe in the PicoJigApp_*XXXXX* folder.
+(1) After connecting the Pico with a USB cable, wait about 10 seconds and double-click PicoJigApp.exe in the PicoJigApp folder.
 
 - * The reason for waiting about 10 seconds is that it takes time for Windows to recognize the virtual COM of the Pico.
 

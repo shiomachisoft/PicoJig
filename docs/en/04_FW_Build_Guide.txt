@@ -5,7 +5,7 @@ Install the "Raspberry Pi Pico" extension in Visual Studio Code (VS Code) on Win
 
 Verified to build successfully with the following versions:
 
-VS Code: 1.114.0
+VS Code: 1.116.0
 
 "Raspberry Pi Pico" extension: 0.19.0
 

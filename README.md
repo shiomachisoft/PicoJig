@@ -39,7 +39,7 @@ This repository provides documentation in both **English** and **Japanese**. Ple
 This repository consists of the following main components:
 
 1.  **Firmware (`.uf2`)** Firmware files for Raspberry Pi Pico and Pico W. 
-2.  **PC GUI Application (`PicoJigApp.exe`)** A Windows GUI application to control microcontroller peripherals from a PC via USB or Wi-Fi. *(Requires .NET Framework 4.6.2+)*
+2.  **PC GUI Application (`PicoJigApp.exe`)** A Windows GUI application to control the microcontroller peripherals from a PC via USB or Wi-Fi. *(Requires .NET Framework 4.6.2+)*
 3.  **C# Library (`PicoJigLib.dll`)** A C# DLL to control microcontroller peripherals from a PC via USB or Wi-Fi. You can integrate it into your own custom Windows applications.
 4.  **Sample Application (`PicoJigLibSample.exe`)** A console-based sample C# program demonstrating how to use `PicoJigLib.dll` to control the microcontroller peripherals.
 
