@@ -2,7 +2,7 @@
 #include "Common.h"
 
 // [File scope variables] / [ファイルスコープ変数]
-static volatile bool f_isWillClearWdtByCore1 = false; // Whether it is CPU core 1's turn to clear the WDT timer / CPUコア1によってWDTタイマをクリアする番か否か
+static volatile bool f_isCore1TurnToClearWdt = false; // Whether it is CPU core 1's turn to clear the WDT timer / CPUコア1によってWDTタイマをクリアする番か否か
 
 // [Function prototype declarations] / [関数プロトタイプ宣言]
 static void MN_Init();
@@ -32,10 +32,10 @@ static void MN_MainLoop_Core0()
 {
 	while (1) 
 	{
-		if (!f_isWillClearWdtByCore1) { // If it is CPU core 0's turn to clear the WDT timer / CPUコア0によってWDTタイマをクリアする番の場合
+		if (!f_isCore1TurnToClearWdt) { // If it is CPU core 0's turn to clear the WDT timer / CPUコア0によってWDTタイマをクリアする番の場合
 			// Clear WDT timer / WDTタイマをクリア
-			TIMER_WdtClear();
-			f_isWillClearWdtByCore1 = true;
+			TMR_WdtClear();
+			f_isCore1TurnToClearWdt = true;
 		}	
 
 		// Extract USB/wireless receive data ⇒ Parse and execute command / USB/無線受信データ取り出し⇒コマンド解析・実行
@@ -57,10 +57,10 @@ static void MN_MainLoop_Core1()
 
 	while (1) 
 	{
-		if (f_isWillClearWdtByCore1) { // If it is CPU core 1's turn to clear the WDT timer / CPUコア1によってWDTタイマをクリアする番の場合	
+		if (f_isCore1TurnToClearWdt) { // If it is CPU core 1's turn to clear the WDT timer / CPUコア1によってWDTタイマをクリアする番の場合	
 			// Clear WDT timer / WDTタイマをクリア
-			TIMER_WdtClear();
-			f_isWillClearWdtByCore1 = false;
+			TMR_WdtClear();
+			f_isCore1TurnToClearWdt = false;
 		}	
 
 		// Control LED / LEDを制御する
@@ -83,10 +83,10 @@ static void MN_ControlLed()
 	static bool bLedOn = false;
 
 	// Get whether it's time to change the LED ON/OFF state / LEDのON/OFFを変更するタイミングか否かを取得
-	if (true == TIMER_IsLedChangeTiming()) {
+	if (true == TMR_IsLedChangeTiming()) {
 		// Determine whether to turn ON/OFF / ON/OFFのどちらにするかを決める
-		period = TIMER_GetLedPeriod();
-		if (TIMER_LED_PERIOD_ERR == period) {
+		period = TMR_GetLedPeriod();
+		if (TMR_LED_PERIOD_ERR == period) {
 			bLedOn = !bLedOn;	
 		}	
 		else {
@@ -159,10 +159,10 @@ static void MN_Init()
 	FRM_Init();
 
 	// Initialize timer / タイマーを初期化
-	TIMER_Init();
+	TMR_Init();
 
 	// Wait for stabilization wait time after boot / 起動してからの安定待ち時間を待つ
-	while (!TIMER_IsStabilizationWaitTimePassed()) {}
+	while (!TMR_IsStabilizationWaitTimePassed()) {}
 
 	if (watchdog_enable_caused_reboot()) { // If rebooted by watchdog_enable() WDT timeout instead of watchdog_reboot() / watchdog_reboot()ではなくwatchdog_enable()のWDTタイムアウトで再起動していた場合
 		// Set FW error / FWエラーを設定

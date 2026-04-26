@@ -11,7 +11,7 @@
 #define TCP_PORT 7777 // Socket port number / ソケットポート番号
 
 // [File scope variables] / [ファイルスコープ変数]
-static E_TCP_SERVER_PHASE f_ePhase = E_TCP_SERVER_PHASE_NOT_INIT; // Phase / フェーズ
+static volatile E_TCP_SERVER_PHASE f_ePhase = E_TCP_SERVER_PHASE_NOT_INIT; // Phase / フェーズ
 static volatile uint64_t f_startUs = 0;
 static TCP_SERVER_T f_state = {0}; 
 

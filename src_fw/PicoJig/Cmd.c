@@ -147,12 +147,14 @@ void CMD_ExecReqCmd(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute get FW info command / FW情報取得コマンドの実行
 static void CMD_ExecReqCmd_GetFwInfo(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
+    USHORT dataSize = 0;                // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_FW_INFO stFwInfo = {0};          // FW info / FW情報
+    PVOID pBuf = NULL;                  // Data of response frame / 応答フレームのデータ
     
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
@@ -160,22 +162,25 @@ static void CMD_ExecReqCmd_GetFwInfo(ST_FRM_REQ_FRAME *pstReqFrm)
         strcpy(stFwInfo.szFwName, FW_NAME);           // FW name / FW名 
         stFwInfo.fwVer = FW_VER;                      // FW version / FWバージョン
         pico_get_unique_board_id(&stFwInfo.board_id); // Unique board ID size = PICO_UNIQUE_BOARD_ID_SIZE_BYTES / ユニークボードID サイズ = PICO_UNIQUE_BOARD_ID_SIZE_BYTES       
+    
+        dataSize = sizeof(stFwInfo); // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)&stFwInfo;     // Data of response frame / 応答フレームのデータ     
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, sizeof(stFwInfo), &stFwInfo);
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Set GPIO config command / GPIO設定変更コマンド
 static void CMD_ExecReqCmd_SetGpioConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_FLASH_DATA stFlashData = {0};    // FLASH data / FLASHデータ
 
     // Check data size / データサイズをチェック
-    dataSize = sizeof(ST_GPIO_CONFIG);
-    if (pstReqFrm->dataSize != dataSize) {
+    expectedSize = sizeof(ST_GPIO_CONFIG);
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
 
@@ -197,60 +202,71 @@ static void CMD_ExecReqCmd_SetGpioConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 // Get GPIO config command / GPIO設定取得コマンド
 static void CMD_ExecReqCmd_GetGpioConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
+    USHORT dataSize = 0;                // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_FLASH_DATA *pstFlashData = FLASH_GetDataAtPowerOn(); // FLASH data at power-on / 電源起動時のFLASHデータ
-    
+    PVOID pBuf = NULL;                  // Data of response frame / 応答フレームのデータ
+
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
+    }
+    else { // Normal case / 正常系
+        dataSize = sizeof(pstFlashData->stGpioConfig); // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)&pstFlashData->stGpioConfig;     // Data of response frame / 応答フレームのデータ            
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, sizeof(pstFlashData->stGpioConfig), &pstFlashData->stGpioConfig);    
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);    
 }
 
 // Execute get GPIO input/output value command / GPIO入出力値取得コマンドの実行
 static void CMD_ExecReqCmd_GetGpio(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;              // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;          // Expected data size of request frame / 要求フレームのデータサイズの期待値
+    USHORT dataSize = 0;              // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS; // Error code / エラーコード
-    ULONG valBits = 0;                // All current GPIO input/output values / 全ての現在GPIO入出力値
-    
+    ULONG inOutValBits = 0;           // All current GPIO input/output values / 全ての現在GPIO入出力値
+    PVOID pBuf = NULL;                // Data of response frame / 応答フレームのデータ
+
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
         // Get all current GPIO input/output values / 全ての現在GPIO入出力値を取得
-        valBits = gpio_get_all();
-        valBits &= (GPIO_GetInDirBits() | GPIO_GetOutDirBits());
+        inOutValBits = gpio_get_all();
+        inOutValBits &= (GPIO_GetInDirBits() | GPIO_GetOutDirBits());
+
+        dataSize = sizeof(inOutValBits); // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)&inOutValBits;     // Data of response frame / 応答フレームのデータ          
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, sizeof(valBits), &valBits);  
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);  
 }
 
 // Execute set GPIO output command / GPIO出力コマンドの実行
 static void CMD_ExecReqCmd_PutGpio(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード
     ULONG maskBits = 0;                 // Bit mask / ビットマスク
-    ULONG valBits = 0;                  // GPIO output value / GPIO出力値
+    ULONG outValBits = 0;               // GPIO output value / GPIO出力値
 
     // Check data size / データサイズをチェック
-    dataSize = sizeof(valBits);
-    if (pstReqFrm->dataSize != dataSize) {
+    expectedSize = sizeof(outValBits);
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
         // Get arguments / 引数を取得
-        memcpy(&valBits, pstReqFrm->aData, sizeof(valBits));
+        memcpy(&outValBits, pstReqFrm->aData, sizeof(outValBits));
         // Get bit mask / ビットマスクを取得
         maskBits = GPIO_GetOutDirBits();
         // GPIO output / GPIO出力
-        gpio_put_masked(maskBits, valBits);
+        gpio_put_masked(maskBits, outValBits);
     }
 
     // Send response frame / 応答フレームを送信        
@@ -260,15 +276,17 @@ static void CMD_ExecReqCmd_PutGpio(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute get ADC input command / ADC入力コマンドの実行
 static void CMD_ExecReqCmd_GetAdc(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0; // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
+    USHORT dataSize = 0;                // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS; // Error code / エラーコード
     ULONG i;
     float adcVal = 0; // AD conversion value / AD変換値
     float aVolt[ADC_CH_NUM] = {0}; // Voltage/Temperature / 電圧・温度
     const float conversionFactor = 3.3f / (1 << 12); // 12-bit conversion, assume max value == ADC_VREF == 3.3 V / 12ビット変換、最大値 == ADC_VREF == 3.3Vと想定
+    PVOID pBuf = NULL;                  // Data of response frame / 応答フレームのデータ
 
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
@@ -282,23 +300,26 @@ static void CMD_ExecReqCmd_GetAdc(ST_FRM_REQ_FRAME *pstReqFrm)
         adc_select_input(4);
         adcVal = (float)adc_read() * conversionFactor;
         aVolt[ADC_CH_NUM_WITHOUT_TEMP] = 27.0f - (adcVal - 0.706f) / 0.001721f;
+
+        dataSize = sizeof(aVolt); // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)aVolt;      // Data of response frame / 応答フレームのデータ           
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, sizeof(aVolt), aVolt);
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Execute set UART config command / UART通信設定変更コマンドの実行
 static void CMD_ExecReqCmd_SetUartConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_UART_CONFIG stUartConfig = {0};  // UART config / UART通信設定
     ST_FLASH_DATA stFlashData = {0};    // FLASH data / FLASHデータ
 
     // Check data size / データサイズをチェック
-    dataSize = sizeof(stUartConfig);
-    if (pstReqFrm->dataSize != dataSize) {
+    expectedSize = sizeof(stUartConfig);
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { 
@@ -336,17 +357,23 @@ static void CMD_ExecReqCmd_SetUartConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute get UART config command / UART通信設定取得コマンドの実行
 static void CMD_ExecReqCmd_GetUartConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
+    USHORT dataSize = 0;                // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_FLASH_DATA *pstFlashData = FLASH_GetDataAtPowerOn(); // FLASH data at power-on / 電源起動時のFLASHデータ
-    
+    PVOID pBuf = NULL;                  // Data of response frame / 応答フレームのデータ
+
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
+    }
+    else { // Normal case / 正常系
+        dataSize = sizeof(pstFlashData->stUartConfig); // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)&pstFlashData->stUartConfig;     // Data of response frame / 応答フレームのデータ        
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, sizeof(pstFlashData->stUartConfig), &pstFlashData->stUartConfig);
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Execute send UART command / UART送信コマンドの実行
@@ -376,14 +403,14 @@ static void CMD_ExecReqCmd_SendUart(ST_FRM_REQ_FRAME *pstReqFrm)
 // Set SPI config command / SPI通信設定変更コマンド
 static void CMD_ExecReqCmd_SetSpiConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_SPI_CONFIG stSpiConfig = {0};    // SPI config / SPI通信設定
     ST_FLASH_DATA stFlashData = {0};    // FLASH data / FLASHデータ
 
     // Check data size / データサイズをチェック
-    dataSize = sizeof(stSpiConfig);
-    if (pstReqFrm->dataSize != dataSize) {
+    expectedSize = sizeof(stSpiConfig);
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { 
@@ -423,23 +450,31 @@ static void CMD_ExecReqCmd_SetSpiConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute get SPI config command / SPI通信設定取得コマンドの実行
 static void CMD_ExecReqCmd_GetSpiConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
+    USHORT dataSize = 0;                // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_FLASH_DATA *pstFlashData = FLASH_GetDataAtPowerOn(); // FLASH data at power-on / 電源起動時のFLASHデータ
-    
+    PVOID pBuf = NULL;                  // Data of response frame / 応答フレームのデータ
+
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
+    }
+    else { // Normal case / 正常系
+        dataSize = sizeof(pstFlashData->stSpiConfig); // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)&pstFlashData->stSpiConfig;     // Data of response frame / 応答フレームのデータ   
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, sizeof(pstFlashData->stSpiConfig), &pstFlashData->stSpiConfig);
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Execute SPI master send/receive command / SPIマスタ送受信コマンドの実行
 static void CMD_ExecReqCmd_SendRecvSpi(ST_FRM_REQ_FRAME *pstReqFrm)
 {
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
+    USHORT dataSize = 0;                // Data size of response frame / 応答フレームのデータサイズ
+    PVOID pBuf = NULL;                  // Data of response frame / 応答フレームのデータ
 
     // Check data size / データサイズをチェック
     if ((pstReqFrm->dataSize < 1) || (pstReqFrm->dataSize > SPI_DATA_MAX_SIZE)) {
@@ -451,23 +486,26 @@ static void CMD_ExecReqCmd_SendRecvSpi(ST_FRM_REQ_FRAME *pstReqFrm)
 
         // SPI master send/receive / SPIマスタ送受信
         SPI_SendRecv(pstReqFrm->aData, f_aResData, pstReqFrm->dataSize);
+
+        dataSize = pstReqFrm->dataSize; // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)f_aResData;       // Data of response frame / 応答フレームのデータ          
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, pstReqFrm->dataSize, f_aResData);
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Execute set I2C config command / I2C通信設定変更コマンドの実行
 static void CMD_ExecReqCmd_SetI2cConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_I2C_CONFIG stI2cConfig = {0};    // I2C config / I2C通信設定
     ST_FLASH_DATA stFlashData = {0};    // FLASH data / FLASHデータ
 
     // Check data size / データサイズをチェック
-    dataSize = sizeof(stI2cConfig);
-    if (pstReqFrm->dataSize != dataSize) {
+    expectedSize = sizeof(stI2cConfig);
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
@@ -493,23 +531,29 @@ static void CMD_ExecReqCmd_SetI2cConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute get I2C config command / I2C通信設定取得コマンドの実行
 static void CMD_ExecReqCmd_GetI2cConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
+    USHORT dataSize = 0;                // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_FLASH_DATA *pstFlashData = FLASH_GetDataAtPowerOn(); // FLASH data at power-on / 電源起動時のFLASHデータ
-    
+    PVOID pBuf = NULL;                  // Data of response frame / 応答フレームのデータ
+
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
+    }
+    else { // Normal case / 正常系
+        dataSize = sizeof(pstFlashData->stI2cConfig); // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)&pstFlashData->stI2cConfig;     // Data of response frame / 応答フレームのデータ           
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, sizeof(pstFlashData->stI2cConfig), &pstFlashData->stI2cConfig); 
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf); 
 }
 
 // Execute I2C master send command / I2Cマスタ送信コマンドの実行
 static void CMD_ExecReqCmd_SendI2c(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_I2C_REQ stI2cReq = {0};          // I2C send request / I2C送信要求
 
@@ -525,8 +569,8 @@ static void CMD_ExecReqCmd_SendI2c(ST_FRM_REQ_FRAME *pstReqFrm)
         }
         else {  
             // Check data size / データサイズをチェック
-            dataSize = sizeof(stI2cReq.slaveAddr) + sizeof(stI2cReq.dataSize) + stI2cReq.dataSize; // Slave address + Size of send size area + Send size / スレーブアドレス + 送信サイズ領域のサイズ + 送信サイズ
-            if (pstReqFrm->dataSize != dataSize) {
+            expectedSize = sizeof(stI2cReq.slaveAddr) + sizeof(stI2cReq.dataSize) + stI2cReq.dataSize; // Slave address + Size of send size area + Send size / スレーブアドレス + 送信サイズ領域のサイズ + 送信サイズ
+            if (pstReqFrm->dataSize != expectedSize) {
                 errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
             }         
         }
@@ -557,7 +601,7 @@ static void CMD_ExecReqCmd_SendI2c(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute I2C master receive command / I2Cマスタ受信コマンドの実行
 static void CMD_ExecReqCmd_RecvI2c(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_I2C_REQ stI2cReq = {0};          // I2C receive request / I2C受信要求
 
@@ -573,8 +617,8 @@ static void CMD_ExecReqCmd_RecvI2c(ST_FRM_REQ_FRAME *pstReqFrm)
         }
         else {
             // Check data size / データサイズをチェック
-            dataSize = sizeof(stI2cReq.slaveAddr) + sizeof(stI2cReq.dataSize);  // Slave address + Size of receive size area / スレーブアドレス + 受信サイズ領域のサイズ
-            if (pstReqFrm->dataSize != dataSize) {
+            expectedSize = sizeof(stI2cReq.slaveAddr) + sizeof(stI2cReq.dataSize);  // Slave address + Size of receive size area / スレーブアドレス + 受信サイズ領域のサイズ
+            if (pstReqFrm->dataSize != expectedSize) {
                 errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
             }
         }
@@ -604,13 +648,13 @@ static void CMD_ExecReqCmd_RecvI2c(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute start PWM command / PWM開始コマンドの実行
 static void CMD_ExecReqCmd_StartPwm(ST_FRM_REQ_FRAME *pstReqFrm)
 {  
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_PWM_CONFIG stPwmConfig = {0};    // PWM config / PWM設定
 
     // Check data size / データサイズをチェック
-    dataSize = sizeof(stPwmConfig);
-    if (pstReqFrm->dataSize != dataSize) {
+    expectedSize = sizeof(stPwmConfig);
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
@@ -627,11 +671,11 @@ static void CMD_ExecReqCmd_StartPwm(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute stop PWM command / PWM停止コマンドの実行
 static void CMD_ExecReqCmd_StopPwm(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
 
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系      
@@ -646,31 +690,36 @@ static void CMD_ExecReqCmd_StopPwm(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute get FW error command / FWエラー取得コマンドの実行
 static void CMD_ExecReqCmd_GetFwError(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
+    USHORT dataSize = 0;                // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ULONG errorBits = 0;                // FW error / FWエラー
+    PVOID pBuf = NULL;                  // Data of response frame / 応答フレームのデータ
 
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
         // Get FW error / FWエラーを取得
-        errorBits = CMN_GetFwErrorBits(true);        
+        errorBits = CMN_GetFwErrorBits();     
+        
+        dataSize = sizeof(errorBits); // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)&errorBits;     // Data of response frame / 応答フレームのデータ         
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, sizeof(errorBits), &errorBits); 
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf); 
 }
 
 // Execute clear FW error command / FWエラークリアコマンドの実行
 static void CMD_ExecReqCmd_ClearFwError(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
 
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
@@ -685,11 +734,11 @@ static void CMD_ExecReqCmd_ClearFwError(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute erase FLASH command / FLASH消去コマンドの実行
 static void CMD_ExecReqCmd_EraseFlash(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
 
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE;    // Invalid data size / データサイズが不正
     }
 
@@ -708,14 +757,14 @@ static void CMD_ExecReqCmd_EraseFlash(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute set network config command / ネットワーク設定変更コマンドの実行
 static void CMD_ExecReqCmd_SetNwConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_NW_CONFIG stNwConfig = {0};      // Network config / ネットワーク設定
     ST_FLASH_DATA stFlashData = {0};    // FLASH data / FLASHデータ
 
     // Check data size / データサイズをチェック
-    dataSize = sizeof(stNwConfig);
-    if (pstReqFrm->dataSize != dataSize) {
+    expectedSize = sizeof(stNwConfig);
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
@@ -741,28 +790,34 @@ static void CMD_ExecReqCmd_SetNwConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 // Execute get network config command / ネットワーク設定取得コマンドの実行
 static void CMD_ExecReqCmd_GetNwConfig(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
+    USHORT dataSize = 0;                // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
     ST_FLASH_DATA *pstFlashData = FLASH_GetDataAtPowerOn(); // FLASH data at power-on / 電源起動時のFLASHデータ
-    
+    PVOID pBuf = NULL;                  // Data of response frame / 応答フレームのデータ
+
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
+    }
+    else { // Normal case / 正常系
+        dataSize = sizeof(pstFlashData->stNwConfig); // Data size of response frame / 応答フレームのデータサイズ
+        pBuf = (PVOID)&pstFlashData->stNwConfig;     // Data of response frame / 応答フレームのデータ  
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, sizeof(pstFlashData->stNwConfig), &pstFlashData->stNwConfig);    
+    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);    
 }
 #endif
 
 // Execute reset MCU command / マイコンリセットコマンドの実行
 static void CMD_ExecReqCmd_ResetMcu(ST_FRM_REQ_FRAME *pstReqFrm)
 {
-    USHORT dataSize = 0;                // Expected data size / データサイズの期待値
+    USHORT expectedSize = 0;            // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT errCode = FRM_ERR_SUCCESS;   // Error code / エラーコード 
 
     // Check data size / データサイズをチェック
-    if (pstReqFrm->dataSize != dataSize) {
+    if (pstReqFrm->dataSize != expectedSize) {
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
 

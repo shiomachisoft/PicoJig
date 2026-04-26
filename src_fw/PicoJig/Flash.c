@@ -7,7 +7,7 @@
 // FLASH_SECTOR_SIZE = 0x1000
 // FLASH_PAGE_SIZE = 256
 #define FLASH_OFFSET  (PICO_FLASH_SIZE_BYTES - FLASH_SECTOR_SIZE)   // Start offset address of the last sector of FLASH / FLASHの最後のセクタの先頭オフセットアドレス
-#define FLASH_WRITE_BUF_SIZE (FLASH_PAGE_SIZE * 2)                  // FLASH data write size * Must be a multiple of FLASH_PAGE_SIZE (256 bytes) / FLASHデータ書き込みサイズ ※ FLASH_PAGE_SIZE(256byte)の倍数とする
+#define FLASH_WRITE_BUF_SIZE (FLASH_PAGE_SIZE * 2)                  // FLASH data write size * Must be a multiple of FLASH_PAGE_SIZE / FLASHデータ書き込みサイズ ※ FLASH_PAGE_SIZEの倍数とする
 
 // [File scope variables] / [ファイルスコープ変数]
 static ST_FLASH_DATA f_stFlashData = {0};            // FLASH data at power-on / 電源起動時のFLASHデータ
@@ -102,8 +102,6 @@ void FLASH_Write(ST_FLASH_DATA *pstFlashData)
     // Disable interrupts / 割り込み禁止
     //ints = save_and_disable_interrupts();
     (void)save_and_disable_interrupts();
-    // Clear WDT timer / WDTタイマをクリア
-    TIMER_WdtClear();
 
     // Erase FLASH / FLASH消去
     // Erase unit must be a multiple of FLASH_SECTOR_SIZE (4096 bytes) defined in flash.h / 消去単位はflash.hで定義されている FLASH_SECTOR_SIZE(4096byte)の倍数とする
@@ -133,8 +131,6 @@ void FLASH_Erase()
     // Disable interrupts / 割り込み禁止
     //ints = save_and_disable_interrupts();
     (void)save_and_disable_interrupts();
-    // Clear WDT timer / WDTタイマをクリア
-    TIMER_WdtClear();
 
     // Erase FLASH / FLASH消去
     // Erase unit must be a multiple of FLASH_SECTOR_SIZE (4096 bytes) defined in flash.h / 消去単位はflash.hで定義されている FLASH_SECTOR_SIZE(4096byte)の倍数とする

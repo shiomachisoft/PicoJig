@@ -1,3 +1,10 @@
+[20260425]
+
+Fix an issue with the UART error message.
+
+Minor improvements.
+
+
 [20260401]
 
 Released the C# library (PicoJigLib) and a sample program using it.

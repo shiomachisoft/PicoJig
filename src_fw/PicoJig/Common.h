@@ -61,10 +61,10 @@
 
 // FW error bits / FWエラービット
 #define CMN_ERR_BIT_WDT_RESET                       (1 << 0)  // MCU reset due to WDT timeout / WDTタイムアウトでマイコンがリセットした
-#define CMN_ERR_BIT_UART_OVERRUN_ERR                (1 << 1)  // UART: Overrun error / UART:Overrun error     
-#define CMN_ERR_BIT_UART_BREAK_ERR                  (1 << 2)  // UART: Break error / UART:Break error
-#define CMN_ERR_BIT_UART_PARITY_ERR                 (1 << 3)  // UART: Parity error / UART:Parity error
-#define CMN_ERR_BIT_UART_FRAMING_ERR                (1 << 4)  // UART: Framing error / UART:Framing error
+#define CMN_ERR_BIT_UART_FRAMING_ERR                (1 << 1)  // UART:Framing error     
+#define CMN_ERR_BIT_UART_PARITY_ERR                 (1 << 2)  // UART:Parity error
+#define CMN_ERR_BIT_UART_BREAK_ERR                  (1 << 3)  // UART:Break error
+#define CMN_ERR_BIT_UART_OVERRUN_ERR                (1 << 4)  // UART:Overrun error
 #define CMN_ERR_BIT_I2C_NO_DEVICE                   (1 << 5)  // I2C: address not acknowledged, or, no device present. (Meaning of PICO_ERROR_GENERIC) / I2C:address not acknowledged, or, no device present.(PICO_ERROR_GENERICの意味)
 #define CMN_ERR_BIT_I2C_TIMEOUT                     (1 << 6)  // I2C communication timeout / I2C通信でタイムアウト
 #define CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_USB_WL_SEND (1 << 7)  // Request data discarded due to lack of buffer space (USB/wireless send) / バッファに空きがないので要求データを破棄した(USB/無線送信)
@@ -100,7 +100,7 @@ bool CMN_Dequeue(ULONG iQue, PVOID pData, bool bSpinLock);
 void CMN_EntrySpinLock();
 void CMN_ExitSpinLock();
 void CMN_SetErrorBits(ULONG errorBits, bool bSpinLock);
-ULONG CMN_GetFwErrorBits(bool bSpinLock);
+ULONG CMN_GetFwErrorBits();
 void CMN_ClearFwErrorBits(bool bSpinLock);
 bool CMN_Checksum(PVOID pBuf, USHORT expect, ULONG size);
 USHORT CMN_CalcChecksum(PVOID pBuf, ULONG size);

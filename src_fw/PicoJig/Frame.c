@@ -44,7 +44,7 @@ static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line)
 
 	// [Receive timeout check for request frame] / [要求フレームの受信タイムアウト判定]
 	if (pstRecv->reqFrmSize > 0) { // If header of request frame has been received / 要求フレームのヘッダは受信済みの場合
-		if (TIMER_IsRecvTimeout(line) // If the following timeout occurs: If the end of the request frame is not received within TIMER_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイムアウトが発生した場合:要求フレームのヘッダを受信後、TIMER_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
+		if (TMR_IsRecvTimeout(line) // If the following timeout occurs: If the end of the request frame is not received within TMR_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイムアウトが発生した場合:要求フレームのヘッダを受信後、TMR_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
 		  || (!isConnected)) { // If not connected / 未接続の場合 
 			pstRecv->reqFrmSize = 0; // Discard frame / フレーム破棄
 		}
@@ -84,8 +84,8 @@ static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line)
 			*pstRecv->p++ = data;			 // Store header / ヘッダを格納
 			pstRecv->reqFrmSize++;			 // Received size of request frame + 1 / 要求フレームの受信済みサイズ+1
 
-			// Clear timer count for the following: If the end of the request frame is not received within TIMER_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイマカウントをクリア:要求フレームのヘッダを受信後、TIMER_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
-			TIMER_ClearRecvTimeout(line);	
+			// Clear timer count for the following: If the end of the request frame is not received within TMR_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイマカウントをクリア:要求フレームのヘッダを受信後、TMR_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
+			TMR_ClearRecvTimeout(line);	
 		}
 		else {
 			// If not request header / 要求ヘッダではない場合	
@@ -214,7 +214,7 @@ void FRM_MakeAndSendResFrm(USHORT seqNo, USHORT cmd, USHORT errCode, USHORT data
 	}
 	stResFrm.dataSize = dataSize;      	// Data size / データサイズ	
 	// Data / データ
-	if ((FRM_ERR_SUCCESS == errCode) && (pDataAry != NULL) && (dataSize > 0)) { 
+	if ((pDataAry != NULL) && (dataSize > 0)) { 
 		memcpy(stResFrm.aData, pDataAry, dataSize);
 	}
 	// Size of response frame (excluding checksum) / 応答フレームのサイズ(チェックサム除く)を計算

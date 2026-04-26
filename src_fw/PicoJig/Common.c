@@ -2,7 +2,7 @@
 #include "Common.h" 
 
 // [File scope variables] / [ファイルスコープ変数]
-static ULONG f_errorBits = 0; 	// FW error / FWエラー
+static volatile ULONG f_errorBits = 0; 	// FW error / FWエラー
 static critical_section_t f_stSpinLock = {0};	// Spin lock / スピンロック
 static ST_QUE f_astQue[CMN_QUE_KIND_NUM] = {0}; // Array of queues / キューの配列
 static UCHAR f_aQueData_usbWlSend[CMN_QUE_DATA_MAX_USB_WL_SEND] = {0};	// Data array for USB/wireless send queue / USB/無線送信キューのデータ配列 
@@ -49,11 +49,11 @@ bool CMN_Enqueue(ULONG iQue, PVOID pData, bool bSpinLock)
 				// Unreachable / ここに来ない
 				break;			
 		}
-		// Do not acquire spin lock if already acquired. If not yet acquired, acquire it. / スピンロック獲得済みであればスピンロックを獲得しない。未だ獲得していない場合、スピンロックを獲得する。
-		CMN_SetErrorBits(errorBits, !bSpinLock);
+		// Set FW error / FWエラーを設定
+		CMN_SetErrorBits(errorBits, false);
 	}
 	else {
-		if (TIMER_IsStabilizationWaitTimePassed()) { 
+		if (TMR_IsStabilizationWaitTimePassed()) { 
 			// If stabilization wait time after boot has passed / 起動してからの安定待ち時間が経過していた場合
 
 			// Queuing / キューイング
@@ -196,21 +196,9 @@ void CMN_SetErrorBits(ULONG errorBits, bool bSpinLock)
 }
 
 // Get FW error / FWエラーを取得
-ULONG CMN_GetFwErrorBits(bool bSpinLock)
+ULONG CMN_GetFwErrorBits()
 {
-	ULONG errorBits;
-
-	if (bSpinLock) {
-		CMN_EntrySpinLock();
-	}
-
-	errorBits = f_errorBits;
-
-	if (bSpinLock) {
-		CMN_ExitSpinLock();
-	}	
-
-	return errorBits;
+	return f_errorBits;;
 }
 
 // Clear FW error / FWエラーをクリア

@@ -25,15 +25,6 @@ typedef enum _E_TCP_SERVER_PHASE {
 typedef struct TCP_SERVER_T_ {
     struct tcp_pcb *server_pcb;
     struct tcp_pcb *client_pcb;
-    // Deleted / 削除
-    // =====>
-    //bool complete;
-    //uint8_t buffer_sent[TCP_BUF_SIZE];
-    //uint8_t buffer_recv[TCP_BUF_SIZE];
-    //int sent_len;
-    //int recv_len;
-    //int run_count;
-    // <======
 } TCP_SERVER_T;
 
 #endif
