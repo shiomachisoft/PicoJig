@@ -175,7 +175,7 @@ The FW will start when the Pico (Pico W) is powered on.
 
 ## Main Window
 
-![](./images/Pictures/main.png)
+![](./images/Pictures/main_window.png)
 
 ## Startup in USB Mode
 

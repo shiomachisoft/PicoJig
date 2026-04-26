@@ -175,7 +175,7 @@ PicoJigは、USB（仮想COM）経由でRaspberry Pi PicoのGPIO/UART/SPI/I2C/AD
 
 ## メイン画面
 
-![](./images/Pictures/main.png)
+![](./images/Pictures/main_window.png)
 
 ## USBモードでの起動
 
