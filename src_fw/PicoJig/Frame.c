@@ -44,7 +44,7 @@ static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line)
 
 	// [Receive timeout check for request frame] / [要求フレームの受信タイムアウト判定]
 	if (pstRecv->reqFrmSize > 0) { // If header of request frame has been received / 要求フレームのヘッダは受信済みの場合
-		if (TMR_IsRecvTimeout(line) // If the following timeout occurs: If the end of the request frame is not received within TMR_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイムアウトが発生した場合:要求フレームのヘッダを受信後、TMR_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
+		if (TMR_IsRecvTimeout(line) // If request frame receive timeout occurs / 要求フレーム受信タイムアウトが発生した場合
 		  || (!isConnected)) { // If not connected / 未接続の場合 
 			pstRecv->reqFrmSize = 0; // Discard frame / フレーム破棄
 		}
@@ -84,7 +84,7 @@ static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line)
 			*pstRecv->p++ = data;			 // Store header / ヘッダを格納
 			pstRecv->reqFrmSize++;			 // Received size of request frame + 1 / 要求フレームの受信済みサイズ+1
 
-			// Clear timer count for the following: If the end of the request frame is not received within TMR_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイマカウントをクリア:要求フレームのヘッダを受信後、TMR_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
+			// Clear timer count for request frame receive timeout / 要求フレーム受信タイムアウトのタイマカウントをクリア
 			TMR_ClearRecvTimeout(line);	
 		}
 		else {

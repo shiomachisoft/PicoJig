@@ -3,7 +3,7 @@
 
 // [define] / [定義]
 #define SPI_ID spi0    // SPI ID / SPIのID
-#define CS_HOLD_TIME 5 // CS High/Low hold time (us). Set to a time longer than 1 bit (preferably 2 bits or more). / CSのHigh/Low保持時間(us)。1bit分(できれば2bit分以上)の時間分以上に設定する。
+#define CS_HOLD_TIME 5 // CS High/Low hold time (us). Set to a time longer than 1 bit (preferably 2 bits or more). / CSのHigh/Low保持時間(us)。1bit分(できれば2bit分以上)の時間以上に設定する。
 
 // Default values for SPI config / SPI設定のデフォルト値
 #define SPI_DEFAULT_FREQ      1000000UL     // Clock frequency (Hz) / クロック周波数(Hz) 

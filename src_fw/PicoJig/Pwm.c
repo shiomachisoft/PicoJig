@@ -11,7 +11,7 @@ void PWM_Start(ST_PWM_CONFIG *pstConfig)
     pwm_set_enabled(f_sliceNum, false); 
 
     // Set PWM period / PWM周期を設定
-    pwm_set_clkdiv(f_sliceNum, pstConfig->clkdiv); // Clock divider / クロック分周器
+    pwm_set_clkdiv(f_sliceNum, pstConfig->clkdiv); // Clock divider / クロック分周
     pwm_set_wrap(f_sliceNum, pstConfig->wrap);     // Wrap value / ラップ値
     
     // Set PWM compare value / PWMの比較値を設定

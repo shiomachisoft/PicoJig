@@ -11,7 +11,7 @@
 static repeating_timer_t f_stTimer = {0};                   // Parameter passed when registering periodic timer callback / 定期タイマコールバック登録時に渡すパラメータ
 static volatile ULONG f_timerCnt_wdt = 0;                            // Timer count for WDT timer / WDTタイマのタイマカウント
 static volatile ULONG f_timerCnt_stabilizationWait = 0;              // Timer count for stabilization wait time after boot / 起動してからの安定待ち時間のタイマカウント
-static volatile ULONG f_aTimerCnt_recvTimeout[E_FRM_LINE_NUM] = {0}; // Timer count for the following: If the end of the request frame is not received within TMR_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイマカウント:要求フレームのヘッダを受信後、TMR_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
+static volatile ULONG f_aTimerCnt_recvTimeout[E_FRM_LINE_NUM] = {0}; // Timer count for request frame receive timeout / 要求フレーム受信タイムアウト用のタイマカウント
 static volatile ULONG f_timerCnt_led = 0;                            // Timer count for LED blink / LED点滅のタイマカウント
 static volatile ULONG f_ledPeriod = TMR_LED_PERIOD_NORMAL;           // LED blink period / LED点滅周期
 
@@ -37,7 +37,7 @@ static bool TMR_PeriodicCallback(repeating_timer_t *pstTimer)
         f_timerCnt_stabilizationWait++;
     }
 
-    // Timer count for the following: If the end of the request frame is not received within TMR_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイマカウント:要求フレームのヘッダを受信後、TMR_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
+    // Timer count for request frame receive timeout / 要求フレーム受信タイムアウトのタイマカウント
     for (i = 0; i < E_FRM_LINE_NUM; i++) {
         if (f_aTimerCnt_recvTimeout[i] < TMR_RECV_TIMEOUT) {
             f_aTimerCnt_recvTimeout[i]++;
@@ -74,13 +74,13 @@ bool TMR_IsStabilizationWaitTimePassed()
     return (f_timerCnt_stabilizationWait >=TMR_STABILIZATION_WAIT_TIME) ? true : false;
 }
 
-// Clear timer count for the following: If the end of the request frame is not received within TMR_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイマカウントをクリア:要求フレームのヘッダを受信後、TMR_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
+// Clear timer count for request frame receive timeout / 要求フレーム受信タイムアウトのタイマカウントをクリア
 void TMR_ClearRecvTimeout(ULONG line)
 {
     f_aTimerCnt_recvTimeout[line] = 0;
 }
 
-// Get whether it's timeout for the following: If the end of the request frame is not received within TMR_RECV_TIMEOUT [ms] after receiving the header, a timeout occurs / 右記のタイムアウトか否かを取得:要求フレームのヘッダを受信後、TMR_RECV_TIMEOUT[ms]経過しても要求フレームの末尾まで受信してない場合はタイムアウトとする
+// Get whether request frame receive timeout occurred / 要求フレーム受信タイムアウトか否かを取得
 bool TMR_IsRecvTimeout(ULONG line)
 {
     return (f_aTimerCnt_recvTimeout[line] >= TMR_RECV_TIMEOUT) ? true : false;
@@ -105,7 +105,7 @@ ULONG TMR_GetLedPeriod()
     return f_ledPeriod;
 }
 
-// Initialize timer / タイマーを初期化
+// Initialize timer / タイマを初期化
 void TMR_Init()
 {
     // Register periodic timer callback / 定期タイマコールバックの登録

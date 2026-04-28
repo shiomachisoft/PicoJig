@@ -137,7 +137,7 @@ bool CMN_Dequeue(ULONG iQue, PVOID pData, bool bSpinLock)
 }
 
 // Acquire spin lock / スピンロックを獲得
-// Spin lock is used to disable interrupts while ensuring mutual exclusion between CPUs. / スピンロックはCPU間排他をしつつ割り込みを禁止にする場合に使用する。
+// Spin lock is used to disable interrupts while ensuring mutual exclusion between CPUs. / スピンロックはCPU間排他を行いつつ割り込みを禁止にする場合に使用する。
 // Use mutex if only mutual exclusion between CPUs is needed. / CPU間排他だけならミューテックスを使用すること。
 // Definitions of critical_section (spin lock) and mutex in Pico are as follows. / Picoのcritical_section(spin lock)とmutexの定義は下記。
 // https://www.raspberrypi.com/documentation/pico-sdk/high_level.html#pico_sync
@@ -187,7 +187,7 @@ void CMN_SetErrorBits(ULONG errorBits, bool bSpinLock)
 			CMN_EntrySpinLock();
 		}
 
-		f_errorBits |= errorBits; // OR operation is not atomic, so exclude it / OR演算はアトミックではないので排他する
+		f_errorBits |= errorBits; // OR operation is not atomic, so mutual exclusion is required / OR演算はアトミックではないので排他制御する
 
 		if (bSpinLock) {
 			CMN_ExitSpinLock();
@@ -221,14 +221,18 @@ void CMN_ClearFwErrorBits(bool bSpinLock)
 void CMN_WdtEnableReboot()
 {
     watchdog_enable(1, true);
-    while (1) {}		
+    while (1) {
+        tight_loop_contents();
+    }		
 }
 
 // Reboot immediately by WDT timeout without using watchdog_enable() / watchdog_enable()を使用しないで即WDTタイムアウトで再起動する
 void CMN_WdtRebootWithoutEnable()
 {
     watchdog_reboot(0, 0, 1);
-    while(1) {};   	
+    while (1) {
+        tight_loop_contents();
+    }   	
 }
 
 // Initialize common library / 共通ライブラリを初期化

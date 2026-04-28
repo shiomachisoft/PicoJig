@@ -227,7 +227,7 @@ static void CMD_ExecReqCmd_GetGpio(ST_FRM_REQ_FRAME *pstReqFrm)
     USHORT expectedSize = 0;          // Expected data size of request frame / 要求フレームのデータサイズの期待値
     USHORT dataSize = 0;              // Data size of response frame / 応答フレームのデータサイズ
     USHORT errCode = FRM_ERR_SUCCESS; // Error code / エラーコード
-    ULONG inOutValBits = 0;           // All current GPIO input/output values / 全ての現在GPIO入出力値
+    ULONG inOutValBits = 0;           // All current GPIO input/output values / 現在の全てのGPIO入出力値
     PVOID pBuf = NULL;                // Data of response frame / 応答フレームのデータ
 
     // Check data size / データサイズをチェック
@@ -235,7 +235,7 @@ static void CMD_ExecReqCmd_GetGpio(ST_FRM_REQ_FRAME *pstReqFrm)
         errCode = FRM_ERR_DATA_SIZE; // Invalid data size / データサイズが不正
     }
     else { // Normal case / 正常系
-        // Get all current GPIO input/output values / 全ての現在GPIO入出力値を取得
+        // Get all current GPIO input/output values / 現在の全てのGPIO入出力値を取得
         inOutValBits = gpio_get_all();
         inOutValBits &= (GPIO_GetInDirBits() | GPIO_GetOutDirBits());
 

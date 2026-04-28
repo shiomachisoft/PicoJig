@@ -6,7 +6,7 @@
 // PICO_FLASH_SIZE_BYTES = 0x200000
 // FLASH_SECTOR_SIZE = 0x1000
 // FLASH_PAGE_SIZE = 256
-#define FLASH_OFFSET  (PICO_FLASH_SIZE_BYTES - FLASH_SECTOR_SIZE)   // Start offset address of the last sector of FLASH / FLASHの最後のセクタの先頭オフセットアドレス
+#define FLASH_OFFSET  (PICO_FLASH_SIZE_BYTES - FLASH_SECTOR_SIZE)   // Start offset address of the last sector of the last block of FLASH / FLASHの最終ブロックの最終セクタの先頭オフセットアドレス
 #define FLASH_WRITE_BUF_SIZE (FLASH_PAGE_SIZE * 2)                  // FLASH data write size * Must be a multiple of FLASH_PAGE_SIZE / FLASHデータ書き込みサイズ ※ FLASH_PAGE_SIZEの倍数とする
 
 // [File scope variables] / [ファイルスコープ変数]
@@ -19,44 +19,43 @@ ST_FLASH_DATA* FLASH_GetDataAtPowerOn()
     return &f_stFlashData;
 }
 
-// Read config data from sector 15 of the last block (Block 31) of FLASH / FLASHの最終ブロック(Block31)のセクタ15から設定データを読み込む
+// Read config data from the last sector of the last block of FLASH / FLASHの最終ブロックの最終セクタから設定データを読み込む
 void FLASH_Read(ST_FLASH_DATA *pstFlashData)
 {
-    const PVOID pSrc = (const PVOID) (XIP_BASE + FLASH_OFFSET); // Start address of sector 15 of the last block (Block 31). XIP_BASE is the start of the program. / 最終ブロック(Block31)のセクタ15の先頭アドレス。XIP_BASEはプログラムの先頭。
+    const PVOID pSrc = (const PVOID) (XIP_BASE + FLASH_OFFSET); // Start address of the last sector of the last block. XIP_BASE is the base address of FLASH memory. / 最終ブロックの最終セクタの先頭アドレス。XIP_BASEはFLASHメモリのベースアドレス。
     char szFwName[FW_NAME_BUF_SIZE];
     USHORT checksum;       // Checksum / チェックサム
     bool bDefault = false; // Whether to adopt default config data / デフォルトの設定データを採用するか否か
     
-    // Read start address of sector 15 of the last block (Block 31) / 最終ブロック(Block31)のセクタ15の先頭アドレスを読み込む
+    // Read data from the start address of the last sector of the last block / 最終ブロックの最終セクタの先頭アドレスからデータを読み込む
     memcpy(pstFlashData, pSrc, sizeof(ST_FLASH_DATA));
 
     // [If FW name, FW version, and checksum are OK, this read data will be returned to the upper layer] / [FW名, FWバージョン, チェックサムが問題ない場合、この読み込んだデータが上位に返されることになる]
-
-    // Check FW name / FW名のチェック
-    memset(szFwName, 0, sizeof(szFwName));
-    strcpy(szFwName, FW_NAME);
-    // Compare without using strcmp since pstFlashData->szFwName is not guaranteed to end with a NULL character / pstFlashData->szFwNameがNULL文字で終わっているとは限らないのでstrcmpは使用しないで比較する
-    if (memcmp(pstFlashData->szFwName, szFwName, FW_NAME_BUF_SIZE) != 0) {
-        bDefault = true;  // Adopt default config data / デフォルトの設定データを採用
-    }
-
-    // Check FW version / FWバージョンのチェック
-    if (!bDefault) {
-        if (pstFlashData->fwVer != FW_VER) {
-            // If FW version is invalid / FWバージョンが不正値の場合
+    do {
+        // Check FW name / FW名のチェック
+        memset(szFwName, 0, sizeof(szFwName));
+        strcpy(szFwName, FW_NAME);
+        // Compare without using strcmp since pstFlashData->szFwName is not guaranteed to end with a NULL character / pstFlashData->szFwNameがNULL文字で終わっているとは限らないのでstrcmpは使用しないで比較する
+        if (memcmp(pstFlashData->szFwName, szFwName, FW_NAME_BUF_SIZE) != 0) {
             bDefault = true;  // Adopt default config data / デフォルトの設定データを採用
+            break;
         }
-    }
 
-    // Checksum validation / チェックサム検査
-    if (!bDefault) {
-        // Calculate checksum / チェックサムを計算する
-        checksum = CMN_CalcChecksum(pstFlashData, sizeof(ST_FLASH_DATA) - sizeof(checksum));        
+        // Check FW version / FWバージョンのチェック
+        if (pstFlashData->fwVer != FW_VER) {
+            // If FW version is different / FWバージョンが異なる場合
+            bDefault = true;  // Adopt default config data / デフォルトの設定データを採用
+            break;
+        }
+        
+        // Checksum validation / チェックサム検査
+        checksum = CMN_CalcChecksum(pstFlashData, sizeof(ST_FLASH_DATA) - sizeof(pstFlashData->checksum));        
         if (pstFlashData->checksum != checksum) {
             // If checksum validation fails / チェックサム検査がNGの場合
             bDefault = true; // Adopt default config data / デフォルトの設定データを採用
+            break;
         }
-    }
+    } while(0);
 
     if (bDefault) {
         // Adopt default config data / デフォルトの設定データを採用
@@ -78,7 +77,7 @@ void FLASH_Read(ST_FLASH_DATA *pstFlashData)
     }
 }
 
-// Write config data to sector 15 of the last block (Block 31) of FLASH / FLASHの最終ブロック(Block31)のセクタ15に設定データを書き込む
+// Write config data to the last sector of the last block of FLASH / FLASHの最終ブロックの最終セクタに設定データを書き込む
 void FLASH_Write(ST_FLASH_DATA *pstFlashData)
 {
     USHORT checksum;   // Checksum / チェックサム
@@ -92,7 +91,7 @@ void FLASH_Write(ST_FLASH_DATA *pstFlashData)
     // Set FW version / FWバージョンを設定
     pstFlashData->fwVer = FW_VER;
     // Calculate and set checksum / チェックサムを計算して設定
-    checksum = CMN_CalcChecksum(pstFlashData, sizeof(ST_FLASH_DATA) - sizeof(checksum));
+    checksum = CMN_CalcChecksum(pstFlashData, sizeof(ST_FLASH_DATA) - sizeof(pstFlashData->checksum));
     pstFlashData->checksum = checksum;
     // Copy argument data to FLASH data write buffer / FLASHデータ書き込みバッファに引数データをコピー
     memcpy(f_writeBuf, pstFlashData, sizeof(ST_FLASH_DATA));
@@ -107,7 +106,7 @@ void FLASH_Write(ST_FLASH_DATA *pstFlashData)
     // Erase unit must be a multiple of FLASH_SECTOR_SIZE (4096 bytes) defined in flash.h / 消去単位はflash.hで定義されている FLASH_SECTOR_SIZE(4096byte)の倍数とする
     flash_range_erase(FLASH_OFFSET, FLASH_SECTOR_SIZE);
     // Write to FLASH / FLASH書き込み
-    // Write unit must be a multiple of FLASH_PAGE_SIZE (256 bytes) defined in flash.h / 書込単位はflash.hで定義されている FLASH_PAGE_SIZE(256byte)の倍数とする
+    // Write unit must be a multiple of FLASH_PAGE_SIZE defined in flash.h / 書き込み単位はflash.hで定義されている FLASH_PAGE_SIZEの倍数とする
     flash_range_program(FLASH_OFFSET, f_writeBuf, sizeof(f_writeBuf)); // The size of f_writeBuf is a multiple of FLASH_PAGE_SIZE / f_writeBufのサイズはFLASH_PAGE_SIZEの倍数になっている
     
     // Reboot immediately by WDT timeout without using watchdog_enable() / watchdog_enable()を使用しないで即WDTタイムアウトで再起動する
@@ -121,7 +120,7 @@ void FLASH_Write(ST_FLASH_DATA *pstFlashData)
 #endif
 }
 
-// Erase data in sector 15 of the last block (Block 31) of FLASH / FLASHの最終ブロック(Block31)のセクタ15のデータを消去
+// Erase data in the last sector of the last block of FLASH / FLASHの最終ブロックの最終セクタのデータを消去
 void FLASH_Erase()
 {
     //ULONG ints;

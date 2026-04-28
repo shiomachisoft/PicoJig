@@ -158,11 +158,13 @@ static void MN_Init()
 	// Initialize USB/wireless common processing / USB/無線共通処理を初期化
 	FRM_Init();
 
-	// Initialize timer / タイマーを初期化
+	// Initialize timer / タイマを初期化
 	TMR_Init();
 
 	// Wait for stabilization wait time after boot / 起動してからの安定待ち時間を待つ
-	while (!TMR_IsStabilizationWaitTimePassed()) {}
+	while (!TMR_IsStabilizationWaitTimePassed()) {
+		tight_loop_contents();
+	}
 
 	if (watchdog_enable_caused_reboot()) { // If rebooted by watchdog_enable() WDT timeout instead of watchdog_reboot() / watchdog_reboot()ではなくwatchdog_enable()のWDTタイムアウトで再起動していた場合
 		// Set FW error / FWエラーを設定

@@ -65,7 +65,7 @@
 #define CMN_ERR_BIT_UART_PARITY_ERR                 (1 << 2)  // UART:Parity error
 #define CMN_ERR_BIT_UART_BREAK_ERR                  (1 << 3)  // UART:Break error
 #define CMN_ERR_BIT_UART_OVERRUN_ERR                (1 << 4)  // UART:Overrun error
-#define CMN_ERR_BIT_I2C_NO_DEVICE                   (1 << 5)  // I2C: address not acknowledged, or, no device present. (Meaning of PICO_ERROR_GENERIC) / I2C:address not acknowledged, or, no device present.(PICO_ERROR_GENERICの意味)
+#define CMN_ERR_BIT_I2C_NO_DEVICE                   (1 << 5)  // I2C: address not acknowledged, or, no device present. (Meaning of PICO_ERROR_GENERIC) / I2C: アドレスが応答されない、またはデバイスが存在しない (PICO_ERROR_GENERICの意味)
 #define CMN_ERR_BIT_I2C_TIMEOUT                     (1 << 6)  // I2C communication timeout / I2C通信でタイムアウト
 #define CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_USB_WL_SEND (1 << 7)  // Request data discarded due to lack of buffer space (USB/wireless send) / バッファに空きがないので要求データを破棄した(USB/無線送信)
 #define CMN_ERR_BIT_BUF_SIZE_NOT_ENOUGH_UART_SEND   (1 << 8)  // Request data discarded due to lack of buffer space (UART send) / バッファに空きがないので要求データを破棄した(UART送信)

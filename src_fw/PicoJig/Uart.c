@@ -136,7 +136,7 @@ static void UART_SendFirstByte()
     if (!f_isSentFirstByte) {  // If 1st byte has not been sent yet / 1byte目をまだ送信していない場合
         if (uart_is_writable(UART_ID)) { // If UART send is possible / UART送信可能な場合
             // Extract UART send data ⇒ UART send / UART送信データ取り出し⇒UART送信
-            (void)UART_Send(); // true: Synchronize with dequeue of UART send interrupt / true:UART送信割り込みのデキューと同期する
+            (void)UART_Send();
         }
     }
 }

@@ -3,7 +3,7 @@
 #include "Common.h"
 
 // [define] / [定義]
-#define TCP_SERVER_CONNECT_AP_INTERVAL 1000000ULL // us 1 second If connection to AP fails, wait this time before returning the phase to E_TCP_SERVER_PHASE_INITED / 100ms APとの接続に失敗した場合、この時間を待ってからフェーズをE_TCP_SERVER_PHASE_INITEDに戻す
+#define TCP_SERVER_CONNECT_AP_INTERVAL 1000000ULL // us 1 second If connection to AP fails, wait this time before returning the phase to E_TCP_SERVER_PHASE_INITED / 1秒 APとの接続に失敗した場合、この時間を待ってからフェーズをE_TCP_SERVER_PHASE_INITEDに戻す
 #define TCP_SERVER_CONNECT_AP_TIMEOUT 10000000ULL // us 10 seconds If connection to AP cannot be established after this time has passed, return the phase to E_TCP_SERVER_PHASE_INITED / 10秒 この時間が経過してもAPと接続できない場合、フェーズをE_TCP_SERVER_PHASE_INITEDに戻す
 
 // [define] / [定義]

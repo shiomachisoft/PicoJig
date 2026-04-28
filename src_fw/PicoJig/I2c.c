@@ -36,17 +36,17 @@ void I2C_Main()
             bLast = true;    
         }
 
-        // 1st byte: bNoStop=true,  bFirst=true,  bLast=false / 1byte目: bNoStop=true,  bFirst=true,  bLast=false
-        // Middle:    bNoStop=true,  bFirst=false, bLast=false / 中間:    bNoStop=true,  bFirst=false, bLast=false
-        // Last byte:bNoStop=false, bFirst=false, bLast=true / 最終byte:bNoStop=false, bFirst=false, bLast=true
+        // 1st byte:  bNoStop=true,  bFirst=true,  bLast=false / 1byte目:  bNoStop=true,  bFirst=true,  bLast=false
+        // Middle:    bNoStop=true,  bFirst=false, bLast=false / 中間:      bNoStop=true,  bFirst=false, bLast=false
+        // Last byte: bNoStop=false, bFirst=false, bLast=true  / 最終byte: bNoStop=false, bFirst=false, bLast=true
 
         if (CMD_RECV_I2C == f_stI2cReq.cmd) { // I2C receive / I2C受信
-            // Communicate 1 byte at a time to make it look asynchronous / 非同期っぽくするために1byteずつ通信
+            // Communicate 1 byte at a time to mimic asynchronous processing / 擬似的な非同期処理とするために1byteずつ通信
             // 1 byte I2C receive / 1byteのI2C受信
             size = i2c_read_byte_separately(I2C_ID, f_stI2cReq.slaveAddr, &f_stI2cReq.aData[f_dataSize], bNoStop, bFirst, bLast);
         }
         else { // I2C send / I2C送信
-            // Communicate 1 byte at a time to make it look asynchronous / 非同期っぽくするために1byteずつ通信
+            // Communicate 1 byte at a time to mimic asynchronous processing / 擬似的な非同期処理とするために1byteずつ通信
             // 1 byte I2C send / 1byteのI2C送信
             size = i2c_write_byte_separately(I2C_ID, f_stI2cReq.slaveAddr, &f_stI2cReq.aData[f_dataSize], bNoStop, bFirst, bLast);
         }
@@ -178,7 +178,7 @@ static int i2c_write_byte_separately(i2c_inst_t *i2c, uint8_t addr, const uint8_
             abort_reason = i2c->hw->tx_abrt_source;
             if (abort_reason) {
                 // Note clearing the abort flag also clears the reason, and / 中断フラグをクリアすると理由もクリアされることに注意してください。
-                // this instance of flag is clear-on-read! Note also the / また、このフラグのインスタンスは読み取り時にクリアされます！
+                // this instance of flag is clear-on-read! Note also the / また、このフラグは読み取り時にクリアされる仕様であることにも注意してください。
                 // IC_CLR_TX_ABRT register always reads as 0. / IC_CLR_TX_ABRTレジスタは常に0として読み取られることにも注意してください。
                 i2c->hw->clr_tx_abrt;
                 abort = true;
@@ -246,7 +246,7 @@ static int i2c_write_byte_separately(i2c_inst_t *i2c, uint8_t addr, const uint8_
         rval = byte_ctr;
     }
 
-    // nostop means we are now at the end of a *message* but not the end of a *transfer* / nostopは、現在*メッセージ*の終わりであるが、*転送*の終わりではないことを意味します
+    // nostop means we are now at the end of a *message* but not the end of a *transfer* / nostopは、現在が「メッセージの終わり」であり、「転送の終わり」ではないことを意味します
     i2c->restart_on_next = nostop;
     return rval;
 }

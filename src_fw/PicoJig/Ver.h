@@ -6,7 +6,7 @@
 
 // [define] / [定義]
 // FW version / FWバージョン
-#define FW_VER 0x26042500
+#define FW_VER 0x26042800
 
 // FW name / FW名
 #ifdef MY_BOARD_PICO_W
