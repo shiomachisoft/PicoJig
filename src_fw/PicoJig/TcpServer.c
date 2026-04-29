@@ -7,8 +7,8 @@
 #define TCP_SERVER_CONNECT_AP_TIMEOUT 10000000ULL // us 10 seconds If connection to AP cannot be established after this time has passed, return the phase to E_TCP_SERVER_PHASE_INITED / 10秒 この時間が経過してもAPと接続できない場合、フェーズをE_TCP_SERVER_PHASE_INITEDに戻す
 
 // [define] / [定義]
-#define WIFI_HOSTNAME FW_NAME // Hostname / ホスト名
-#define TCP_PORT 7777 // Socket port number / ソケットポート番号
+#define TCP_SERVER_WIFI_HOSTNAME FW_NAME // Hostname / ホスト名
+#define TCP_SERVER_PORT 7777 // Socket port number / ソケットポート番号
 
 // [File scope variables] / [ファイルスコープ変数]
 static volatile E_TCP_SERVER_PHASE f_ePhase = E_TCP_SERVER_PHASE_NOT_INIT; // Phase / フェーズ
@@ -119,7 +119,7 @@ static int tcp_server_init()
 
         // Enable station mode (Wi-Fi client) / ステーションモード(Wi-Fiクライアント)を有効化
         cyw43_arch_enable_sta_mode();
-        netif_set_hostname(netif_default, WIFI_HOSTNAME);
+        netif_set_hostname(netif_default, TCP_SERVER_WIFI_HOSTNAME);
 
         // Get FLASH data at power-on and set network config such as IP address / 電源起動時のFLASHデータを取得し、IPアドレス等のネットワーク設定を行う
         pstFlashData = FLASH_GetDataAtPowerOn(); 
@@ -222,7 +222,7 @@ static bool tcp_server_open(void *arg) {
     }
     
     // Bind to specified port number / 指定のポート番号にバインド
-    err_t err = tcp_bind(pcb, NULL, TCP_PORT);
+    err_t err = tcp_bind(pcb, NULL, TCP_SERVER_PORT);
     if (err) {
         tcp_close(pcb);
         goto end;

@@ -21,7 +21,7 @@ bool CMN_Enqueue(ULONG iQue, PVOID pData, bool bSpinLock)
 	ST_I2C_REQ* pstI2cReq;
 
 	if (bSpinLock) {
-		CMN_EntrySpinLock(); // Acquire spin lock / スピンロックを獲得
+		CMN_EnterSpinLock(); // Acquire spin lock / スピンロックを獲得
 	}
 
 	if ((pstQue->head == (pstQue->tail + 1) % pstQue->max)) { 
@@ -98,7 +98,7 @@ bool CMN_Dequeue(ULONG iQue, PVOID pData, bool bSpinLock)
 	ST_I2C_REQ* pstI2cReq;	
 	
 	if (bSpinLock) {
-		CMN_EntrySpinLock(); // Acquire spin lock / スピンロックを獲得
+		CMN_EnterSpinLock(); // Acquire spin lock / スピンロックを獲得
 	}
 
 	if (pstQue->head == pstQue->tail) {
@@ -145,7 +145,7 @@ bool CMN_Dequeue(ULONG iQue, PVOID pData, bool bSpinLock)
 // Critical Section API for short-lived mutual exclusion safe for IRQ and multi-core. / IRQとマルチコアに安全な短時間の相互排他のためのCritical Section API。
 // mutex: / mutex:
 // Mutex API for non IRQ mutual exclusion between cores. / コア間の非IRQ相互排他のためのMutex API。
-void CMN_EntrySpinLock()
+void CMN_EnterSpinLock()
 {
 	critical_section_enter_blocking(&f_stSpinLock);
 }
@@ -184,7 +184,7 @@ void CMN_SetErrorBits(ULONG errorBits, bool bSpinLock)
 {
 	if (errorBits != 0) {
 		if (bSpinLock) {
-			CMN_EntrySpinLock();
+			CMN_EnterSpinLock();
 		}
 
 		f_errorBits |= errorBits; // OR operation is not atomic, so mutual exclusion is required / OR演算はアトミックではないので排他制御する
@@ -198,14 +198,14 @@ void CMN_SetErrorBits(ULONG errorBits, bool bSpinLock)
 // Get FW error / FWエラーを取得
 ULONG CMN_GetFwErrorBits()
 {
-	return f_errorBits;;
+	return f_errorBits;
 }
 
 // Clear FW error / FWエラーをクリア
 void CMN_ClearFwErrorBits(bool bSpinLock)
 {
 	if (bSpinLock) {
-		CMN_EntrySpinLock();
+		CMN_EnterSpinLock();
 	}
 
 	f_errorBits = 0;

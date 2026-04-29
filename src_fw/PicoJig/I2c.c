@@ -3,7 +3,7 @@
 
 // [define] / [定義]
 #define I2C_ID i2c1 // I2C ID / I2CのID
-#define TMR_I2C_TIMEOUT 100000ULL // 100ms I2C send/receive timeout (us) / 100ms I2C送信/受信タイムアウト(us)
+#define I2C_TIMEOUT 100000ULL // 100ms I2C send/receive timeout (us) / 100ms I2C送信/受信タイムアウト(us)
 
 // Default values / デフォルト値
 #define I2C_DEFAULT_FREQ 100000 // Clock frequency 100kHz / クロック周波数 100kHz
@@ -166,7 +166,7 @@ static int i2c_write_byte_separately(i2c_inst_t *i2c, uint8_t addr, const uint8_
 #endif
             currentUs = time_us_64();    
             diffUs = currentUs - startUs;
-            if (diffUs >= TMR_I2C_TIMEOUT) {
+            if (diffUs >= I2C_TIMEOUT) {
                 timeout = true;
                 abort |= timeout;
             }
@@ -201,7 +201,7 @@ static int i2c_write_byte_separately(i2c_inst_t *i2c, uint8_t addr, const uint8_
 #endif
                     currentUs = time_us_64();    
                     diffUs = currentUs - startUs;
-                    if (diffUs >= TMR_I2C_TIMEOUT) {
+                    if (diffUs >= I2C_TIMEOUT) {
                         timeout = true;
                         abort |= timeout;
                     }
@@ -308,7 +308,7 @@ static int i2c_read_byte_separately(i2c_inst_t *i2c, uint8_t addr, uint8_t *dst,
 #endif
             currentUs = time_us_64();    
             diffUs = currentUs - startUs;
-            if (diffUs >= TMR_I2C_TIMEOUT) {
+            if (diffUs >= I2C_TIMEOUT) {
                 timeout = true;
                 abort |= timeout;
             }

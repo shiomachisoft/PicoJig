@@ -3,7 +3,7 @@
 
 // [define] / [定義]
 #define SPI_ID spi0    // SPI ID / SPIのID
-#define CS_HOLD_TIME 5 // CS High/Low hold time (us). Set to a time longer than 1 bit (preferably 2 bits or more). / CSのHigh/Low保持時間(us)。1bit分(できれば2bit分以上)の時間以上に設定する。
+#define SPI_CS_HOLD_TIME 5 // CS High/Low hold time (us). Set to a time longer than 1 bit (preferably 2 bits or more). / CSのHigh/Low保持時間(us)。1bit分(できれば2bit分以上)の時間以上に設定する。
 
 // Default values for SPI config / SPI設定のデフォルト値
 #define SPI_DEFAULT_FREQ      1000000UL     // Clock frequency (Hz) / クロック周波数(Hz) 
@@ -53,7 +53,7 @@ void SPI_SendRecv(PVOID pSendBuf, PVOID pRecvBuf, ULONG sendRecvSize)
 #ifdef SPI_USE_GPIO_AS_CS
     // Hold CS = Low for a certain time / CS = Lowを一定時間保持
     gpio_put(SPI_CSN, false);
-    busy_wait_us(CS_HOLD_TIME);
+    busy_wait_us(SPI_CS_HOLD_TIME);
 #endif
 
     // Start DMA / DMAを開始
@@ -64,10 +64,10 @@ void SPI_SendRecv(PVOID pSendBuf, PVOID pRecvBuf, ULONG sendRecvSize)
 
 #ifdef SPI_USE_GPIO_AS_CS
     // Hold CS = Low for a certain time / CS = Lowを一定時間保持
-    busy_wait_us(CS_HOLD_TIME);
+    busy_wait_us(SPI_CS_HOLD_TIME);
     gpio_put(SPI_CSN, true);
     // Hold CS = High for a certain time / CS = Highを一定時間保持
-    busy_wait_us(CS_HOLD_TIME); 
+    busy_wait_us(SPI_CS_HOLD_TIME); 
 #endif
 }
 
