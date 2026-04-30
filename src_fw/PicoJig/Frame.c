@@ -9,7 +9,7 @@ static ST_FRM_RECV_DATA_INFO f_astRecvDataInf[E_FRM_LINE_NUM] = {0}; // USB/wire
 static UCHAR f_aSendData[FRM_SEND_BUF_SIZE] = {0}; // USB/wireless send buffer / USB/無線送信バッファ
 
 // [Function prototype declarations] / [関数プロトタイプ宣言] 
-static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line);
+static ST_FRM_REQ_FRAME* FRM_RecvReqFrm(ULONG line);
 static void FRM_ReqToSend(PVOID pBuf, ULONG size);
 static bool FRM_IsConnected(ULONG line);
 
@@ -22,7 +22,7 @@ void FRM_RecvMain()
 	for (iLine = 0; iLine < E_FRM_LINE_NUM; iLine++)
 	{
 		// Create request frame from USB/wireless receive data / USB/無線受信データから要求フレームを作成する
-		pstReqFrm = FRM_RecvReqFrame(iLine);
+		pstReqFrm = FRM_RecvReqFrm(iLine);
 		if (pstReqFrm != NULL) { // If extraction of request frame is complete / 要求フレームの抽出が完了した場合
 			// Parse and execute command / コマンドを解析・実行
 			CMD_ExecReqCmd(pstReqFrm);
@@ -31,7 +31,7 @@ void FRM_RecvMain()
 }
 
 // Create request frame from USB/wireless receive data / USB/無線受信データから要求フレームを作成する
-static ST_FRM_REQ_FRAME* FRM_RecvReqFrame(ULONG line)
+static ST_FRM_REQ_FRAME* FRM_RecvReqFrm(ULONG line)
 {
 	int ret;
 	UCHAR data = 0; 					// Receive data (1 byte) / 受信データ(1byte)
@@ -197,7 +197,7 @@ void FRM_SendMain()
 }
 
 // USB/wireless send of response frame / 応答フレームのUSB/無線送信
-void FRM_MakeAndSendResFrm(USHORT seqNo, USHORT cmd, USHORT errCode, USHORT dataSize, PVOID pBuf)
+void FRM_SendResFrm(USHORT seqNo, USHORT cmd, USHORT errCode, USHORT dataSize, PVOID pBuf)
 {
 	ULONG frmSize;        			// Size of response frame (excluding checksum) / 応答フレームのサイズ(チェックサム除く)
 	UCHAR* pDataAry = (UCHAR*)pBuf;	// Data part of response frame / 応答フレームのデータ部
@@ -228,7 +228,7 @@ void FRM_MakeAndSendResFrm(USHORT seqNo, USHORT cmd, USHORT errCode, USHORT data
 }
 
 // USB/wireless send of notification frame / 通知フレームのUSB/無線送信
-void FRM_MakeAndSendNotifyFrm(UCHAR header, USHORT dataSize, PVOID pBuf)
+void FRM_SendNotifyFrm(UCHAR header, USHORT dataSize, PVOID pBuf)
 {
 	UCHAR* pDataAry = (UCHAR*)pBuf; // Data part of notification frame / 通知フレームのデータ部
 	ULONG frmSize; 					// Size of notification frame (excluding checksum) / 通知フレームのサイズ(チェックサム部除く)

@@ -57,7 +57,7 @@ void I2C_Main()
             f_stI2cReq.dataSize--; // Remaining bytes for I2C send/receive - 1 / I2C送信/受信の残りbyte数-1
             if (!f_stI2cReq.dataSize) { // If sent/received to the end / 最後まで送信/受信した場合
                 // Send success response frame / 成功の応答フレームを送信       
-                FRM_MakeAndSendResFrm(f_stI2cReq.seqNo, f_stI2cReq.cmd, FRM_ERR_SUCCESS, f_dataSize, f_stI2cReq.aData);
+                FRM_SendResFrm(f_stI2cReq.seqNo, f_stI2cReq.cmd, FRM_ERR_SUCCESS, f_dataSize, f_stI2cReq.aData);
                 f_dataSize = 0; // Sent/received size = 0 / 送信/受信済みサイズ=0
             } 
         }
@@ -72,7 +72,7 @@ void I2C_Main()
             // Set FW error / FWエラーを設定
             CMN_SetErrorBits(errorBits, true);
             // Send failure response frame / 失敗の応答フレームを送信        
-            FRM_MakeAndSendResFrm(f_stI2cReq.seqNo, f_stI2cReq.cmd, FRM_ERR_I2C_NO_DEVICE, 0, NULL); 
+            FRM_SendResFrm(f_stI2cReq.seqNo, f_stI2cReq.cmd, FRM_ERR_I2C_NO_DEVICE, 0, NULL); 
             f_dataSize = 0;          // Sent/received size = 0 / 送信/受信済みサイズ=0
             f_stI2cReq.dataSize = 0; // Remaining bytes for I2C send/receive = 0 / I2C送信/受信の残りbyte数=0                 
         }

@@ -168,7 +168,7 @@ static void CMD_ExecReqCmd_GetFwInfo(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Set GPIO config command / GPIO設定変更コマンド
@@ -185,7 +185,7 @@ static void CMD_ExecReqCmd_SetGpioConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame (Success/Failure) / 成功・失敗に関わらず応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
 
     if (errCode == FRM_ERR_SUCCESS) { // Normal case / 正常系    
         // Wait for CPU core 1 to send response frame / CPUコア1が応答フレームを送信するのを待つ
@@ -218,7 +218,7 @@ static void CMD_ExecReqCmd_GetGpioConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);    
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);    
 }
 
 // Execute get GPIO input/output value command / GPIO入出力値取得コマンドの実行
@@ -244,7 +244,7 @@ static void CMD_ExecReqCmd_GetGpio(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);  
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);  
 }
 
 // Execute set GPIO output command / GPIO出力コマンドの実行
@@ -270,7 +270,7 @@ static void CMD_ExecReqCmd_PutGpio(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
 }
 
 // Execute get ADC input command / ADC入力コマンドの実行
@@ -306,7 +306,7 @@ static void CMD_ExecReqCmd_GetAdc(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Execute set UART config command / UART通信設定変更コマンドの実行
@@ -340,7 +340,7 @@ static void CMD_ExecReqCmd_SetUartConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame (Success/Failure) / 成功・失敗に関わらず応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
 
     if (errCode == FRM_ERR_SUCCESS) { // Normal case / 正常系     
         // Wait for CPU core 1 to send response frame / CPUコア1が応答フレームを送信するのを待つ
@@ -373,7 +373,7 @@ static void CMD_ExecReqCmd_GetUartConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Execute send UART command / UART送信コマンドの実行
@@ -397,7 +397,7 @@ static void CMD_ExecReqCmd_SendUart(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
 }
 
 // Set SPI config command / SPI通信設定変更コマンド
@@ -433,7 +433,7 @@ static void CMD_ExecReqCmd_SetSpiConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame (Success/Failure) / 成功・失敗に関わらず応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
 
     if (errCode == FRM_ERR_SUCCESS) { // Normal case / 正常系      
         // Wait for CPU core 1 to send response frame / CPUコア1が応答フレームを送信するのを待つ
@@ -466,7 +466,7 @@ static void CMD_ExecReqCmd_GetSpiConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Execute SPI master send/receive command / SPIマスタ送受信コマンドの実行
@@ -492,7 +492,7 @@ static void CMD_ExecReqCmd_SendRecvSpi(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);
 }
 
 // Execute set I2C config command / I2C通信設定変更コマンドの実行
@@ -514,7 +514,7 @@ static void CMD_ExecReqCmd_SetI2cConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame (Success/Failure) / 成功・失敗に関わらず応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
 
     if (errCode == FRM_ERR_SUCCESS) { // Normal case / 正常系
         // Wait for CPU core 1 to send response frame / CPUコア1が応答フレームを送信するのを待つ
@@ -547,7 +547,7 @@ static void CMD_ExecReqCmd_GetI2cConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf); 
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf); 
 }
 
 // Execute I2C master send command / I2Cマスタ送信コマンドの実行
@@ -594,7 +594,7 @@ static void CMD_ExecReqCmd_SendI2c(ST_FRM_REQ_FRAME *pstReqFrm)
 
     if (errCode != FRM_ERR_SUCCESS) { // If error / エラー有りの場合 
         // Send response frame / 応答フレームを送信        
-        FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+        FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
     }    
 }
 
@@ -641,7 +641,7 @@ static void CMD_ExecReqCmd_RecvI2c(ST_FRM_REQ_FRAME *pstReqFrm)
 
     if (errCode != FRM_ERR_SUCCESS) { // If error / エラー有りの場合 
         // Send response frame / 応答フレームを送信        
-        FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+        FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
     }
 }
 
@@ -665,7 +665,7 @@ static void CMD_ExecReqCmd_StartPwm(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);    
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);    
 }
 
 // Execute stop PWM command / PWM停止コマンドの実行
@@ -684,7 +684,7 @@ static void CMD_ExecReqCmd_StopPwm(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);           
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);           
 }
 
 // Execute get FW error command / FWエラー取得コマンドの実行
@@ -709,7 +709,7 @@ static void CMD_ExecReqCmd_GetFwError(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf); 
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf); 
 }
 
 // Execute clear FW error command / FWエラークリアコマンドの実行
@@ -728,7 +728,7 @@ static void CMD_ExecReqCmd_ClearFwError(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL); 
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL); 
 }
 
 // Execute erase FLASH command / FLASH消去コマンドの実行
@@ -743,7 +743,7 @@ static void CMD_ExecReqCmd_EraseFlash(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame (Success/Failure) / 成功・失敗に関わらず応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL); 
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL); 
 
     if (errCode == FRM_ERR_SUCCESS) { // Normal case / 正常系
         // Wait for CPU core 1 to send response frame / CPUコア1が応答フレームを送信するのを待つ
@@ -773,7 +773,7 @@ static void CMD_ExecReqCmd_SetNwConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame (Success/Failure) / 成功・失敗に関わらず応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
 
     if (errCode == FRM_ERR_SUCCESS) { // Normal case / 正常系
         // Wait for CPU core 1 to send response frame / CPUコア1が応答フレームを送信するのを待つ
@@ -806,7 +806,7 @@ static void CMD_ExecReqCmd_GetNwConfig(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame / 応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);    
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, dataSize, pBuf);    
 }
 #endif
 
@@ -822,7 +822,7 @@ static void CMD_ExecReqCmd_ResetMcu(ST_FRM_REQ_FRAME *pstReqFrm)
     }
 
     // Send response frame (Success/Failure) / 成功・失敗に関わらず応答フレームを送信        
-    FRM_MakeAndSendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
+    FRM_SendResFrm(pstReqFrm->seqNo, pstReqFrm->cmd, errCode, 0, NULL);
 
     if (errCode == FRM_ERR_SUCCESS) { // Normal case / 正常系
         // Wait for CPU core 1 to send response frame / CPUコア1が応答フレームを送信するのを待つ

@@ -126,7 +126,7 @@ static void UART_Recv()
     size = i;
     if (size > 0) {
         // Send UART receive notification frame / UART受信通知フレームの送信
-        FRM_MakeAndSendNotifyFrm(FRM_HEADER_NOTIFY_UART_RECV, size, f_aNotifyData);
+        FRM_SendNotifyFrm(FRM_HEADER_NOTIFY_UART_RECV, size, f_aNotifyData);
     }
 }
 
