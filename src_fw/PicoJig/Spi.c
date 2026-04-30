@@ -72,7 +72,7 @@ void SPI_SendRecv(PVOID pSendBuf, PVOID pRecvBuf, ULONG sendRecvSize)
 }
 
 // Store default values in ST_SPI_CONFIG structure / ST_SPI_CONFIG構造体にデフォルト値を格納
-void SPI_SetDefault(ST_SPI_CONFIG *pstConfig)
+void SPI_GetDefaultConfig(ST_SPI_CONFIG *pstConfig)
 {
     pstConfig->frequency = SPI_DEFAULT_FREQ;
     pstConfig->dataBits  = SPI_DEFAULT_DATA_BITS;

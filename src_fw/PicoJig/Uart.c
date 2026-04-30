@@ -159,7 +159,7 @@ static inline bool UART_Send()
 }
 
 // Store default values in ST_UART_CONFIG structure / ST_UART_CONFIG構造体にデフォルト値を格納
-void UART_SetDefault(ST_UART_CONFIG *pstConfig)
+void UART_GetDefaultConfig(ST_UART_CONFIG *pstConfig)
 {
     pstConfig->baudrate = UART_DEFAULT_BAUD_RATE; // Baud rate / ボーレート
     pstConfig->dataBits = UART_DEFAULT_DATA_BITS; // Data bit length / データビット長

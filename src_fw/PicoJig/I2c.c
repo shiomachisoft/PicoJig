@@ -88,7 +88,7 @@ void I2C_Main()
 }
 
 // Store default values in ST_I2C_CONFIG structure / ST_I2C_CONFIG構造体にデフォルト値を格納
-void I2C_SetDefault(ST_I2C_CONFIG *pstConfig)
+void I2C_GetDefaultConfig(ST_I2C_CONFIG *pstConfig)
 {
     pstConfig->frequency = I2C_DEFAULT_FREQ;
 }

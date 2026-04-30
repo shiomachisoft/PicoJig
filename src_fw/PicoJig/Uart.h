@@ -22,7 +22,7 @@ typedef struct _ST_UART_CONFIG {
 
 // [Function prototype declarations] / [関数プロトタイプ宣言]
 void UART_Main();
-void UART_SetDefault(ST_UART_CONFIG *pstConfig);
+void UART_GetDefaultConfig(ST_UART_CONFIG *pstConfig);
 void UART_Init(ST_UART_CONFIG *pstConfig);
 
 #endif

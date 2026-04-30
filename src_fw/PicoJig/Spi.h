@@ -22,7 +22,7 @@ typedef struct _ST_SPI_CONFIG {
 #pragma pack()
 
 void SPI_SendRecv(PVOID pSendBuf, PVOID pRecvBuf, ULONG sendRecvSize);
-void SPI_SetDefault(ST_SPI_CONFIG *pstConfig);
+void SPI_GetDefaultConfig(ST_SPI_CONFIG *pstConfig);
 void SPI_Init(ST_SPI_CONFIG *pstConfig);
 
 #endif

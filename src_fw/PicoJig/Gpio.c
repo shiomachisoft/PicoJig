@@ -37,7 +37,7 @@ ULONG GPIO_GetOutDirBits()
 }
 
 // Store default values in ST_GPIO_CONFIG structure / ST_GPIO_CONFIG構造体にデフォルト値を格納
-void GPIO_SetDefault(ST_GPIO_CONFIG *pstConfig)
+void GPIO_GetDefaultConfig(ST_GPIO_CONFIG *pstConfig)
 {
     pstConfig->pullDownBits   = 0; // All GPIO inputs are pull-up / 全てのGPIO入力はプルアップ
     pstConfig->initialOutValBits = 0; // Output value of all GPIO outputs at power-on is OFF / 全てのGPIO出力の電源ON時出力値=OFF 

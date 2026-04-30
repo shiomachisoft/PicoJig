@@ -95,7 +95,7 @@ bool tcp_server_is_link_up()
 }
 
 // Store default values in ST_NW_CONFIG structure / ST_NW_CONFIG構造体にデフォルト値を格納
-void tcp_server_set_default(ST_NW_CONFIG *pstConfig)
+void tcp_server_get_default_config(ST_NW_CONFIG *pstConfig)
 {
     strcpy(pstConfig->szCountryCode, TCP_SERVER_DEFAULT_COUNTRY_CODE);
     pstConfig->aIpAddr[0] = (TCP_SERVER_DEFAULT_IP_ADDR >> 24) & 0xFF;

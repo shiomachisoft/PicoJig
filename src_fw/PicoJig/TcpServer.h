@@ -49,7 +49,7 @@ bool tcp_server_is_inited();
 bool tcp_server_is_connected();
 bool tcp_server_is_link_up();
 err_t tcp_server_send_data(uint8_t* buffer_sent, uint32_t size);
-void tcp_server_set_default(ST_NW_CONFIG *pstConfig);
+void tcp_server_get_default_config(ST_NW_CONFIG *pstConfig);
 #endif
 
 #endif

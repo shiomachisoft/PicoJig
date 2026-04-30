@@ -69,7 +69,7 @@ typedef struct _ST_GPIO_CONFIG {
 // [Function prototype declarations] / [関数プロトタイプ宣言]
 ULONG GPIO_GetInDirBits();
 ULONG GPIO_GetOutDirBits();
-void GPIO_SetDefault(ST_GPIO_CONFIG *pstConfig);
+void GPIO_GetDefaultConfig(ST_GPIO_CONFIG *pstConfig);
 void GPIO_Init(ST_GPIO_CONFIG *pstConfig);
 
 #endif

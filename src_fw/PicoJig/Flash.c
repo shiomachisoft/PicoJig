@@ -65,12 +65,12 @@ void FLASH_Read(ST_FLASH_DATA *pstFlashData)
         strcpy(pstFlashData->szFwName, FW_NAME);
         pstFlashData->fwVer = FW_VER;
 
-        GPIO_SetDefault(&pstFlashData->stGpioConfig);
-        UART_SetDefault(&pstFlashData->stUartConfig);
-        SPI_SetDefault(&pstFlashData->stSpiConfig);
-        I2C_SetDefault(&pstFlashData->stI2cConfig);
+        GPIO_GetDefaultConfig(&pstFlashData->stGpioConfig);
+        UART_GetDefaultConfig(&pstFlashData->stUartConfig);
+        SPI_GetDefaultConfig(&pstFlashData->stSpiConfig);
+        I2C_GetDefaultConfig(&pstFlashData->stI2cConfig);
 #ifdef MY_BOARD_PICO_W        
-        tcp_server_set_default(&pstFlashData->stNwConfig);
+        tcp_server_get_default_config(&pstFlashData->stNwConfig);
 #else
         memset(&pstFlashData->stNwConfig, 0, sizeof(pstFlashData->stNwConfig));
 #endif

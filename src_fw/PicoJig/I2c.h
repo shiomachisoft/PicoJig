@@ -26,7 +26,7 @@ typedef struct _ST_I2C_REQ {
 #pragma pack()
 
 void I2C_Main();
-void I2C_SetDefault(ST_I2C_CONFIG *pstConfig);
+void I2C_GetDefaultConfig(ST_I2C_CONFIG *pstConfig);
 void I2C_Init(ST_I2C_CONFIG *pstConfig);
 
 #endif
