@@ -187,12 +187,12 @@ The FW will start when the Pico (Pico W) is powered on.
 
 - Double-clicking PicoJigApp.exe will display the [Main Window].
 
-(2) Turn ON [1] on the [Main Window] to select USB mode.
+(2) Turn ON [1] to select USB mode.
 
-(3) Select the COM port number of the Pico at [2] on the [Main Window], then press button [5].
+(3) Select the COM port number of the Pico at [2], then press button [5].
 
-- If the display at [6] on the [Main Window] changes to "connected", the connection with Pico in USB mode is established.
-- When the display at [6] on the [Main Window] changes to "connected", buttons [8], [9], and [11] on the [Main Window] are enabled. FW information is also displayed at [7].
+- If the display at [6] changes to "connected", the connection with Pico in USB mode is established.
+- When the display at [6] changes to "connected", buttons [8], [9], and [11] are enabled. FW information is also displayed at [7].
 
 ## Startup in Wi-Fi Mode
 
@@ -202,7 +202,7 @@ The FW will start when the Pico (Pico W) is powered on.
 
 - To save Wi-Fi settings to the Flash memory of Pico W, you must first start in USB mode.
 
-(2) Press the [NW Config] button inside [8] on the [Main Window] to display the [NW Config Window] and configure Wi-Fi settings.
+(2) Press the [NW Config] button inside [8] to display the [NW Config Window] and configure Wi-Fi settings.
 
 - **Since Wi-Fi settings are saved in the Flash memory of Pico W, you do not need to do this every time.**
 
@@ -212,15 +212,15 @@ The FW will start when the Pico (Pico W) is powered on.
 
 (4) Close the virtual COM of Pico W with the following operation:
 
-- Confirm that the display of button [5] on the [Main Window] is "disconnect", and press button [5].
+- Confirm that the display of button [5] is "disconnect", and press button [5].
 
-- Then, confirm that the display at [6] on the [Main Window] becomes "disconnected".
+- Then, confirm that the display at [6] becomes "disconnected".
 
 (5) Confirm that the LED of Pico W is lit continuously instead of flashing (= connected to the Wi-Fi router).
 
-(6) Turn ON [3] on the [Main Window] to select Wi-Fi mode.
+(6) Turn ON [3] to select Wi-Fi mode.
 
-(7) Specify the IP address of the Pico W you want to connect to via TCP in [4] on the [Main Window].
+(7) Specify the IP address of the Pico W you want to connect to via TCP in [4].
 
 - The network portion of the IP addresses of the PC and Pico W must be the same.
 
@@ -228,13 +228,13 @@ The FW will start when the Pico (Pico W) is powered on.
 
 - If the display at [6] becomes "connected", the TCP connection with Pico W is successful (= connected in Wi-Fi mode).
 
-- When the display at [6] on the [Main Window] changes to "connected", buttons [8], [9], and [11] on the [Main Window] are enabled. FW information is also displayed at [7].
+- When the display at [6] changes to "connected", buttons [8], [9], and [11] are enabled. FW information is also displayed at [7].
 
 ## Checking FW Errors
 
-Errors recognized by the FW are displayed at [10] on the [Main Window].
+Errors recognized by the FW are displayed at [10].
 
-To clear the errors recognized by the FW, press button [11] on the [Main Window].
+To clear the errors recognized by the FW, press button [11].
 
 Examples of errors recognized by the FW include the following:
 
@@ -276,7 +276,7 @@ The following settings data are saved in the back of the Flash memory of Pico (P
 
 - I2C settings
 
-\* If you are no longer using PicoJig/PicoJig-WL, it is recommended to erase the settings data saved in the back of the Flash memory using button [9] on the [Main Window].  
+\* If you are no longer using PicoJig/PicoJig-WL, it is recommended to erase the settings data saved in the back of the Flash memory using button [9].  
 
 # Wi-Fi Settings
 
