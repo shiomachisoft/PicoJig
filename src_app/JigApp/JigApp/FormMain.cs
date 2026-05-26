@@ -127,7 +127,7 @@ namespace JigApp
 
             // Get list of COM port names / COMポート名一覧を取得
             astrPortName = SerialPort.GetPortNames();
-            Array.Sort(astrPortName); // ポート名の昇順にソート
+            Array.Sort(astrPortName); // Sort port names in ascending order / ポート名の昇順にソート
 
             // Add list of port names to combo box / ポート名一覧をコンボボックスに追加
             for (int i = 0; i < astrPortName.Length; i++)
@@ -202,7 +202,7 @@ namespace JigApp
 
                         if (this.IsDisposed) return;
 
-                        _lstFwErrMsg = lstTemp; // 代入はUIスレッドで行う
+                        _lstFwErrMsg = lstTemp; // Assignment is done on the UI thread / 代入はUIスレッドで行う
 
                         if (strErrMsg == null)
                         {
@@ -260,7 +260,7 @@ namespace JigApp
         {
             try
             {
-                if (radioButton_UsbMode.Checked)// USB mode / USBモードの場合
+                if (radioButton_UsbMode.Checked) // USB mode / USBモードの場合
                 {
                     Program.PrpJigCmd = Program.PrpJigSerial;
                 }
@@ -579,7 +579,7 @@ namespace JigApp
         }
 
         /// <summary>
-        /// When the "I2C" button is pressed / 「I2C」ボタンを押したとき
+        /// When the "I2C" button is pressed / 「I2C」ボタンを押した時
         /// </summary>
         private void button_I2c_Click(object sender, EventArgs e)
         {

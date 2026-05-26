@@ -209,7 +209,7 @@ namespace JigApp
             this.radioButton_UsbMode.Name = "radioButton_UsbMode";
             this.radioButton_UsbMode.Size = new System.Drawing.Size(123, 25);
             this.radioButton_UsbMode.TabIndex = 40;
-            this.radioButton_UsbMode.TabStop = true;
+            this.radioButton_UsbMode.TabStop = false;
             this.radioButton_UsbMode.Text = "USB Mode";
             this.radioButton_UsbMode.UseVisualStyleBackColor = true;
             this.radioButton_UsbMode.CheckedChanged += new System.EventHandler(this.radioButton_UsbMode_CheckedChanged);
@@ -221,6 +221,7 @@ namespace JigApp
             this.radioButton_Wifi.Name = "radioButton_Wifi";
             this.radioButton_Wifi.Size = new System.Drawing.Size(288, 25);
             this.radioButton_Wifi.TabIndex = 41;
+            this.radioButton_Wifi.TabStop = false;
             this.radioButton_Wifi.Text = "Wi-Fi Mode (PicoW Only)";
             this.radioButton_Wifi.UseVisualStyleBackColor = true;
             // 

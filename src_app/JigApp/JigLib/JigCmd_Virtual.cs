@@ -6,16 +6,16 @@ namespace JigLib
     public abstract partial class JigCmd
     {
         /// <summary>
-        /// 回線に接続する
+        /// Connect to the line / 回線に接続する
         /// </summary>
         /// <remarks>
-        /// 継承先でオーバーライドすること
+        /// Override in the inheriting class / 継承先でオーバーライドすること
         /// </remarks>
         /// <param name="objParam">
-        /// 接続に必要なパラメータ(ポート名やIPアドレスなど)
+        /// Parameters required for connection (port name, IP address, etc.) / 接続に必要なパラメータ(ポート名やIPアドレスなど)
         /// </param>
         /// <returns>
-        /// エラーメッセージ。成功時はnullを返す。
+        /// Error message. Returns null on success. / エラーメッセージ。成功時はnullを返す。
         /// </returns>
         public virtual string Connect(Object objParam)
         {
@@ -23,23 +23,23 @@ namespace JigLib
         }
 
         /// <summary>
-        /// 回線を切断する
+        /// Disconnect the line / 回線を切断する
         /// </summary>
         /// <remarks>
-        /// 継承先でオーバーライドすること
+        /// Override in the inheriting class / 継承先でオーバーライドすること
         /// </remarks>
         public virtual void Disconnect()
         {
         }
 
         /// <summary>
-        /// 回線に接続済みか否かを取得
+        /// Get whether it is already connected to the line / 回線に接続済みか否かを取得
         /// </summary>
         /// <remarks>
-        /// 継承先でオーバーライドすること
+        /// Override in the inheriting class / 継承先でオーバーライドすること
         /// </remarks> 
         /// <returns>
-        /// true:接続済み, false:未接続
+        /// true: Connected, false: Not connected / true:接続済み, false:未接続
         /// </returns>
         public virtual bool IsConnected()
         {
@@ -47,10 +47,10 @@ namespace JigLib
         }
 
         /// <summary>
-        /// 送信
+        /// Send / 送信
         /// </summary>
         /// <remarks>
-        /// 継承先でオーバーライドすること
+        /// Override in the inheriting class / 継承先でオーバーライドすること
         /// </remarks>
         protected virtual string Send(byte[] buf)
         {
@@ -58,10 +58,10 @@ namespace JigLib
         }
 
         /// <summary>
-        /// 受信データが存在するか否かを取得
+        /// Get whether receive data exists / 受信データが存在するか否かを取得
         /// </summary>
         /// <remarks>
-        /// 継承先でオーバーライドすること
+        /// Override in the inheriting class / 継承先でオーバーライドすること
         /// </remarks>
         protected virtual bool IsExistRecvData()
         {
@@ -69,10 +69,10 @@ namespace JigLib
         }
 
         /// <summary>
-        /// 受信データを1byte取り出し
+        /// Extract 1 byte of receive data / 受信データを1byte取り出し
         /// </summary>
         /// <remarks>
-        /// 継承先でオーバーライドすること
+        /// Override in the inheriting class / 継承先でオーバーライドすること
         /// </remarks>
         protected virtual bool ReadByte(out byte data)
         {

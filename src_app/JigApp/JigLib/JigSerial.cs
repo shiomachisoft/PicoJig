@@ -79,7 +79,7 @@ namespace JigLib
 
                     // Open port / ポートをオープン
                     _port.Open();
-                    _port.DtrEnable = true; // DTR = ON 
+                    _port.DtrEnable = true; // DTR = ON / DTRをONにする
                 }
                 catch (Exception ex)
                 {
@@ -122,7 +122,7 @@ namespace JigLib
                 // Wait for receive task to finish / 受信タスクの終了を待つ
                 waitTask.Wait(RECV_TASK_END_TIMEOUT);
 
-                lock (_lockPort) // リソース解放
+                lock (_lockPort) // Release resources / リソース解放
                 {
                     _tskRecv = null;
                     if (_port.IsOpen) // If port is already open / ポートがオープン済みの場合
@@ -241,7 +241,7 @@ namespace JigLib
                         {
                             readData = _port.ReadByte();
                         }
-                        catch { };
+                        catch { }
                     }
                 }
                 catch { }

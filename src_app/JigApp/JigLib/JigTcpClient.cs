@@ -262,7 +262,7 @@ namespace JigLib
                     {
                         readData = _stream.ReadByte();
                     }
-                    catch { };
+                    catch { }
                 }
                 if (readData >= 0)
                 {

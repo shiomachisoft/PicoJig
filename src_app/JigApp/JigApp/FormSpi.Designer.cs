@@ -96,10 +96,10 @@ namespace JigApp
             // 
             // button_SetConfig
             // 
-            this.button_SetConfig.Location = new System.Drawing.Point(587, 176);
+            this.button_SetConfig.Location = new System.Drawing.Point(606, 176);
             this.button_SetConfig.Margin = new System.Windows.Forms.Padding(6, 5, 6, 5);
             this.button_SetConfig.Name = "button_SetConfig";
-            this.button_SetConfig.Size = new System.Drawing.Size(226, 50);
+            this.button_SetConfig.Size = new System.Drawing.Size(207, 50);
             this.button_SetConfig.TabIndex = 46;
             this.button_SetConfig.TabStop = false;
             this.button_SetConfig.Text = "Change Settings";

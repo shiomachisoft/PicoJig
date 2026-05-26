@@ -803,7 +803,7 @@ namespace JigApp
             this.groupBox4.Controls.Add(this.button_SetConfig);
             this.groupBox4.Location = new System.Drawing.Point(611, 18);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(621, 409);
+            this.groupBox4.Size = new System.Drawing.Size(621, 400);
             this.groupBox4.TabIndex = 110;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Settings";

@@ -237,7 +237,7 @@ namespace JigLib
             /// </summary>
             BUF_NOT_ENOUGH,
             /// <summary>
-            /// I2C:address not acknowledged, or, no device present.
+            /// I2C:address not acknowledged, or, no device present. / I2C:アドレスが応答しないか、デバイスが存在しません。
             /// </summary>
             FRM_ERR_I2C_NO_DEVICE
         }

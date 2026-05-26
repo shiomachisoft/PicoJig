@@ -541,7 +541,7 @@ namespace JigLib
         /// 7-bit slave address / 7bitスレーブアドレス
         /// </param>
         /// <param name="aReqData">
-        /// Transmission data (1 to 256 bytes) / 送信データ(1～256byte)　
+        /// Transmission data (1 to 256 bytes) / 送信データ(1～256byte)
         /// </param>
         /// <returns>
         /// Error message. Returns null on success. / エラーメッセージ。成功時はnullを返す。
@@ -698,7 +698,7 @@ namespace JigLib
                 {
                     lstErrMsg.Clear();
                 }
-                for (int i = 0; i < 32/*FW_ERR_MSG_ARY.Length*/; i++)
+                for (int i = 0; i < 32; i++) // Check all 32 bits / 32ビットすべてをチェック
                 {
                     if ((errBits & (1U << i)) != 0)
                     {
@@ -789,9 +789,9 @@ namespace JigLib
             strCountryCode.CopyTo(0, szCountryCode, 0, strCountryCode.Length);
 
             // IP address / IPアドレス
-            strErrMsg = ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr);
-            if (strErrMsg != null)
+            if (!ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr, out strErrMsg))
             {
+                strErrMsg = "Invalid parameter. (IP address): " + strErrMsg;
                 goto End;
             }
 
@@ -915,9 +915,9 @@ namespace JigLib
             strCountryCode.CopyTo(0, szCountryCode, 0, strCountryCode.Length);
 
             // IP address / IPアドレス
-            strErrMsg = ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr);
-            if (strErrMsg != null)
+            if (!ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr, out strErrMsg))
             {
+                strErrMsg = "Invalid parameter. (IP address): " + strErrMsg;
                 goto End;
             }
 
@@ -938,9 +938,9 @@ namespace JigLib
             strPassword.CopyTo(0, szPassword, 0, strPassword.Length);
 
             // Server IP address / サーバーのIPアドレス
-            strErrMsg = ConvertIpAddrStringToByteArray(strServerIpAddr, out abyServerIpAddr);
-            if (strErrMsg != null)
+            if (!ConvertIpAddrStringToByteArray(strServerIpAddr, out abyServerIpAddr, out strErrMsg))
             {
+                strErrMsg = "Invalid parameter. (Server IP address): " + strErrMsg;
                 goto End;
             }
 
@@ -1048,51 +1048,32 @@ namespace JigLib
         /// <param name="strIpAddr">
         /// IP address / IPアドレス
         /// </param>
+        /// <param name="strSubnetMask">
+        /// Subnet mask / サブネットマスク
+        /// </param>
+        /// <param name="strGateway">
+        /// Gateway / ゲートウェイ
+        /// </param>
         /// <param name="strSsid">
         /// SSID / SSID
         /// </param>
         /// <param name="strPassword">
         /// Password / パスワード
         /// </param>
-        /// <param name="strServerIpAddr">
-        /// Server IP address / サーバーのIPアドレス
-        /// </param>
-        /// <param name="isClient">
-        /// Client mode flag / クライアントモードフラグ
-        /// </param>
-        /// <param name="strGMailAddress">
-        /// Gmail address / Gmailアドレス
-        /// </param>
-        /// <param name="strGMailAppPassword">
-        /// Gmail app password / Gmailアプリパスワード
-        /// </param>
-        /// <param name="strToEMailAddress">
-        /// Destination email address / 送信先メールアドレス
-        /// </param>
-        /// <param name="mailIntervalHour">
-        /// Mail transmission interval (hours) / メール送信間隔(時間)
-        /// </param>
-        /// <param name="strName">
-        /// Identification name / 識別名
-        /// </param>
         /// <returns>
         /// Error message. Returns null on success. / エラーメッセージ。成功時はnullを返す。
         /// </returns>
-        public string SendCmd_SetNwConfig3(bool isWifi, string strCountryCode, string strIpAddr, string strSsid, string strPassword, string strServerIpAddr, bool isClient, string strGMailAddress, string strGMailAppPassword, string strToEMailAddress, byte mailIntervalHour, string strName)
+        public string SendCmd_SetNwConfig3(bool isWifi, string strCountryCode, string strIpAddr, string strSubnetMask, string strGateway, string strSsid, string strPassword)
         {
-            byte[] aReqData = new byte[279];
+            byte[] aReqData = new byte[114];
             byte[] aResData = null;
             char[] szCountryCode = new char[3];
             byte[] abyIpAddr = new byte[4];
             char[] szSsid = new char[33];
             char[] szPassword = new char[65];
-            byte[] abyServerIpAddr = new byte[4];
-            byte byIsClient = 0;
+            byte[] abySubnetMask = new byte[4];
+            byte[] abyGateway = new byte[4];
             byte byIsWifi = 0;
-            char[] szGMailAddress = new char[65];
-            char[] szGMailAppPassword = new char[20];
-            char[] szToEMailAddress = new char[65];
-            char[] szName = new char[17];
             string strErrMsg;
 
             // Country code / カントリーコード
@@ -1104,9 +1085,23 @@ namespace JigLib
             strCountryCode.CopyTo(0, szCountryCode, 0, strCountryCode.Length);
 
             // IP address / IPアドレス
-            strErrMsg = ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr);
-            if (strErrMsg != null)
+            if (!ConvertIpAddrStringToByteArray(strIpAddr, out abyIpAddr, out strErrMsg))
             {
+                strErrMsg = "Invalid parameter. (IP address): " + strErrMsg;
+                goto End;
+            }
+
+            // Subnet mask / サブネットマスク
+            if (!ConvertIpAddrStringToByteArray(strSubnetMask, out abySubnetMask, out strErrMsg))
+            {
+                strErrMsg = "Invalid parameter. (Subnet mask): " + strErrMsg;
+                goto End;
+            }
+
+            // Gateway / ゲートウェイ
+            if (!ConvertIpAddrStringToByteArray(strGateway, out abyGateway, out strErrMsg))
+            {
+                strErrMsg = "Invalid parameter. (Gateway): " + strErrMsg;
                 goto End;
             }
 
@@ -1126,66 +1121,18 @@ namespace JigLib
             }
             strPassword.CopyTo(0, szPassword, 0, strPassword.Length);
 
-            // Server IP address / サーバーのIPアドレス
-            strErrMsg = ConvertIpAddrStringToByteArray(strServerIpAddr, out abyServerIpAddr);
-            if (strErrMsg != null)
-            {
-                goto End;
-            }
-
-            // Gmail address / Gmailアドレス
-            if (strGMailAddress.Length > szGMailAddress.Length - 1)
-            {
-                strErrMsg = "Invalid parameter. (My Gmail Address)";
-                goto End;
-            }
-            strGMailAddress.CopyTo(0, szGMailAddress, 0, strGMailAddress.Length);
-
-            // Google Account App Password / Googleアカウントのアプリパスワード
-            if (strGMailAppPassword.Length > szGMailAppPassword.Length - 1)
-            {
-                strErrMsg = "Invalid parameter. (Gmail Account App Password)";
-                goto End;
-            }
-            strGMailAppPassword.CopyTo(0, szGMailAppPassword, 0, strGMailAppPassword.Length);
-
-            // Destination E-Mail Address / 宛先E-Mailアドレス
-            if (strToEMailAddress.Length > szToEMailAddress.Length - 1)
-            {
-                strErrMsg = "Invalid parameter. (To E-Mail Address)";
-                goto End;
-            }
-            strToEMailAddress.CopyTo(0, szToEMailAddress, 0, strToEMailAddress.Length);
-
-            // Identification name / 識別名
-            if (strName.Length > szName.Length - 1)
-            {
-                strErrMsg = "Invalid parameter. (Name)";
-                goto End;
-            }
-            strName.CopyTo(0, szName, 0, strName.Length);
-
             // Request data / 要求データ
             if (isWifi)
             {
                 byIsWifi = 1;
             }
             aReqData[0] = byIsWifi;
-            Array.Copy(ConvertCharAryToByteAry(szCountryCode), 0, aReqData, 1, szCountryCode.Length);
-            Array.Copy(abyIpAddr, 0, aReqData, 4, abyIpAddr.Length);
-            Array.Copy(ConvertCharAryToByteAry(szSsid), 0, aReqData, 8, szSsid.Length);
-            Array.Copy(ConvertCharAryToByteAry(szPassword), 0, aReqData, 41, szPassword.Length);
-            Array.Copy(abyServerIpAddr, 0, aReqData, 106, abyServerIpAddr.Length);
-            if (isClient)
-            {
-                byIsClient = 1;
-            }
-            aReqData[110] = byIsClient;
-            Array.Copy(ConvertCharAryToByteAry(szGMailAddress), 0, aReqData, 111, szGMailAddress.Length);
-            Array.Copy(ConvertCharAryToByteAry(szGMailAppPassword), 0, aReqData, 176, szGMailAppPassword.Length);
-            Array.Copy(ConvertCharAryToByteAry(szToEMailAddress), 0, aReqData, 196, szToEMailAddress.Length);
-            aReqData[261] = mailIntervalHour;
-            Array.Copy(ConvertCharAryToByteAry(szName), 0, aReqData, 262, szName.Length);
+            Array.Copy(ConvertCharAryToByteAry(szCountryCode), 0, aReqData, 1, szCountryCode.Length);   // Offset 1 (3 bytes)
+            Array.Copy(abyIpAddr, 0, aReqData, 4, abyIpAddr.Length);                                    // Offset 4 (4 bytes)
+            Array.Copy(abySubnetMask, 0, aReqData, 8, abySubnetMask.Length);                            // Offset 8 (4 bytes)
+            Array.Copy(abyGateway, 0, aReqData, 12, abyGateway.Length);                                 // Offset 12 (4 bytes)
+            Array.Copy(ConvertCharAryToByteAry(szSsid), 0, aReqData, 16, szSsid.Length);                // Offset 16 (33 bytes)
+            Array.Copy(ConvertCharAryToByteAry(szPassword), 0, aReqData, 49, szPassword.Length);        // Offset 49 (65 bytes)
 
             strErrMsg = SendCmd(E_FRM_CMD.SET_NW_CONFIG3, aReqData, out aResData);
 
@@ -1205,56 +1152,37 @@ namespace JigLib
         /// <param name="strIpAddr">
         /// Acquired IP address / 取得したIPアドレス
         /// </param>
+        /// <param name="strSubnetMask">
+        /// Acquired subnet mask / 取得したサブネットマスク
+        /// </param>
+        /// <param name="strGateway">
+        /// Acquired gateway / 取得したゲートウェイ
+        /// </param>
         /// <param name="strSsid">
         /// Acquired SSID / 取得したSSID
         /// </param>
         /// <param name="strPassword">
         /// Acquired password / 取得したパスワード
         /// </param>
-        /// <param name="strServerIpAddr">
-        /// Acquired server IP address / 取得したサーバーのIPアドレス
-        /// </param>
-        /// <param name="isClient">
-        /// Acquired client mode flag / 取得したクライアントモードフラグ
-        /// </param>
-        /// <param name="strGMailAddress">
-        /// Acquired Gmail address / 取得したGmailアドレス
-        /// </param>
-        /// <param name="strGMailAppPassword">
-        /// Acquired Gmail app password / 取得したGmailアプリパスワード
-        /// </param>
-        /// <param name="strToEMailAddress">
-        /// Acquired destination email address / 取得した送信先メールアドレス
-        /// </param>
-        /// <param name="mailIntervalHour">
-        /// Acquired mail transmission interval (hours) / 取得したメール送信間隔(時間)
-        /// </param>
-        /// <param name="strName">
-        /// Acquired identification name / 取得した識別名
-        /// </param>
         /// <returns>
         /// Error message. Returns null on success. / エラーメッセージ。成功時はnullを返す。
         /// </returns>
-        public string SendCmd_GetNwConfig3(out bool isWifi, out string strCountryCode, out string strIpAddr, out string strSsid, out string strPassword, out string strServerIpAddr, out bool isClient, out string strGMailAddress, out string strGMailAppPassword, out string strToEMailAddress, out byte mailIntervalHour, out string strName)
+        public string SendCmd_GetNwConfig3(out bool isWifi, out string strCountryCode, out string strIpAddr, out string strSubnetMask, out string strGateway, out string strSsid, out string strPassword)
         {
             byte[] aReqData = null;
             byte[] aResData = null;
             byte[] abyIpAddr = new byte[4];
-            byte[] abyServerIpAddr = new byte[4];
+            byte[] abySubnetMask = new byte[4];
+            byte[] abyGateway = new byte[4];
             string strErrMsg;
 
             strCountryCode = null;
             strIpAddr = null;
             strSsid = null;
+            strSubnetMask = null;
+            strGateway = null;
             strPassword = null;
-            strServerIpAddr = null;
-            isClient = false;
             isWifi = false;
-            strGMailAddress = null;
-            strGMailAppPassword = null;
-            strToEMailAddress = null;
-            mailIntervalHour = 0;
-            strName = null;
 
             strErrMsg = SendCmd(E_FRM_CMD.GET_NW_CONFIG3, aReqData, out aResData);
             if (strErrMsg == null)
@@ -1264,25 +1192,18 @@ namespace JigLib
                     isWifi = true;
                 }
 
-                Array.Copy(aResData, 4, abyIpAddr, 0, abyIpAddr.Length);
-                Array.Copy(aResData, 106, abyServerIpAddr, 0, abyServerIpAddr.Length);
+                Array.Copy(aResData, 4, abyIpAddr, 0, abyIpAddr.Length);             // Offset 4 (4 bytes)
+                Array.Copy(aResData, 8, abySubnetMask, 0, abySubnetMask.Length);     // Offset 8 (4 bytes)
+                Array.Copy(aResData, 12, abyGateway, 0, abyGateway.Length);          // Offset 12 (4 bytes)
 
-                strCountryCode = System.Text.Encoding.ASCII.GetString(aResData, 1, 3).TrimEnd('\0');
+                strCountryCode = System.Text.Encoding.ASCII.GetString(aResData, 1, 3).TrimEnd('\0'); // Offset 1 (3 bytes)
                 strIpAddr = abyIpAddr[0].ToString() + "." + abyIpAddr[1].ToString() + "." + abyIpAddr[2].ToString() + "." + abyIpAddr[3].ToString();
-                strSsid = System.Text.Encoding.ASCII.GetString(aResData, 8, 33).TrimEnd('\0');
-                strPassword = System.Text.Encoding.ASCII.GetString(aResData, 41, 65).TrimEnd('\0');
-                strServerIpAddr = abyServerIpAddr[0].ToString() + "." + abyServerIpAddr[1].ToString() + "." + abyServerIpAddr[2].ToString() + "." + abyServerIpAddr[3].ToString();
-                if (aResData[110] == 1)
-                {
-                    isClient = true;
-                }
-                strGMailAddress = System.Text.Encoding.ASCII.GetString(aResData, 111, 65).TrimEnd('\0');
-                strGMailAppPassword = System.Text.Encoding.ASCII.GetString(aResData, 176, 20).TrimEnd('\0');
-                strToEMailAddress = System.Text.Encoding.ASCII.GetString(aResData, 196, 65).TrimEnd('\0');
-                mailIntervalHour = aResData[261];
-                strName = System.Text.Encoding.ASCII.GetString(aResData, 262, 17).TrimEnd('\0');
+                strSubnetMask = abySubnetMask[0].ToString() + "." + abySubnetMask[1].ToString() + "." + abySubnetMask[2].ToString() + "." + abySubnetMask[3].ToString();
+                strGateway = abyGateway[0].ToString() + "." + abyGateway[1].ToString() + "." + abyGateway[2].ToString() + "." + abyGateway[3].ToString();
+                strSsid = System.Text.Encoding.ASCII.GetString(aResData, 16, 33).TrimEnd('\0');     // Offset 16 (33 bytes)
+                strPassword = System.Text.Encoding.ASCII.GetString(aResData, 49, 65).TrimEnd('\0'); // Offset 49 (65 bytes)
             }
-
+            
             return strErrMsg;
         }
 
@@ -1353,7 +1274,6 @@ namespace JigLib
                 strErrMsg = Send(aReqFrm);
                 if (strErrMsg != null)
                 {
-
                     goto End;
                 }
 
@@ -1418,28 +1338,28 @@ namespace JigLib
         /// </summary>
         private byte[] ConvertReqFrameStructToByteArray(ST_FRM_REQ_FRAME stReqFrm)
         {
-            List<byte[]> lst = new List<byte[]>(); // List of byte arrays / byte型配列のリスト
+            List<byte[]> lstByteAry = new List<byte[]>(); // List of byte arrays / byte型配列のリスト
 
             // Convert each field of the request frame structure into a byte array and add it to the list / 要求フレーム構造体の各フィールドをbyte型配列に変換してリストに追加
-            lst.Add(new byte[1] { (byte)stReqFrm.header });
-            lst.Add(BitConverter.GetBytes(stReqFrm.seqNo));
-            lst.Add(BitConverter.GetBytes((UInt16)stReqFrm.cmd));
-            lst.Add(BitConverter.GetBytes(stReqFrm.dataSize));
-            lst.Add(stReqFrm.aData);
-            lst.Add(BitConverter.GetBytes(stReqFrm.checksum));
+            lstByteAry.Add(new byte[1] { (byte)stReqFrm.header });
+            lstByteAry.Add(BitConverter.GetBytes(stReqFrm.seqNo));
+            lstByteAry.Add(BitConverter.GetBytes((UInt16)stReqFrm.cmd));
+            lstByteAry.Add(BitConverter.GetBytes(stReqFrm.dataSize));
+            lstByteAry.Add(stReqFrm.aData);
+            lstByteAry.Add(BitConverter.GetBytes(stReqFrm.checksum));
 
             // Combine the list into a single byte array and return it / リストを1つのbyte型配列に結合して返す
-            return CombineByteArray(lst);
+            return CombineByteArray(lstByteAry);
         }
 
         /// <summary>
         /// Combine the list of byte arrays in the argument into a single byte array and return it / 引数のbyte型配列のリストを1つのbyte型配列に結合して返す
         /// </summary>
-        private byte[] CombineByteArray(List<byte[]> lst)
+        private byte[] CombineByteArray(List<byte[]> lstByteAry)
         {
             // Determine the size of the byte array to return / 返却するbyte型配列のサイズを求める
             int size = 0;
-            foreach (byte[] ary in lst)
+            foreach (byte[] ary in lstByteAry)
             {
                 if (ary != null)
                 {
@@ -1450,7 +1370,7 @@ namespace JigLib
             // Combine the list of byte arrays in the argument into a single byte array / 引数のbyte型配列のリストを1つのbyte型配列に結合する
             int offset = 0;
             byte[] buf = new byte[size];
-            foreach (byte[] ary in lst)
+            foreach (byte[] ary in lstByteAry)
             {
                 if (ary != null)
                 {
@@ -1468,37 +1388,32 @@ namespace JigLib
         /// <remarks>
         /// The separator is a dot. / セパレータはドット。
         /// </remarks>
-        private string ConvertIpAddrStringToByteArray(string strText, out byte[] aVal)
+        private bool ConvertIpAddrStringToByteArray(string strText, out byte[] abyIpAddr, out string strErrMsg)
         {
-            char[] aSeparator = { '.' }; // Separator / セパレータ
-            strText = strText.Replace("\r", "").Replace("\n", "");
-            string strErrMsg = ConvertStringToValArray(strText, aSeparator, 10, out aVal);
-            bool isErr = false;
+            strText = strText.Replace("\r", "").Replace("\n", "").Trim();
+            abyIpAddr = null;
+            strErrMsg = null;
 
-            if (strErrMsg == null)
+            if (System.Net.IPAddress.TryParse(strText, out System.Net.IPAddress ipAddr))
             {
-                if (aVal.Length != 4)
+                if (ipAddr.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                 {
-                    isErr = true;
+                    abyIpAddr = ipAddr.GetAddressBytes();
+                    return true;
                 }
-            }
-            else
-            {
-                isErr = true;
+
+                strErrMsg = "Invalid IP address format (only IPv4 is supported).";
+                return false;
             }
 
-            if (isErr)
-            {
-                strErrMsg = "Invalid parameter. (IP address)";
-            }
-
-            return strErrMsg;
+            strErrMsg = "Invalid IP address format.";
+            return false;
         }
 
         /// <summary>
         /// Convert a string to a byte array / 文字列をbyte型の配列に変換する
         /// </summary>
-        private string ConvertStringToValArray(string strText, char[] aSeparator, int baseNumber, out byte[] aVal)
+        private string ConvertStringToByteArray(string strText, char[] aSeparator, int baseNumber, out byte[] abyData)
         {
             string[] astrSplit; // String after splitting / 分割後の文字列
             string strErrMsg = null;
@@ -1508,13 +1423,13 @@ namespace JigLib
 
             // [Convert the string to a byte array] / [文字列をbyte型の配列に変換]
             // Prepare a byte array with the number of elements equal to the number of split strings / 要素数が分割された文字列の数であるbyte型配列を用意
-            aVal = new byte[astrSplit.Length];
+            abyData = new byte[astrSplit.Length];
             // Convert the string to byte type for the number of split strings / 分割された文字列の数だけ、文字列をbyte型に変換
             for (int i = 0; i < astrSplit.Length; i++)
             {
                 try
                 {
-                    aVal[i] = Convert.ToByte(astrSplit[i], baseNumber);
+                    abyData[i] = Convert.ToByte(astrSplit[i], baseNumber);
                 }
                 catch (Exception ex)
                 {
@@ -1529,16 +1444,16 @@ namespace JigLib
         /// <summary>
         /// Convert a char array to a byte array / char型の配列をbyte型の配列に変換する
         /// </summary>
-        private byte[] ConvertCharAryToByteAry(char[] achArray)
+        private byte[] ConvertCharAryToByteAry(char[] achData)
         {
-            byte[] abyArray = new byte[achArray.Length];
+            byte[] abyData = new byte[achData.Length];
 
-            for (int i = 0; i < achArray.Length; i++)
+            for (int i = 0; i < achData.Length; i++)
             {
-                abyArray[i] = (byte)achArray[i];
+                abyData[i] = (byte)achData[i];
             }
 
-            return abyArray;
+            return abyData;
         }
     }
 }

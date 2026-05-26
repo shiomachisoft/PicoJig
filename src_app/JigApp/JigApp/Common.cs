@@ -30,16 +30,16 @@ namespace JigApp
         /// <remarks>
         /// Separator: Space/Tab/CRLF/CR / セパレータ:スペース/タブ/CRLF/CR
         /// </remarks>
-        public static string ConvertHexStringToByteArray(string strText, out byte[] aVal)
+        public static string ConvertHexStringToByteArray(string strText, out byte[] abyData)
         {
             char[] aSeparator = { ' ', ',', '\t', '\r', '\n' }; // Separator / セパレータ    
-            return ConvertStringToValArray(strText, aSeparator, 16, out aVal);
+            return ConvertStringToByteArray(strText, aSeparator, 16, out abyData);
         }
 
         /// <summary>
         /// Convert string to byte array / 文字列をbyte型の配列に変換
         /// </summary>
-        public static string ConvertStringToValArray(string strText, char[] aSeparator, int baseNumber, out byte[] aVal)
+        public static string ConvertStringToByteArray(string strText, char[] aSeparator, int baseNumber, out byte[] abyData)
         {
             string[] astrSplit; // Split string / 分割後の文字列
             string strErrMsg = null;
@@ -49,19 +49,19 @@ namespace JigApp
 
             if (astrSplit.Length == 0)
             {
-                aVal = new byte[0];
+                abyData = new byte[0];
                 return "No valid transmission data has been entered.";
             }
 
             // [Convert string to byte array] / [文字列をbyte型の配列に変換]
             // Prepare byte array with the number of split strings / 要素数が分割された文字列の数であるbyte型配列を用意
-            aVal = new byte[astrSplit.Length];
+            abyData = new byte[astrSplit.Length];
             // Convert string to byte type for the number of split strings / 分割された文字列の数だけ、文字列をbyte型に変換
             for (int i = 0; i < astrSplit.Length; i++)
             {
                 try
                 {
-                    aVal[i] = Convert.ToByte(astrSplit[i], baseNumber);
+                    abyData[i] = Convert.ToByte(astrSplit[i], baseNumber);
                 }
                 catch (Exception ex)
                 {
