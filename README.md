@@ -20,10 +20,10 @@ This repository provides documentation in both **English** and **Japanese**. Ple
 <a id="english"></a>
 ## English
 
-### Overview
+### 1. Overview
 **PicoJig** and **PicoJig-WL** are combined Firmware (FW), PC Applications, and C# Libraries that allow you to easily control the peripherals of a **Raspberry Pi Pico** or **Raspberry Pi Pico W** from a Windows PC.
 
-#### Main Features
+#### 1.1 Main Features
 * **Two Connection Modes:**
     * **USB Mode:** Control via Virtual COM port (Supports both Pico and Pico W).
     * **Wi-Fi Mode:** Control remotely via TCP/IP socket communication (Pico W only).
@@ -35,7 +35,10 @@ This repository provides documentation in both **English** and **Japanese**. Ple
     * I2C (Master)
     * PWM
 
-### Repository Components
+#### 1.2 System Configuration
+<img width="739" height="360" alt="image" src="https://github.com/user-attachments/assets/05163c60-a5ac-4eab-b791-720c9b121c13" />
+
+### 2. Repository Components
 This repository consists of the following main components:
 
 1.  **Firmware (`.uf2`)** Firmware files for Raspberry Pi Pico and Pico W. 
@@ -43,10 +46,10 @@ This repository consists of the following main components:
 3.  **C# Library (`PicoJigLib.dll`)** A C# DLL to control microcontroller peripherals from a PC via USB or Wi-Fi. You can integrate it into your own custom Windows applications.
 4.  **Sample Application (`PicoJigLibSample.exe`)** A console-based sample C# program demonstrating how to use `PicoJigLib.dll` to control the microcontroller peripherals.
 
-### Source Code
+### 3. Source Code
 The source code for the firmware, PC application, and C# library is all publicly available.
 
-### Quick Start
+### 4. Quick Start
 1.  Write the appropriate firmware (`.uf2`) to your Pico or Pico W:
     * **Pico:** `PicoJig_XXXXXXXX.uf2`
     * **Pico W:** `PicoJig_WL_XXXXXXXX.uf2`
@@ -59,10 +62,10 @@ The source code for the firmware, PC application, and C# library is all publicly
 <a id="japanese"></a>
 ## 日本語
 
-### 概要
+### 1. 概要
 **PicoJig** および **PicoJig-WL** は、Windows PC から **Raspberry Pi Pico** または **Raspberry Pi Pico W** のペリフェラルを簡単に制御できるようにする、ファームウェア (FW)、PC アプリケーション、および C# ライブラリのセットです。
 
-#### 主な機能
+#### 1.1 主な機能
 * **2つの接続モード:**
     * **USB モード:** 仮想 COM ポート経由での制御 (Pico と Pico W の両方に対応)。
     * **Wi-Fi モード:** TCP/IP ソケット通信経由でのリモート制御 (Pico W のみ)。
@@ -74,7 +77,10 @@ The source code for the firmware, PC application, and C# library is all publicly
     * I2C (マスター)
     * PWM
 
-### リポジトリの構成要素
+#### 1.2 システム構成
+<img width="739" height="360" alt="image" src="https://github.com/user-attachments/assets/05163c60-a5ac-4eab-b791-720c9b121c13" />
+
+### 2. リポジトリの構成要素
 本リポジトリは、主に以下の要素で構成されています。
 
 1.  **ファームウェア (`.uf2`)** Raspberry Pi Pico用 および Pico W用のファームウェアファイルです。
@@ -82,10 +88,10 @@ The source code for the firmware, PC application, and C# library is all publicly
 3.  **C# ライブラリ (`PicoJigLib.dll`)** PCからUSBやWi-Fi経由でマイコンのペリフェラルを制御するためのC#のDLLです。独自の Windows アプリケーションに組み込むことができます。
 4.  **サンプルアプリケーション (`PicoJigLibSample.exe`)** `PicoJigLib.dll` を使用してマイコンのペリフェラルを制御する方法を示す、コンソールベースの C# サンプルプログラムです。
 
-### ソースコードについて
+### 3. ソースコードについて
 ファームウェア、PCアプリ、C#ライブラリのソースコードはすべて公開されています。
 
-### クイックスタート
+### 4. クイックスタート
 1.  適切なファームウェア（`.uf2`）を Pico または Pico W に書き込みます。
     * **Pico:** `PicoJig_XXXXXXXX.uf2`
     * **Pico W:** `PicoJig_WL_XXXXXXXX.uf2`
