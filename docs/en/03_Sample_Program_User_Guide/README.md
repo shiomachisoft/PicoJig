@@ -265,7 +265,7 @@ Below is an overview of the user input required when executing each function and
     ```text
     --- Set UART Config ---
     Baudrate: 
-    Stop bits: 
+    Stop bits(1 or 2): 
     Parity (0:None, 1:Even, 2:Odd): 
     ```
   - **Display:**   

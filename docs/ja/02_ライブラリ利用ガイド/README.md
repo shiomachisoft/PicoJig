@@ -144,7 +144,7 @@
 - `string SendCmd_GetAdc(out float[] aVolt)`
 
   「ADC入力」コマンドの要求を送信します。
-  - aVolt: 取得した各チャンネルの電圧値[V]の配列(要素数4)
+  - aVolt: 取得した各チャンネルの電圧値[V]（ADC4は温度[℃]）の配列(要素数4)
 
 ## 7. UART通信
 

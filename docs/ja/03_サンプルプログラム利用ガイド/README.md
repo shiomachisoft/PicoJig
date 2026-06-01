@@ -265,7 +265,7 @@ Connected successfully via USB (COM).
     ```text
     --- Set UART Config ---
     Baudrate: 
-    Stop bits: 
+    Stop bits(1 or 2): 
     Parity (0:None, 1:Even, 2:Odd): 
     ```
   - **表示:**   

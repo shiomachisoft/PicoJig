@@ -141,7 +141,7 @@ The bitmask (bit data) handled by the arguments of each method represents the bi
 - `string SendCmd_GetAdc(out float[] aVolt)`
 
   Sends an "ADC Input" command request.
-  - aVolt: Retrieved array of voltage values [V] for each channel (Array length 4)
+  - aVolt: Retrieved array of voltage values [V](ADC4 = Temperature [deg C]) for each channel (Array length 4)
 
 ## 7. UART Communication
 
