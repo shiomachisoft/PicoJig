@@ -46,6 +46,11 @@ This repository consists of the following main components:
 3.  **C# Library (`PicoJigLib.dll`)** A C# DLL to control microcontroller peripherals from a PC via USB or Wi-Fi. You can integrate it into your own custom Windows applications.
 4.  **Sample Applications (`PicoJigLibSample.exe`, `PicoJigLibSample.py`)** Console-based C# and Python sample programs demonstrating how to use `PicoJigLib.dll` to control the microcontroller peripherals.
 
+* **.NET Framework Version:** .NET Framework 4.6.2 or higher
+  * **Windows 11:** Runs natively using the standard .NET Framework 4.8.
+  * **Windows 10:** Requires .NET Framework 4.6.2 or higher to be installed.
+  * **Unsupported:** .NET 5 and above (Will not run due to compatibility issues)
+
 ### 3. Source Code
 The source code for the firmware, PC application, and C# library is all publicly available.
 
@@ -87,6 +92,11 @@ The source code for the firmware, PC application, and C# library is all publicly
 2.  **PC GUI アプリケーション (`PicoJigApp.exe`)** PCからUSBやWi-Fi経由でマイコンのペリフェラルを制御するためのWindows GUIアプリです。  
 3.  **C# ライブラリ (`PicoJigLib.dll`)** PCからUSBやWi-Fi経由でマイコンのペリフェラルを制御するためのC#のDLLです。独自の Windows アプリケーションに組み込むことができます。
 4.  **サンプルアプリケーション (`PicoJigLibSample.exe`, `PicoJigLibSample.py`)** `PicoJigLib.dll` を使用してマイコンのペリフェラルを制御する方法を示す、コンソールベースの C#とPython サンプルプログラムです。
+
+* **.Net FrameWorkのバージョン：** .NET Framework 4.6.2以降
+  * Windows 11では、標準の .NET Framework 4.8 でそのまま動作します。
+  * Windows 10では、4.6.2以上がインストールされている必要があります。
+  * 非対応： .NET 5 以上（互換性がないため動作しません）
 
 ### 3. ソースコードについて
 ファームウェア、PCアプリ、C#ライブラリのソースコードはすべて公開されています。
