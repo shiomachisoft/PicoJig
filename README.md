@@ -48,7 +48,6 @@ This repository consists of the following main components:
 
 * **.NET Framework Version:** .NET Framework 4.6.2 or higher
   * **Windows 11:** Runs natively using the standard .NET Framework 4.8.
-  * **Windows 10:** Requires .NET Framework 4.6.2 or higher to be installed.
   * **Unsupported:** .NET 5 and above (Will not run due to compatibility issues)
 
 ### 3. Source Code
@@ -95,7 +94,6 @@ The source code for the firmware, PC application, and C# library is all publicly
 
 * **.Net FrameWorkのバージョン：** .NET Framework 4.6.2以降
   * Windows 11では、標準の .NET Framework 4.8 でそのまま動作します。
-  * Windows 10では、4.6.2以上がインストールされている必要があります。
   * 非対応： .NET 5 以上（互換性がないため動作しません）
 
 ### 3. ソースコードについて
