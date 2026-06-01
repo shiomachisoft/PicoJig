@@ -42,7 +42,7 @@ This repository provides documentation in both **English** and **Japanese**. Ple
 This repository consists of the following main components:
 
 1.  **Firmware (`.uf2`)** Firmware files for Raspberry Pi Pico and Pico W. 
-2.  **PC GUI Application (`PicoJigApp.exe`)** A Windows GUI application to control the microcontroller peripherals from a PC via USB or Wi-Fi. *(Requires .NET Framework 4.6.2+)*
+2.  **PC GUI Application (`PicoJigApp.exe`)** A Windows GUI application to control the microcontroller peripherals from a PC via USB or Wi-Fi.  
 3.  **C# Library (`PicoJigLib.dll`)** A C# DLL to control microcontroller peripherals from a PC via USB or Wi-Fi. You can integrate it into your own custom Windows applications.
 4.  **Sample Applications (`PicoJigLibSample.exe`, `PicoJigLibSample.py`)** Console-based C# and Python sample programs demonstrating how to use `PicoJigLib.dll` to control the microcontroller peripherals.
 
@@ -84,7 +84,7 @@ The source code for the firmware, PC application, and C# library is all publicly
 本リポジトリは、主に以下の要素で構成されています。
 
 1.  **ファームウェア (`.uf2`)** Raspberry Pi Pico用 および Pico W用のファームウェアファイルです。
-2.  **PC GUI アプリケーション (`PicoJigApp.exe`)** PCからUSBやWi-Fi経由でマイコンのペリフェラルを制御するためのWindows GUIアプリです。*(.NET Framework 4.6.2 以降が必要)*
+2.  **PC GUI アプリケーション (`PicoJigApp.exe`)** PCからUSBやWi-Fi経由でマイコンのペリフェラルを制御するためのWindows GUIアプリです。  
 3.  **C# ライブラリ (`PicoJigLib.dll`)** PCからUSBやWi-Fi経由でマイコンのペリフェラルを制御するためのC#のDLLです。独自の Windows アプリケーションに組み込むことができます。
 4.  **サンプルアプリケーション (`PicoJigLibSample.exe`, `PicoJigLibSample.py`)** `PicoJigLib.dll` を使用してマイコンのペリフェラルを制御する方法を示す、コンソールベースの C#とPython サンプルプログラムです。
 
